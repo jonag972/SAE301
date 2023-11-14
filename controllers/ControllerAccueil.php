@@ -7,8 +7,7 @@ class ControllerAccueil {
     public function accueil() {
 
         // Inclure la vue de la page d'accueil
-        include 'views/barredenavigation.php';
-        $content = include 'views/accueil/accueilVue.php';
+        include 'views/accueil/accueilVue.php';
     }
 }
 ?>

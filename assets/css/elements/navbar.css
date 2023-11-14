@@ -1,0 +1,49 @@
+#navbar {
+    background-color: #006400;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+/* Style pour la barre de navigation */
+.navbar-wrapper nav {
+    display: flex;
+    align-items: center;
+    color: white;
+    border-radius: 10px;
+}
+.navbar-wrapper nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex; /* Active le flex sur les éléments de la liste */
+    justify-content: space-between; /* Nouveau : répartit les éléments de manière égale */
+}
+.navbar-wrapper nav ul li {
+    display: inline-block;
+    margin-right: 20px;
+    position: relative;
+    padding: 25px 0; /* Ajoutez du padding en haut et en bas */
+}
+
+.navbar-wrapper nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+/* Style pour la liste déroulante */
+.navbar-wrapper nav ul ul {
+    position: absolute;
+    display: none;
+    background-color: #006400; /* Vert foncé */
+}
+
+.navbar-wrapper nav ul li:hover ul {
+    display: block;
+    background-color: #006400; /* Vert foncé */
+}
+
+#utilisateur {
+    /* L'utilisateur est tout à droite */
+    margin-left: auto;
+    margin-right: 20px;
+}
