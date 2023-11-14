@@ -60,5 +60,27 @@ class ModelUtilisateur {
         // On exécute la requête SQL en utilisant la méthode "prepareEtExecute" de la classe "database"
         database::prepareEtExecute($query, $values);
     }
+
+    public static function getTousLesUtilisateurs() {
+        // On prépare la requête SQL pour récupérer tous les utilisateurs
+        $query = "SELECT * FROM Utilisateurs";
+        // On exécute la requête SQL en utilisant la méthode "prepareEtExecute" de la classe "database"
+        $resultat = database::prepareEtExecute($query);
+        // On retourne la résultat à l'utilisateur si elle existe ou null
+        return $resultat ? $resultat : NULL;
+    }
+
+    public static function getUtilisateurParIdentifiant($identifiant_utilisateur) {
+        // On prépare la requête SQL pour récupérer un utilisateur à partir de son identifiant
+        $query = "SELECT * FROM Utilisateurs WHERE identifiant_utilisateur = :identifiant";
+        // On prépare les valeurs à utiliser dans la requête SQL
+        $values = array(
+            ':identifiant' => $identifiant_utilisateur
+        );
+        // On exécute la requête SQL en utilisant la méthode "prepareEtExecute" de la classe "database"
+        $resultat = database::prepareEtExecute($query, $values);
+        // On retourne la résultat à l'utilisateur si elle existe ou null
+        return $resultat ? $resultat[0] : NULL;
+    }
 }
 ?>

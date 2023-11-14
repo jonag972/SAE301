@@ -64,7 +64,7 @@
                                 session_start();
                                 // Ici, vous devez récupérer toutes les informations de l'utilisateur à partir de la base de données
                                 // et les stocker dans la session. Je vais supposer que vous avez une méthode pour cela.
-                                $_SESSION['id_utilisateur'] = modelUtilisateur::getAttributUtilisateurParIdentifiant('id_utilisateur', $identifiant_utilisateur);
+                                $_SESSION['identifiant_utilisateur'] = modelUtilisateur::getAttributUtilisateurParIdentifiant('identifiant_utilisateur', $identifiant_utilisateur);
                                 $_SESSION['identifiant_utilisateur'] = modelUtilisateur::getAttributUtilisateurParIdentifiant('identifiant_utilisateur', $identifiant_utilisateur);
                                 $_SESSION['email'] = modelUtilisateur::getAttributUtilisateurParIdentifiant('email', $identifiant_utilisateur);
                                 $_SESSION['prenom'] = modelUtilisateur::getAttributUtilisateurParIdentifiant('prenom', $identifiant_utilisateur);
@@ -73,6 +73,8 @@
                                 $_SESSION['pays'] = modelUtilisateur::getAttributUtilisateurParIdentifiant('pays', $identifiant_utilisateur);
                                 $_SESSION['abonnement'] = modelUtilisateur::getAttributUtilisateurParIdentifiant('abonnement', $identifiant_utilisateur);
                                 $_SESSION['role'] = modelUtilisateur::getAttributUtilisateurParIdentifiant('role', $identifiant_utilisateur);
+                                // Changer la date de dernière connexion
+                                modelUtilisateur::modifierAttributUtilisateurParIdentifiant('date_derniere_connexion', date('Y-m-d H:i:s'), $identifiant_utilisateur);
                                 header('Location: ?action=accueil');
                             } 
                             else {
@@ -105,6 +107,7 @@
             // Déconnectez l'utilisateur
             session_destroy();
             header('Location: ?action=accueil');
+            modelUtilisateur::modifierAttributUtilisateurParIdentifiant('date_derniere_deconnexion', date('Y-m-d H:i:s'), $_SESSION['identifiant_utilisateur']);
         }
 
         public function monCompte() {
@@ -220,4 +223,163 @@
                 include 'views/utilisateur/supprimerCompteVue.php';
             }
         }
-    }        
+
+        public function adminAfficherTousLesUtilisateurs() {
+            // Si l'utilisateur n'est pas connecté, redirigez-le vers la page de connexion
+            if (!isset($_SESSION['identifiant_utilisateur'])) {
+                header('Location: ?action=seconnecter');
+                exit();
+            }
+            // Si l'utilisateur n'est pas un administrateur, redirigez-le vers la page d'accueil
+            if ($_SESSION['role'] != 'admin') {
+                header('Location: ?action=accueil');
+                exit();
+            }
+            // On récupère tous les utilisateurs
+            $utilisateurs = modelUtilisateur::getTousLesUtilisateurs();
+            // Afficher la vue
+            include 'views/utilisateur/adminAfficherTousLesUtilisateursVue.php';
+        }
+
+        public function adminAfficherUtilisateur() {
+            // Si l'utilisateur n'est pas connecté, redirigez-le vers la page de connexion
+            if (!isset($_SESSION['identifiant_utilisateur'])) {
+                header('Location: ?action=seconnecter');
+                exit();
+            }
+            // Si l'utilisateur n'est pas un administrateur, redirigez-le vers la page d'accueil
+            if ($_SESSION['role'] != 'admin') {
+                header('Location: ?action=accueil');
+                exit();
+            }
+            // On récupère l'utilisateur
+            $utilisateur = modelUtilisateur::getUtilisateurParIdentifiant($_GET['identifiant_utilisateur']);
+            // Afficher la vue
+            include 'views/utilisateur/adminAfficherUtilisateurVue.php';
+        }
+
+        public function adminModifierUtilisateur($identifiant_utilisateur) {
+            // Si l'utilisateur n'est pas connecté, redirigez-le vers la page de connexion
+            if (!isset($_SESSION['identifiant_utilisateur'])) {
+                header('Location: ?action=seconnecter');
+                exit();
+            }
+            // Si l'utilisateur n'est pas un administrateur, redirigez-le vers la page d'accueil
+            if ($_SESSION['role'] != 'admin') {
+                header('Location: ?action=accueil');
+                exit();
+            }
+            // On récupère l'utilisateur
+            $utilisateur = modelUtilisateur::getUtilisateurParIdentifiant($_GET['identifiant_utilisateur']);
+            // Afficher la vue
+            include 'views/utilisateur/adminModifierUtilisateurVue.php';
+        }
+
+        public function adminModificationUtilisateur($identifiant_utilisateur) {
+            // Si l'utilisateur n'est pas connecté, redirigez-le vers la page de connexion
+            if (!isset($_SESSION['identifiant_utilisateur'])) {
+                header('Location: ?action=seconnecter');
+                exit();
+            }
+            // Si l'utilisateur n'est pas un administrateur, redirigez-le vers la page d'accueil
+            if ($_SESSION['role'] != 'admin') {
+                header('Location: ?action=accueil');
+                exit();
+            }
+            // On modifie l'utilisateur pour tous les champs non vides
+            $champs = array(
+                'identifiant_utilisateur' => $_POST['identifiant_utilisateur'],
+                'mot_de_passe' => !empty($_POST['mot_de_passe']) ? password_hash($_POST['mot_de_passe'], PASSWORD_DEFAULT) : null,
+                'email' => $_POST['email'],
+                'prenom' => $_POST['prenom'],
+                'nom_de_famille' => $_POST['nom_de_famille'],
+                'age' => $_POST['age'],
+                'pays' => $_POST['pays'],
+                'ville' => $_POST['ville'],
+                'abonnement' => $_POST['abonnement'],
+                'role' => $_POST['role']
+            );
+
+            // Parcourir le tableau pour vérifier si chaque champ est vide ou non
+            foreach ($champs as $champ => $valeur) {
+                if (!empty($valeur)) {
+                    // Si le champ n'est pas vide, modifier l'attribut correspondant
+                    modelUtilisateur::modifierAttributUtilisateurParIdentifiant($champ, $valeur, $_POST['identifiant_utilisateur']);
+                }
+            }
+            // Rediriger l'utilisateur vers le controlleur pour afficher l'utilisateur modifié
+            header('Location: ?action=adminAfficherUtilisateur&identifiant_utilisateur=' . $_POST['identifiant_utilisateur']);
+
+    }    
+    
+    public function adminSupprimerUtilisateur($identifiant_utilisateur) {
+        // Si l'utilisateur n'est pas connecté, redirigez-le vers la page de connexion
+        if (!isset($_SESSION['identifiant_utilisateur'])) {
+            header('Location: ?action=seconnecter');
+            exit();
+        }
+        // Si l'utilisateur n'est pas un administrateur, redirigez-le vers la page d'accueil
+        if ($_SESSION['role'] != 'admin') {
+            header('Location: ?action=accueil');
+            exit();
+        }
+        // On supprime l'utilisateur
+        modelUtilisateur::supprimerUtilisateurParIdentifiant($_GET['identifiant_utilisateur']);
+        // Rediriger l'utilisateur vers le controlleur pour afficher tous les utilisateurs
+        header('Location: ?action=adminAfficherTousLesUtilisateurs');
+    }
+
+    public function adminAjouterUtilisateur() {
+        // Si l'utilisateur n'est pas connecté, redirigez-le vers la page de connexion
+        if (!isset($_SESSION['identifiant_utilisateur'])) {
+            header('Location: ?action=seconnecter');
+            exit();
+        }
+        // Si l'utilisateur n'est pas un administrateur, redirigez-le vers la page d'accueil
+        if ($_SESSION['role'] != 'admin') {
+            header('Location: ?action=accueil');
+            exit();
+        }
+        // Afficher le formulaire d'ajout d'utilisateur
+        include 'views/utilisateur/adminAjouterUtilisateurVue.php';
+    }
+
+    public function adminAjoutUtilisateur() {
+        // Si l'utilisateur n'est pas connecté, redirigez-le vers la page de connexion
+        if (!isset($_SESSION['identifiant_utilisateur'])) {
+            header('Location: ?action=seconnecter');
+            exit();
+        }
+        // Si l'utilisateur n'est pas un administrateur, redirigez-le vers la page d'accueil
+        if ($_SESSION['role'] != 'admin') {
+            header('Location: ?action=accueil');
+            exit();
+        }
+        $messageErreur = ''; // Initialisation de la variable d'erreur
+        $identifiant_utilisateur = $_POST['identifiant_utilisateur'];
+        $mot_de_passe = $_POST['mot_de_passe'];
+        $email = $_POST['email'];
+        $prenom = $_POST['prenom'];
+        $nom_de_famille = $_POST['nom_de_famille'];
+        $age = $_POST['age'];
+        $pays = $_POST['pays'];
+        $abonnement = $_POST['abonnement'];
+        $role = $_POST['role'];
+        if (!empty($identifiant_utilisateur) && !empty($mot_de_passe) && !empty($email) && !empty($prenom) && !empty($nom_de_famille) && !empty($age) && !empty($pays)) {
+            if (modelUtilisateur::getAttributUtilisateurParIdentifiant('identifiant_utilisateur', $identifiant_utilisateur) == NULL) {
+                $modelUtilisateur = new ModelUtilisateur();
+                $modelUtilisateur->ajouterUtilisateur($identifiant_utilisateur, password_hash($mot_de_passe, PASSWORD_DEFAULT), $email, $prenom, $nom_de_famille, $age, $pays, $abonnement, $role);
+                // Rediriger l'utilisateur vers le controlleur pour afficher tous les utilisateurs
+                header('Location: ?action=adminAfficherTousLesUtilisateurs');
+            }
+            else {
+                $messageErreur = "L'identifiant existe déjà. Veuillez en choisir un autre.";
+                include 'views/utilisateur/adminAjouterUtilisateurVue.php';
+            }
+        }
+        else {
+            $messageErreur = "Veuillez remplir tous les champs avec l'astérisque.";
+            include 'views/utilisateur/adminAjouterUtilisateurVue.php';
+        }
+    }
+}  

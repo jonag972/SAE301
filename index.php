@@ -14,6 +14,48 @@ if (empty($_GET['action'])) {
 
 // On vérifie la valeur du paramètre page et on appelle le contrôleur correspondant
 switch ($action) {
+    case 'adminAfficherTousLesUtilisateurs':
+        // On appelle le contrôleur de la page d'administration des utilisateurs
+        $controller_file = 'controllers/ControllerUtilisateur.php';
+        $controllerName = 'ControllerUtilisateur';
+        break;
+
+    case 'adminSupprimerUtilisateur':
+        // On appelle le contrôleur de la page de suppression d'un utilisateur
+        $controller_file = 'controllers/ControllerUtilisateur.php';
+        $controllerName = 'ControllerUtilisateur';
+        break;
+
+    case 'adminAfficherUtilisateur':
+        // On appelle le contrôleur de la page d'affichage d'un utilisateur
+        $controller_file = 'controllers/ControllerUtilisateur.php';
+        $controllerName = 'ControllerUtilisateur';
+        break;
+
+    case 'adminModifierUtilisateur':
+        // On appelle le contrôleur de la page de modification d'un utilisateur
+        $controller_file = 'controllers/ControllerUtilisateur.php';
+        $controllerName = 'ControllerUtilisateur';
+        break;
+
+    case 'adminModificationUtilisateur':
+        // On appelle le contrôleur de la page de modification d'un utilisateur
+        $controller_file = 'controllers/ControllerUtilisateur.php';
+        $controllerName = 'ControllerUtilisateur';
+        break;
+
+    case 'adminAjouterUtilisateur':
+        // On appelle le contrôleur de la page d'ajout d'un utilisateur
+        $controller_file = 'controllers/ControllerUtilisateur.php';
+        $controllerName = 'ControllerUtilisateur';
+        break;
+
+    case 'adminAjoutUtilisateur':
+        // On appelle le contrôleur de la page d'ajout d'un utilisateur
+        $controller_file = 'controllers/ControllerUtilisateur.php';
+        $controllerName = 'ControllerUtilisateur';
+        break;
+
     case 'afficherToutesLesEspeces':
         // On appelle le contrôleur des espèces
         $controller_file = 'controllers/ControllerEspeces.php';

@@ -61,6 +61,3 @@ BEGIN
     VALUES (OLD.id_utilisateur, 'DELETE', NOW(), 'ALL', CONCAT(OLD.identifiant_utilisateur, ', ', OLD.mot_de_passe, ', ', OLD.email, ', ', OLD.prenom, ', ', OLD.nom_de_famille, ', ', OLD.age, ', ', OLD.pays, ', ', OLD.ville, ', ', OLD.abonnement, ', ', OLD.role, ', ', OLD.date_inscription, ', ', OLD.date_derniere_connexion, ', ', OLD.date_derniere_modification, ', ', OLD.date_derniere_deconnexion));
 END //
 DELIMITER ;
-
-DELIMITER //
-CREATE TRIGGER tr_utilisateur_

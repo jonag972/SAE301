@@ -5,14 +5,14 @@ DROP TRIGGER IF EXISTS tr_naturotheques_update;
 DROP TRIGGER IF EXISTS tr_naturotheques_delete;
 
 CREATE TABLE IF NOT EXISTS Naturotheques (
-    id_naturotheque INT PRIMARY KEY NOT NULL,
-    id_utilisateur INT NOT NULL,
+    id_naturotheque INT PRIMARY KEY AUTO_INCREMENT,
+    identifiant_utilisateur VARCHAR(255) NOT NULL,
     nom VARCHAR (255),
     description TEXT,
     nombre_especes INT,
     dateCreation TIMESTAMP DEFAULT NOW(),
-    dateDerniereModification TIMESTAMP,
-    FOREIGN KEY (id_utilisateur) REFERENCES Utilisateurs(id_utilisateur)
+    dateDerniereModification TIMESTAMP DEFAULT NOW(),
+    FOREIGN KEY (identifiant_utilisateur) REFERENCES Utilisateurs(identifiant_utilisateur)
 );
 
 CREATE TABLE IF NOT EXISTS Historique_Naturotheques(
@@ -32,7 +32,7 @@ AFTER UPDATE ON Naturotheques
 FOR EACH ROW
 BEGIN
     INSERT INTO Historique_Naturotheques (id_naturotheque, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
-    VALUES (NEW.id_naturotheque, 'UPDATE', NOW(), 'ALL', CONCAT(OLD.id_utilisateur, ', ', OLD.nom, ', ', OLD.description, ', ', OLD.nombre_especes, ', ', OLD.dateCreation, ', ', OLD.dateDerniereModification), CONCAT(NEW.id_utilisateur, ', ', NEW.nom, ', ', NEW.description, ', ', NEW.nombre_especes, ', ', NEW.dateCreation, ', ', NEW.dateDerniereModification));
+    VALUES (NEW.id_naturotheque, 'UPDATE', NOW(), 'ALL', CONCAT(OLD.identifiant_utilisateur, ', ', OLD.nom, ', ', OLD.description, ', ', OLD.nombre_especes, ', ', OLD.dateCreation, ', ', OLD.dateDerniereModification), CONCAT(NEW.identifiant_utilisateur, ', ', NEW.nom, ', ', NEW.description, ', ', NEW.nombre_especes, ', ', NEW.dateCreation, ', ', NEW.dateDerniereModification));
 END //
 DELIMITER ;
 
@@ -42,7 +42,7 @@ AFTER INSERT ON Naturotheques
 FOR EACH ROW
 BEGIN
     INSERT INTO Historique_Naturotheques (id_naturotheque, action, date_modification, colonne_changee, nouvelle_valeur)
-    VALUES (NEW.id_naturotheque, 'INSERT', NOW(), 'ALL', CONCAT(NEW.id_utilisateur, ', ', NEW.nom, ', ', NEW.description, ', ', NEW.nombre_especes, ', ', NEW.dateCreation, ', ', NEW.dateDerniereModification));
+    VALUES (NEW.id_naturotheque, 'INSERT', NOW(), 'ALL', CONCAT(NEW.identifiant_utilisateur, ', ', NEW.nom, ', ', NEW.description, ', ', NEW.nombre_especes, ', ', NEW.dateCreation, ', ', NEW.dateDerniereModification));
 END //
 DELIMITER ;
 
@@ -52,6 +52,6 @@ AFTER DELETE ON Naturotheques
 FOR EACH ROW
 BEGIN
     INSERT INTO Historique_Naturotheques (id_naturotheque, action, date_modification, colonne_changee, ancienne_valeur)
-    VALUES (OLD.id_naturotheque, 'DELETE', NOW(), 'ALL', CONCAT(OLD.id_utilisateur, ', ', OLD.nom, ', ', OLD.description, ', ', OLD.nombre_especes, ', ', OLD.dateCreation, ', ', OLD.dateDerniereModification));
+    VALUES (OLD.id_naturotheque, 'DELETE', NOW(), 'ALL', CONCAT(OLD.identifiant_utilisateur, ', ', OLD.nom, ', ', OLD.description, ', ', OLD.nombre_especes, ', ', OLD.dateCreation, ', ', OLD.dateDerniereModification));
 END //
 DELIMITER ;

@@ -3,13 +3,13 @@
 require_once 'database.php';
 
 class modelNaturotheques{
-    public static function getAttributParId($attribut, $id){
-        $query = "SELECT $attribut FROM naturotheques WHERE id = :id";
+    public static function getAttributParId($attribut, $identifiant_utilisateur){
+        $query = "SELECT $attribut FROM naturotheques WHERE identifiant_utilisateur = :identifiant_utilisateur";
         $values = array(
-            ':id' => $id
+            ':identifiant_utilisateur' => $identifiant_utilisateur
         );
         $resultat = database::prepareEtExecute($query, $values);
-        return $resultat[0][$attribut];
+        return $resultat[0][$attribut] ?? null;
     }
 
     public static function getNaturotheques(){
@@ -18,32 +18,31 @@ class modelNaturotheques{
         return $resultat;
     }
 
-    public static function getNaturothequesParIdentifiantUtilisateur($idUtilisateur){
-        $query = "SELECT * FROM naturotheques WHERE id_utilisateur = :idUtilisateur";
+    public static function getNaturothequesParIdentifiantUtilisateur($identifiant_utilisateur){
+        $query = "SELECT * FROM naturotheques WHERE id_utilisateur = :identifiant_utilisateur";
         $values = array(
-            ':idUtilisateur' => $idUtilisateur
+            ':identifiant_utilisateur' => $identifiant_utilisateur
         );
         $resultat = database::prepareEtExecute($query, $values);
         return $resultat;
     }
 
-    public static function getIdsNaturothequesParIdentifiantUtilisateur($idUtilisateur){
-        $query = "SELECT id FROM naturotheques WHERE id_utilisateur = :idUtilisateur";
+    public static function getIdsNaturothequesParIdentifiantUtilisateur($identifiant_utilisateur){
+        $query = "SELECT id_naturotheque FROM naturotheques WHERE identifiant_utilisateur = :identifiant_utilisateur";
         $values = array(
-            ':idUtilisateur' => $idUtilisateur
+            ':identifiant_utilisateur' => $identifiant_utilisateur
         );
         $resultat = database::prepareEtExecute($query, $values);
         return $resultat;
     }
 
-    public static function addNaturothequeBDD($nom, $description, $dateCreation, $dateDerniereModification, $idUtilisateur){
-        $query = "INSERT INTO naturotheques (nom, description, dateCreation, dateDerniereModification, id_utilisateur) VALUES (:nom, :description, :dateCreation, :dateDerniereModification, :idUtilisateur)";
+    public static function addNaturothequeBDD($identifiant_utilisateur, $nom, $description){
+        $query = "INSERT INTO naturotheques (identifiant_utilisateur, nom, description, nombre_especes) VALUES (:identifiant_utilisateur, :nom, :description, :nombre_especes)";
         $values = array(
+            ':identifiant_utilisateur' => $identifiant_utilisateur,
             ':nom' => $nom,
             ':description' => $description,
-            ':dateCreation' => $dateCreation,
-            ':dateDerniereModification' => $dateDerniereModification,
-            ':idUtilisateur' => $idUtilisateur
+            ':nombre_especes' => 0
         );
         $resultat = database::prepareEtExecute($query, $values);
         return $resultat;

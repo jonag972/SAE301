@@ -24,10 +24,10 @@
                 echo '<li><a href="?action=rechercherEspeces">Rechercher</a></li>';
                 if (isset($_SESSION['identifiant_utilisateur'])) {
                     echo '<li id="utilisateur"><a href="?action=monCompte">' . $_SESSION['identifiant_utilisateur'] . '</a>';
-                    if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
-                        echo '<li><a href="?action=adminOptions">Options d\'administration</a></li>';
-                    }
                     echo '<ul>';
+                    if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
+                        echo '<li><a href="?action=adminAfficherTousLesUtilisateurs">Afficher tous les utilisateurs</a></li>';
+                    }
                     echo '<li><a href="?action=modifierCompte">Modifier mon compte</a></li>';
                     echo '<li><a href="?action=deconnexion">Se déconnecter</a></li>';
                     echo '</ul>';

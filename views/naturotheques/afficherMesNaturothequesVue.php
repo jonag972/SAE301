@@ -8,7 +8,7 @@
     <h1>Mes Naturothèques</h1>
     <?php
     // Supposons que vous ayez une variable $mesNaturotheques qui est un tableau de toutes les naturothèques de l'utilisateur
-    foreach($mesNaturotheques as $naturotheque): ?>
+    foreach($naturotheques as $naturotheque): ?>
         <div>
             <h2><?php echo htmlspecialchars($naturotheque['nom']); ?></h2>
             <p><?php echo htmlspecialchars($naturotheque['description']); ?></p>
