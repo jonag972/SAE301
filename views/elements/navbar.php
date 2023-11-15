@@ -14,7 +14,6 @@
                 // Vérifiez si l'utilisateur est connecté
                 if (isset($_SESSION['identifiant_utilisateur'])) {
                     echo '<li><a href="?action=afficherToutesLesNaturotheques">Naturothèques</a></li>';
-                    echo '<li><a href="?action=afficherToutesLesObservations">Observations</a></li>';
                     // Vérifiez si l'utilisateur est un administrateur
                 }
                 ?>
@@ -22,6 +21,13 @@
                 // Afficher le nom de l'utilisateur
                 // Afficher une liste déroulante qui affiche l'identifiant de l'utilisateur et dans la liste déroulante, il y a un lien vers la page de modification du compte
                 echo '<li><a href="?action=rechercherEspeces">Rechercher</a></li>';
+                if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
+                    echo '<li id="admin">Events</a>';
+                    echo '<ul>';
+                    echo '<li><a href="?action=adminAfficherEvenementsUtilisateurs">Afficher tous les événements des utilisateurs</a></li>';
+                    echo '<li><a href="?action=adminAfficherEvenementsEspeces">Afficher tous les événements des espèces</a></li>';
+                    echo '</ul>';
+                }
                 if (isset($_SESSION['identifiant_utilisateur'])) {
                     echo '<li id="utilisateur"><a href="?action=monCompte">' . $_SESSION['identifiant_utilisateur'] . '</a>';
                     echo '<ul>';

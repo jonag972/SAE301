@@ -56,6 +56,13 @@ switch ($action) {
         $controllerName = 'ControllerUtilisateur';
         break;
 
+
+    case 'adminAfficherEvenementsUtilisateurs':
+        // On appelle le contrôleur de la page d'affichage des événements des utilisateurs
+        $controller_file = 'controllers/ControllerUtilisateur.php';
+        $controllerName = 'ControllerUtilisateur';
+        break;
+
     case 'afficherToutesLesEspeces':
         // On appelle le contrôleur des espèces
         $controller_file = 'controllers/ControllerEspeces.php';

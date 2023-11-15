@@ -382,4 +382,46 @@
             include 'views/utilisateur/adminAjouterUtilisateurVue.php';
         }
     }
+
+    public function adminAfficherEvenementsUtilisateurs() {
+        // Si l'utilisateur n'est pas connecté, redirigez-le vers la page de connexion
+        if (!isset($_SESSION['identifiant_utilisateur'])) {
+            header('Location: ?action=seconnecter');
+            exit();
+        }
+        // Si l'utilisateur n'est pas un administrateur, redirigez-le vers la page d'accueil
+        if ($_SESSION['role'] != 'admin') {
+            header('Location: ?action=accueil');
+            exit();
+        }
+        if (!isset($_GET['page'])) {
+            $_GET['page'] = 1;
+        }
+        if (!isset($_GET['parPage'])) {
+            $_GET['parPage'] = 10;
+        }
+        $page = $_GET['page'];
+        $parPage = $_GET['parPage'];
+        if ($page < 1) {
+            $messageErreur = "La page " . $page . " n'existe pas.";
+            include 'views/utilisateur/adminAfficherEvenementsUtilisateursVue.php';
+            exit();
+        }
+        // On récupère tous les utilisateurs
+        $evenements = modelUtilisateur::getEvenementsTousUtilisateurs($page, $parPage);
+        if ($page == 1) {
+            if (empty($evenements)) {
+                $messageErreur = "Il n'y a aucun événement à afficher.";
+            }
+        }
+        else if ($page > 1) {
+            if (empty($evenements)) {
+                $messageErreur = "Il n'y a aucun événement à afficher pour la page " . $page . ".";
+            }
+        }
+        // Afficher la vue
+        include 'views/utilisateur/adminAfficherEvenementsUtilisateursVue.php';
+    }
+
+
 }  
