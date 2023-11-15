@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS EspecesNaturotheques (
     id_espece_naturotheque INT PRIMARY KEY AUTO_INCREMENT,
     id_espece INT ,
     id_naturotheque INT ,
-    interne BOOLEAN DEFAULT FALSE,
+    interne BOOLEAN DEFAULT FALSE, -- Si l'espèce est interne à la base de données ou non
     FOREIGN KEY (id_espece) REFERENCES Especes(id_espece) ON DELETE SET NULL,
     FOREIGN KEY (id_naturotheque) REFERENCES Naturotheques(id_naturotheque) ON DELETE CASCADE
 );

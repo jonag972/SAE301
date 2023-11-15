@@ -1,21 +1,51 @@
+<?php require_once 'views/elements/navbar.php'; ?>
 <!DOCTYPE html>
 <html>
 <head>
     <title>Toutes les Naturothèques</title>
-    <!-- Vous pouvez ajouter ici vos feuilles de style CSS et autres ressources -->
 </head>
 <body>
-    <?php include 'views/elements/navbar.php'; ?>
     <h1>Toutes les Naturothèques</h1>
-    <a href="?action=ajouterNaturotheque">Ajouter une naturothèque</a>
-    <?php
-    // Supposons que vous ayez une variable $naturotheques qui est un tableau de toutes les naturothèques
-    foreach($naturotheques as $naturotheque): ?>
-        <div>
-            <h2><?php echo htmlspecialchars($naturotheque['nom']); ?></h2>
-            <p><?php echo htmlspecialchars($naturotheque['description']); ?></p>
-            <a href="afficherNaturotheque.php?id=<?php echo $naturotheque['id_naturotheque']; ?>">Voir détails</a>
-        </div>
-    <?php endforeach; ?>
+    <a href="?action=ajouterNaturotheque">Ajouter une Naturothèque</a>
+    <a href="?action=afficherMesNaturotheques">Mes Naturothèques</a>
+    <a href="?action=rechercherNaturotheques">Rechercher naturothèque(s)</a>
+    <table>
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Description</th>
+                <th>Identifiant Utilisateur</th>
+                <th>Date de Création</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($naturotheques as $naturotheque): ?>
+                <tr>
+                    <td><?php echo htmlspecialchars($naturotheque['nom']); ?></td>
+                    <td><?php echo htmlspecialchars($naturotheque['description']); ?></td>
+                    <td><?php echo htmlspecialchars($naturotheque['identifiant_utilisateur']); ?></td>
+                    <td><?php echo htmlspecialchars($naturotheque['dateCreation']); ?></td>
+                    <td><a href="?action=detailsNaturotheque&id=<?php echo $naturotheque['id_naturotheque']; ?>">Détails</a></td>
+                    <?php if ($this->estAdmin()): ?>
+                        <td>
+                            <a href="?action=modifierNaturotheque&id=<?php echo $naturotheque['id_naturotheque']; ?>">Modifier</a> | 
+                            <a href="?action=supprimerNaturotheque&id=<?php echo $naturotheque['id_naturotheque']; ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette naturothèque ?');">Supprimer</a>
+                        </td>
+                    <?php endif; ?>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+    <div class="pagination">
+        <?php
+        if ($page > 1) {
+            echo '<a href="?action=afficherToutesLesNaturotheques&page=' . ($page - 1) . '">Page précédente</a> | ';
+        }
+        if ($page < $nombreDePages) {
+            echo '<a href="?action=afficherToutesLesNaturotheques&page=' . ($page + 1) . '">Page suivante</a>';
+        }
+        ?>
+    </div>
 </body>
 </html>

@@ -2,93 +2,92 @@
 
 require_once 'database.php';
 
-class modelNaturotheques{
-    public static function getAttributParId($attribut, $identifiant_utilisateur){
-        $query = "SELECT $attribut FROM naturotheques WHERE identifiant_utilisateur = :identifiant_utilisateur";
-        $values = array(
-            ':identifiant_utilisateur' => $identifiant_utilisateur
-        );
+class modelNaturotheques {
+
+    public static function obtenirNaturothequeParId($id_naturotheque) {
+        $query = "SELECT * FROM naturotheques WHERE id_naturotheque = :id_naturotheque";
+        $values = array(':id_naturotheque' => $id_naturotheque);
         $resultat = database::prepareEtExecute($query, $values);
-        return $resultat[0][$attribut] ?? null;
+    
+        // Vérifier si le résultat n'est pas vide avant d'accéder à l'index 0
+        return !empty($resultat) ? $resultat[0] : null;
     }
 
-    public static function getNaturotheques(){
-        $query = "SELECT * FROM naturotheques";
+    public static function obtenirNaturotheques($page, $naturothequesParPage) {
+        $debut = ($page - 1) * $naturothequesParPage;
+        $query = "SELECT * FROM naturotheques LIMIT :debut, :naturothequesParPage";
+        
+        return database::prepareExecuteBind($query, array(
+            ':debut' => $debut, 
+            ':naturothequesParPage' => $naturothequesParPage
+        ));
+    }
+       
+
+    public static function compterNaturotheques() {
+        $query = "SELECT COUNT(*) AS count FROM naturotheques";
         $resultat = database::prepareEtExecute($query);
-        return $resultat;
+    
+        // Vérifier si le résultat n'est pas vide avant d'accéder à l'index 0
+        return !empty($resultat) ? $resultat[0]['count'] : 0;
     }
 
-    public static function getNaturothequesParIdentifiantUtilisateur($identifiant_utilisateur){
-        $query = "SELECT * FROM naturotheques WHERE id_utilisateur = :identifiant_utilisateur";
-        $values = array(
-            ':identifiant_utilisateur' => $identifiant_utilisateur
-        );
+    public static function compterNaturothequesParUtilisateur($identifiant_utilisateur) {
+        $query = "SELECT COUNT(*) AS count FROM naturotheques WHERE identifiant_utilisateur = :identifiant_utilisateur";
+        $values = array(':identifiant_utilisateur' => $identifiant_utilisateur);
         $resultat = database::prepareEtExecute($query, $values);
-        return $resultat;
+
+        // Vérifier si le résultat n'est pas vide avant d'accéder à l'index 0
+        return !empty($resultat) ? $resultat[0]['count'] : 0;
     }
 
-    public static function getIdsNaturothequesParIdentifiantUtilisateur($identifiant_utilisateur){
-        $query = "SELECT id_naturotheque FROM naturotheques WHERE identifiant_utilisateur = :identifiant_utilisateur";
-        $values = array(
-            ':identifiant_utilisateur' => $identifiant_utilisateur
-        );
-        $resultat = database::prepareEtExecute($query, $values);
-        return $resultat;
-    }
-
-    public static function addNaturothequeBDD($identifiant_utilisateur, $nom, $description){
-        $query = "INSERT INTO naturotheques (identifiant_utilisateur, nom, description, nombre_especes) VALUES (:identifiant_utilisateur, :nom, :description, :nombre_especes)";
-        $values = array(
+    public static function obtenirNaturothequesParUtilisateur($identifiant_utilisateur, $page, $naturothequesParPage) {
+        $debut = ($page - 1) * $naturothequesParPage;
+        $query = "SELECT * FROM naturotheques WHERE identifiant_utilisateur = :identifiant_utilisateur LIMIT :debut, :naturothequesParPage";
+        
+        return database::prepareExecuteBind($query, array(
             ':identifiant_utilisateur' => $identifiant_utilisateur,
-            ':nom' => $nom,
-            ':description' => $description,
-            ':nombre_especes' => 0
-        );
-        $resultat = database::prepareEtExecute($query, $values);
-        return $resultat;
+            ':debut' => $debut, 
+            ':naturothequesParPage' => $naturothequesParPage
+        ));
+    }    
+
+    public static function ajouterNaturotheque($identifiant_utilisateur, $nom, $description) {
+        $query = "INSERT INTO naturotheques (identifiant_utilisateur, nom, description) VALUES (:identifiant_utilisateur, :nom, :description)";
+        $values = array(':identifiant_utilisateur' => $identifiant_utilisateur, ':nom' => $nom, ':description' => $description);
+        return database::prepareEtExecute($query, $values);
     }
 
-    public static function deleteNaturothequeBDD($id_naturotheque){
-        $query = "DELETE FROM Naturotheques WHERE id_naturotheque = :id_naturotheque";
-        $values = array(
-            ':id_naturotheque' => $id_naturotheque
-        );
-        $resultat = database::prepareEtExecute($query, $values);
-        return $resultat;
+    public static function mettreAJourNaturotheque($id_naturotheque, $nom, $description) {
+        $query = "UPDATE naturotheques SET nom = :nom, description = :description, dateDerniereModification = NOW() WHERE id_naturotheque = :id_naturotheque";
+        $values = array(':id_naturotheque' => $id_naturotheque, ':nom' => $nom, ':description' => $description);
+        return database::prepareEtExecute($query, $values);
     }
 
-
-
-    // Vu qu'il faut faire une jointure entre les tables naturotheques et utilisateurs et especesNaturotheques pour insérer une ligne dans especesNaturotheques, il faut faire une requête SQL avec une sous-requête
-    public static function addEspeceToNaturotheque($id_espece, $id_naturotheque){
-        $query = "INSERT INTO EspecesNaturotheques (id_espece, id_naturotheque) VALUES (:id_espece, :id_naturotheque)";
-        $values = array(
-            ':id_espece' => $id_espece,
-            ':id_naturotheque' => $id_naturotheque
-        );
-        $resultat = database::prepareEtExecute($query, $values);
-        return $resultat;
+    public static function supprimerNaturotheque($id_naturotheque) {
+        $query = "DELETE FROM naturotheques WHERE id_naturotheque = :id_naturotheque";
+        $values = array(':id_naturotheque' => $id_naturotheque);
+        return database::prepareEtExecute($query, $values);
     }
 
-    public static function updateNaturothequeBDD($id_naturotheque, $nom, $description){
-        $query = "UPDATE Naturotheques SET nom = :nom, description = :description WHERE id_naturotheque = :id_naturotheque";
-        $values = array(
-            ':id_naturotheque' => $id_naturotheque,
-            ':nom' => $nom,
-            ':description' => $description
-        );
-        $resultat = database::prepareEtExecute($query, $values);
-        return $resultat;
+    public static function rechercherNaturothequesParNom($nom, $page, $naturothequesParPage) {
+        $debut = ($page - 1) * $naturothequesParPage;
+        $query = "SELECT * FROM naturotheques WHERE nom LIKE :nom LIMIT :debut, :naturothequesParPage";
+        
+        return database::prepareExecuteBind($query, array(
+            ':nom' => '%' . $nom . '%',
+            ':debut' => $debut, 
+            ':naturothequesParPage' => $naturothequesParPage
+        ));
     }
     
-    public static function deleteEspeceFromNaturothequeBDD($id_espece, $id_naturotheque){
-        $query = "DELETE FROM EspecesNaturotheques WHERE id_espece = :id_espece AND id_naturotheque = :id_naturotheque";
-        $values = array(
-            ':id_espece' => $id_espece,
-            ':id_naturotheque' => $id_naturotheque
-        );
+    public static function compterNaturothequesParNom($nom) {
+        $query = "SELECT COUNT(*) AS count FROM naturotheques WHERE nom LIKE :nom";
+        $values = array(':nom' => '%' . $nom . '%');
         $resultat = database::prepareEtExecute($query, $values);
-        return $resultat;
+    
+        return !empty($resultat) ? $resultat[0]['count'] : 0;
     }
-
+    
+    
 }

@@ -2,108 +2,115 @@
 
 require 'models/modelNaturotheques.php';
 
-class ControllerNaturotheques{
-    public function afficherToutesLesNaturotheques(){
-        // Récupérer les naturothèques
-        $naturotheques = modelNaturotheques::getNaturotheques();
-        // Afficher la vue de toutes les naturothèques
+class ControllerNaturotheques {
+    private $naturothequesParPage = 10;
+
+    private function estAdmin() {
+        return isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
+    }
+
+    private function estProprietaireNaturotheque($id_naturotheque) {
+        $naturotheque = modelNaturotheques::obtenirNaturothequeParId($id_naturotheque);
+        if (isset($_SESSION['identifiant_utilisateur'])){
+            return $naturotheque && $naturotheque['identifiant_utilisateur'] == $_SESSION['identifiant_utilisateur'];
+        }
+    }
+
+    public function afficherToutesLesNaturotheques() {
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $totalNaturotheques = modelNaturotheques::compterNaturotheques();
+        $nombreDePages = ceil($totalNaturotheques / $this->naturothequesParPage);
+        $naturotheques = modelNaturotheques::obtenirNaturotheques($page, $this->naturothequesParPage);
         include 'views/naturotheques/afficherToutesLesNaturothequesVue.php';
     }
 
-    public function detailsNaturotheque(){
-        // Récupérer les informations de la naturothèque
-        $id = $_GET['id'];
-        $nom = modelNaturotheques::getAttributParId('nom', $id);
-        $description = modelNaturotheques::getAttributParId('description', $id);
-        $dateCreation = modelNaturotheques::getAttributParId('dateCreation', $id);
-        $dateDerniereModification = modelNaturotheques::getAttributParId('dateDerniereModification', $id);
-        $identifiant_utilisateur = modelNaturotheques::getAttributParId('identifiant_utilisateur', $id);
-        $utilisateur = modelNaturotheques::getAttributParId('identifiant_utilisateur', $identifiant_utilisateur);
-        // Afficher la vue des détails de la naturothèque
-        include 'views/naturotheques/detailsNaturothequeVue.php';
-    }
-
-    public function afficherMesNaturotheques(){
-        // Récupérer les naturothèques de l'utilisateur
-        $identifiant_utilisateur = $_SESSION['identifiant_utilisateur'];
-        $ids = modelNaturotheques::getIdsNaturothequesParIdentifiantUtilisateur($identifiant_utilisateur);
-        foreach ($ids as $id) {
-            $naturotheques[] = [
-                'id_naturotheque' => $id['id_naturotheque'],
-                'nom' => modelNaturotheques::getAttributParId('nom', $id['id_naturotheque']),
-                'description' => modelNaturotheques::getAttributParId('description', $id['id_naturotheque']),
-                'dateCreation' => modelNaturotheques::getAttributParId('dateCreation', $id['id_naturotheque']),
-                'dateDerniereModification' => modelNaturotheques::getAttributParId('dateDerniereModification', $id['id_naturotheque']),
-                'identifiant_utilisateur' => modelNaturotheques::getAttributParId('identifiant_utilisateur', $id['id_naturotheque']),
-                'utilisateur' => modelNaturotheques::getAttributParId('identifiant_utilisateur', modelNaturotheques::getAttributParId('identifiant_utilisateur', $id['id_naturotheque']))
-            ];
+    public function afficherMesNaturotheques() {
+        // Si l'utilisateur n'est pas connecté, rediriger vers la page de connexion
+        if (!isset($_SESSION['identifiant_utilisateur'])) {
+            header('Location: ?action=seconnecter');
+            exit();
         }
-        // Afficher la vue de toutes les naturothèques de l'utilisateur
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $identifiant_utilisateur = $_SESSION['identifiant_utilisateur'];
+        $totalNaturotheques = modelNaturotheques::compterNaturothequesParUtilisateur($identifiant_utilisateur);
+        $nombreDePages = ceil($totalNaturotheques / $this->naturothequesParPage);
+        $naturotheques = modelNaturotheques::obtenirNaturothequesParUtilisateur($identifiant_utilisateur, $page, $this->naturothequesParPage);
         include 'views/naturotheques/afficherMesNaturothequesVue.php';
     }
 
-    public function ajouterNaturotheque(){
-        // Si l'utilisateur n'est pas connecté, afficher la vue de connexion
-        if (!isset($_SESSION['identifiant_utilisateur'])) {
-            include 'views/utilisateurs/connexionVue.php';
-            return;
-        } else {
-            // Sinon, afficher la vue d'ajout d'une naturothèque
-            include 'views/naturotheques/ajouterNaturothequeVue.php';
-        }
+    public function detailsNaturotheque() {
+        $id = $_GET['id'];
+        $naturotheque = modelNaturotheques::obtenirNaturothequeParId($id);
+        include 'views/naturotheques/detailsNaturothequeVue.php';
     }
 
-    public function ajoutNaturothequeBDD(){
-        // Si l'utilisateur n'est pas connecté, afficher la vue de connexion
+    public function ajouterNaturotheque() {
+        // Si l'utilisateur n'est pas connecté, rediriger vers la page de connexion
         if (!isset($_SESSION['identifiant_utilisateur'])) {
-            include 'views/utilisateurs/connexionVue.php';
-            return;
-        }else {
-        // Récupérer les informations de la naturothèque
+            header('Location: ?action=seconnecter');
+            exit();
+        }
+        include 'views/naturotheques/ajouterNaturothequeVue.php';
+    }
+
+    public function ajoutNaturothequeBDD() {
+        if (!isset($_SESSION['identifiant_utilisateur'])) {
+            header('Location: ?action=seconnecter');
+            exit();
+        }
         $nom = $_POST['nom'];
         $description = $_POST['description'];
-        // Le format de date est YYYY-MM-DD parce que c'est le format de date accepté par MySQL
         $identifiant_utilisateur = $_SESSION['identifiant_utilisateur'];
-        // Ajouter la naturothèque à la base de données
-        $resultat = modelNaturotheques::addNaturothequeBDD($identifiant_utilisateur, $nom, $description);
-        // Afficher la vue de toutes les naturothèques de l'utilisateur
+        modelNaturotheques::ajouterNaturotheque($identifiant_utilisateur, $nom, $description);
         $this->afficherMesNaturotheques();
+    }
+
+    public function modifierNaturotheque() {
+        $id = $_GET['id'];
+        if ($this->estProprietaireNaturotheque($id) || $this->estAdmin()) {
+            $naturotheque = modelNaturotheques::obtenirNaturothequeParId($id);
+            include 'views/naturotheques/modifierNaturothequeVue.php';
+        } else {
+            $error = 'Vous n\'avez pas la permission de supprimer cette naturothèque.';
+            include 'views/errors/error.php';
         }
     }
 
-    public function supprimerNaturotheque(){
-        // Récupérer l'id de la naturothèque
-        $id = $_GET['id'];
-        // Supprimer la naturothèque de la base de données
-        $resultat = modelNaturotheques::deleteNaturothequeBDD($id);
-        // Afficher la vue de toutes les naturothèques de l'utilisateur
-        $this->afficherMesNaturotheques();
+    public function modificationNaturothequeBDD() {
+        $id = $_POST['id'];
+        if ($this->estProprietaireNaturotheque($id) || $this->estAdmin()) {
+            $nom = $_POST['nom'];
+            $description = $_POST['description'];
+            modelNaturotheques::mettreAJourNaturotheque($id, $nom, $description);
+            // Rediriger vers une page appropriée après la mise à jour
+            header('Location: ?action=afficherMesNaturotheques');
+        } else {
+            $error = 'Vous n\'avez pas la permission de supprimer cette naturothèque.';
+            include 'views/errors/error.php';
+        }
     }
 
-    public function modifierNaturotheque(){
-        // Récupérer les informations de la naturothèque
+    public function supprimerNaturotheque() {
         $id = $_GET['id'];
-        $nom = modelNaturotheques::getAttributParId('nom', $id);
-        $description = modelNaturotheques::getAttributParId('description', $id);
-        $dateCreation = modelNaturotheques::getAttributParId('dateCreation', $id);
-        $dateDerniereModification = modelNaturotheques::getAttributParId('dateDerniereModification', $id);
-        $identifiant_utilisateur = modelNaturotheques::getAttributParId('identifiant_utilisateur', $id);
-        $utilisateur = modelUtilisateur::getAttributParId('identifiant', $identifiant_utilisateur);
-        // Afficher la vue de modification de la naturothèque
-        include 'views/naturotheques/modifierNaturothequeVue.php';
+        if ($this->estProprietaireNaturotheque($id) || $this->estAdmin()) {
+            modelNaturotheques::supprimerNaturotheque($id);
+            // Redirection appropriée
+            header('Location: ?action=afficherMesNaturotheques');
+        } else {
+            $error = 'Vous n\'avez pas la permission de supprimer cette naturothèque.';
+            include 'views/errors/error.php';
+        }
     }
 
-    public function modificationNaturotheque(){
-        // Récupérer les informations de la naturothèque
-        $id = $_GET['id'];
-        $nom = $_POST['nom'];
-        $description = $_POST['description'];
-        $dateCreation = modelNaturotheques::getAttributParId('dateCreation', $id);
-        $dateDerniereModification = date("Y-m-d");
-        $identifiant_utilisateur = modelNaturotheques::getAttributParId('identifiant_utilisateur', $id);
-        // Modifier la naturothèque dans la base de données
-        $resultat = modelNaturotheques::updateNaturothequeBDD($id, $nom, $description, $dateCreation, $dateDerniereModification, $identifiant_utilisateur);
-        // Afficher la vue de toutes les naturothèques de l'utilisateur
-        $this->afficherMesNaturotheques();
+    public function rechercherNaturotheques() {
+        $nom = isset($_GET['nom']) ? $_GET['nom'] : '';
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    
+        $totalResultats = modelNaturotheques::compterNaturothequesParNom($nom);
+        $nombreDePages = ceil($totalResultats / $this->naturothequesParPage);
+        
+        $naturotheques = modelNaturotheques::rechercherNaturothequesParNom($nom, $page, $this->naturothequesParPage);
+        include 'views/naturotheques/rechercherNaturothequesVue.php';
     }
+    
 }

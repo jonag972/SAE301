@@ -14,6 +14,61 @@ if (empty($_GET['action'])) {
 
 // On vérifie la valeur du paramètre page et on appelle le contrôleur correspondant
 switch ($action) {
+    // Naturothèques
+    case 'afficherToutesLesNaturotheques':
+        // On appelle le contrôleur de la page de toutes les naturothèques
+        $controller_file = 'controllers/ControllerNaturotheques.php';
+        $controllerName = 'ControllerNaturotheques';
+        break;
+
+    case 'detailsNaturotheque':
+        // On appelle le contrôleur de la page de détails d'une naturothèque
+        $controller_file = 'controllers/ControllerNaturotheques.php';
+        $controllerName = 'ControllerNaturotheques';
+        break;
+
+    case 'afficherMesNaturotheques':
+        // On appelle le contrôleur de la page de mes naturothèques
+        $controller_file = 'controllers/ControllerNaturotheques.php';
+        $controllerName = 'ControllerNaturotheques';
+        break;
+
+    case 'ajouterNaturotheque':
+        // On appelle le contrôleur de la page d'ajout d'une naturothèque
+        $controller_file = 'controllers/ControllerNaturotheques.php';
+        $controllerName = 'ControllerNaturotheques';
+        break;
+
+    case 'ajoutNaturothequeBDD':
+        // On appelle le contrôleur de la page d'ajout d'une naturothèque
+        $controller_file = 'controllers/ControllerNaturotheques.php';
+        $controllerName = 'ControllerNaturotheques';
+        break;
+    
+    case 'modifierNaturotheque':
+        // On appelle le contrôleur de la page de modification d'une naturothèque
+        $controller_file = 'controllers/ControllerNaturotheques.php';
+        $controllerName = 'ControllerNaturotheques';
+        break;
+
+    case 'modificationNaturothequeBDD':
+        // On appelle le contrôleur de la page de modification d'une naturothèque
+        $controller_file = 'controllers/ControllerNaturotheques.php';
+        $controllerName = 'ControllerNaturotheques';
+        break;
+
+    case 'supprimerNaturotheque':
+        // On appelle le contrôleur de la page de suppression d'une naturothèque
+        $controller_file = 'controllers/ControllerNaturotheques.php';
+        $controllerName = 'ControllerNaturotheques';
+        break;
+
+    case 'rechercherNaturotheques':
+        // On appelle le contrôleur de la page de recherche de naturothèques
+        $controller_file = 'controllers/ControllerNaturotheques.php';
+        $controllerName = 'ControllerNaturotheques';
+        break;
+
     case 'adminAfficherTousLesUtilisateurs':
         // On appelle le contrôleur de la page d'administration des utilisateurs
         $controller_file = 'controllers/ControllerUtilisateur.php';

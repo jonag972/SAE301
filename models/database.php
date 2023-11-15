@@ -52,6 +52,23 @@ class database {
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public static function prepareExecuteBind($query, $params = array()) {
+        // Préparer la requête SQL
+        $stmt = self::getPdo()->prepare($query);
+
+        // Lier les paramètres
+        foreach ($params as $key => &$val) {
+            $type = is_int($val) ? PDO::PARAM_INT : PDO::PARAM_STR;
+            $stmt->bindValue($key, $val, $type);
+        }
+
+        // Exécuter la requête
+        $stmt->execute();
+
+        // Retourner les résultats
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public static function prepare($query) {
         // On prépare la requête SQL en utilisant la méthode "prepare" de l'objet PDO stocké dans l'attribut $pdo
         return self::getPdo()->prepare($query);
