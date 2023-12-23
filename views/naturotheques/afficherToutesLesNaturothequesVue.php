@@ -12,6 +12,7 @@
     <table>
         <thead>
             <tr>
+                <th>Cover</th>
                 <th>Nom</th>
                 <th>Description</th>
                 <th>Identifiant Utilisateur</th>
@@ -22,6 +23,11 @@
         <tbody>
             <?php foreach ($naturotheques as $naturotheque): ?>
                 <tr>
+                    <td>
+                        <?php if ($naturotheque['photo_naturotheque']): ?>
+                            <img src="data:image/jpeg;base64,<?= base64_encode($naturotheque['photo_naturotheque']) ?>" width="100" height="100">
+                        <?php endif; ?>
+                    </td>
                     <td><?php echo htmlspecialchars($naturotheque['nom']); ?></td>
                     <td><?php echo htmlspecialchars($naturotheque['description']); ?></td>
                     <td><?php echo htmlspecialchars($naturotheque['identifiant_utilisateur']); ?></td>

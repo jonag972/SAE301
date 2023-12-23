@@ -25,7 +25,12 @@
         </label>
         
     </div>  
-    
+    <label>
+      <input type="file" name="photo_de_profil" id="photo_de_profil">
+      <span>Photo de profil</span>
+    </label>
+
+
     <label>
         <input required="" placeholder="" type="text" name="identifiant_utilisateur" class="input">
         <span>Pseudo</span>

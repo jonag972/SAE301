@@ -10,7 +10,8 @@ DROP TABLE IF EXISTS InsertionsEspeces;
 
 CREATE TABLE IF NOT EXISTS Utilisateurs (
     id_utilisateur INT PRIMARY KEY AUTO_INCREMENT,
-    identifiant_utilisateur VARCHAR (100) UNIQUE ,
+    identifiant_utilisateur VARCHAR (255) UNIQUE ,
+    photo_de_profil LONGBLOB DEFAULT NULL,
     mot_de_passe VARCHAR (255),
     email VARCHAR (255) UNIQUE,
     prenom VARCHAR (100),
@@ -46,7 +47,7 @@ CREATE TABLE IF NOT EXISTS Especes (
 
 CREATE TABLE IF NOT EXISTS InsertionsEspeces (
     id_insertion INT PRIMARY KEY AUTO_INCREMENT,
-    identifiant_utilisateur INT,
+    identifiant_utilisateur VARCHAR(255) ,
     id_espece INT ,
     date_insertion TIMESTAMP DEFAULT NOW(),
     FOREIGN KEY (identifiant_utilisateur) REFERENCES Utilisateurs(identifiant_utilisateur) ON DELETE SET NULL,
@@ -56,6 +57,7 @@ CREATE TABLE IF NOT EXISTS InsertionsEspeces (
 
 CREATE TABLE IF NOT EXISTS Naturotheques (
     id_naturotheque INT PRIMARY KEY AUTO_INCREMENT,
+    photo_naturotheque LONGBLOB DEFAULT NULL,
     identifiant_utilisateur VARCHAR(255),
     nom VARCHAR (255),
     description TEXT,
@@ -77,29 +79,30 @@ CREATE TABLE IF NOT EXISTS EspecesNaturotheques (
 CREATE TABLE IF NOT EXISTS Observations (
     id_observation INT PRIMARY KEY AUTO_INCREMENT,
     id_espece INT ,
+    photo_observation LONGBLOB DEFAULT NULL,
     identifiant_utilisateur VARCHAR(255) ,
     date_observation DATE,
     pays_observation VARCHAR (255),
     ville_observation VARCHAR (255),
     commentaire TEXT,
-    FOREIGN KEY (id_espece) REFERENCES Especes(id_espece) ON DELETE SET NULL,
+    interne BOOLEAN DEFAULT FALSE, -- Si l'espèce est interne à la base de données ou non
     FOREIGN KEY (identifiant_utilisateur) REFERENCES Utilisateurs(identifiant_utilisateur) ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXISTS ConsultationsEspeces (
     id_consultation INT PRIMARY KEY AUTO_INCREMENT,
-    identifiant_utilisateur INT ,
-    id_espece INT ,
+    identifiant_utilisateur VARCHAR(255),
+    id_espece INT,
     date_consultation TIMESTAMP DEFAULT NOW(),
     interne BOOLEAN DEFAULT FALSE,
-    FOREIGN KEY (identifiant_utilisateur) REFERENCES Utilisateurs(identifiant_utilisateur) ON DELETE SET NULL,
+    FOREIGN KEY (identifiant_utilisateur) REFERENCES Utilisateurs(identifiant_utilisateur) ON DELETE SET NULL
 );
 
 
 CREATE TABLE IF NOT EXISTS ConsultationsNaturotheques (
     id_consultation INT PRIMARY KEY AUTO_INCREMENT,
-    identifiant_utilisateur VARCHAR(255) ,
-    id_naturotheque INT ,
+    identifiant_utilisateur VARCHAR(255),
+    id_naturotheque INT,
     date_consultation TIMESTAMP DEFAULT NOW(),
     interne BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (identifiant_utilisateur) REFERENCES Utilisateurs(identifiant_utilisateur) ON DELETE SET NULL,

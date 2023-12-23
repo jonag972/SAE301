@@ -52,15 +52,15 @@ class modelNaturotheques {
         ));
     }    
 
-    public static function ajouterNaturotheque($identifiant_utilisateur, $nom, $description) {
-        $query = "INSERT INTO naturotheques (identifiant_utilisateur, nom, description) VALUES (:identifiant_utilisateur, :nom, :description)";
-        $values = array(':identifiant_utilisateur' => $identifiant_utilisateur, ':nom' => $nom, ':description' => $description);
+    public static function ajouterNaturotheque($identifiant_utilisateur, $nom, $description, $photo_naturotheque) {
+        $query = "INSERT INTO naturotheques (identifiant_utilisateur, nom, description, photo_naturotheque) VALUES (:identifiant_utilisateur, :nom, :description, :photo_naturotheque)";
+        $values = array(':identifiant_utilisateur' => $identifiant_utilisateur, ':nom' => $nom, ':description' => $description, ':photo_naturotheque' => $photo_naturotheque);
         return database::prepareEtExecute($query, $values);
     }
 
-    public static function mettreAJourNaturotheque($id_naturotheque, $nom, $description) {
-        $query = "UPDATE naturotheques SET nom = :nom, description = :description, dateDerniereModification = NOW() WHERE id_naturotheque = :id_naturotheque";
-        $values = array(':id_naturotheque' => $id_naturotheque, ':nom' => $nom, ':description' => $description);
+    public static function mettreAJourNaturotheque($id_naturotheque, $nom, $description, $photo_naturotheque) {
+        $query = "UPDATE naturotheques SET nom = :nom, description = :description, photo_naturotheque = :photo_naturotheque WHERE id_naturotheque = :id_naturotheque";
+        $values = array(':id_naturotheque' => $id_naturotheque, ':nom' => $nom, ':description' => $description, ':photo_naturotheque' => $photo_naturotheque);
         return database::prepareEtExecute($query, $values);
     }
 
@@ -69,6 +69,8 @@ class modelNaturotheques {
         $values = array(':id_naturotheque' => $id_naturotheque);
         return database::prepareEtExecute($query, $values);
     }
+
+    // A rajouter pour obtenir les naturotheques par espece grace a la jointure entre les tables naturotheques et especenaturotheques
 
     public static function rechercherNaturothequesParNom($nom, $page, $naturothequesParPage) {
         $debut = ($page - 1) * $naturothequesParPage;
@@ -88,6 +90,14 @@ class modelNaturotheques {
     
         return !empty($resultat) ? $resultat[0]['count'] : 0;
     }
+
+    public static function ajouterEspeceANaturotheque($id_naturotheque, $id_espece) {
+        $query = "INSERT INTO EspecesNaturotheques (id_naturotheque, id_espece) VALUES (:id_naturotheque, :id_espece)";
+        $values = array(':id_naturotheque' => $id_naturotheque, ':id_espece' => $id_espece);
+        return database::prepareEtExecute($query, $values);
+    }
+
+    
     
     
 }

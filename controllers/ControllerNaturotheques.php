@@ -61,7 +61,11 @@ class ControllerNaturotheques {
         $nom = $_POST['nom'];
         $description = $_POST['description'];
         $identifiant_utilisateur = $_SESSION['identifiant_utilisateur'];
-        modelNaturotheques::ajouterNaturotheque($identifiant_utilisateur, $nom, $description);
+        $photo_naturotheque = null;
+        if (isset($_FILES['photo_naturotheque']) && $_FILES['photo_naturotheque']['error'] === UPLOAD_ERR_OK) {
+            $photo_naturotheque = file_get_contents($_FILES['photo_naturotheque']['tmp_name']);
+        }
+        modelNaturotheques::ajouterNaturotheque($identifiant_utilisateur, $nom, $description, $photo_naturotheque);
         $this->afficherMesNaturotheques();
     }
 
@@ -81,7 +85,8 @@ class ControllerNaturotheques {
         if ($this->estProprietaireNaturotheque($id) || $this->estAdmin()) {
             $nom = $_POST['nom'];
             $description = $_POST['description'];
-            modelNaturotheques::mettreAJourNaturotheque($id, $nom, $description);
+            $photo_naturotheque = file_get_contents($_FILES['photo_naturotheque']['tmp_name']) ?? null;
+            modelNaturotheques::mettreAJourNaturotheque($id, $nom, $description, $photo_naturotheque);
             // Rediriger vers une page appropriée après la mise à jour
             header('Location: ?action=afficherMesNaturotheques');
         } else {
@@ -112,5 +117,14 @@ class ControllerNaturotheques {
         $naturotheques = modelNaturotheques::rechercherNaturothequesParNom($nom, $page, $this->naturothequesParPage);
         include 'views/naturotheques/rechercherNaturothequesVue.php';
     }
+
+    public function ajoutEspeceANaturothequeBDD() {
+        $id_naturotheque = $_POST['id_naturotheque'];
+        $id_espece = $_POST['id_espece'];
+        modelNaturotheques::ajouterEspeceANaturotheque($id_naturotheque, $id_espece);
+        header('Location: ?action=afficherMesNaturotheques');
+    }
+
+    
     
 }

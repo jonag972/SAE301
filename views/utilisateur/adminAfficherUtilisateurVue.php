@@ -9,6 +9,9 @@
     ?>
     <h1>Détails de l'utilisateur <?php echo $utilisateur['identifiant_utilisateur']; ?></h1>
     <?php if($utilisateur): ?>
+        <?php if ($utilisateur['photo_de_profil']): ?>
+            <img src="data:image/jpeg;base64,<?= base64_encode($utilisateur['photo_de_profil']) ?>" width="100" height="100">
+        <?php endif; ?>
         <p>Identifiant: <?php echo $utilisateur['identifiant_utilisateur']; ?></p>
         <p>Email: <?php echo $utilisateur['email']; ?></p>
         <p>Prénom: <?php echo $utilisateur['prenom']; ?></p>

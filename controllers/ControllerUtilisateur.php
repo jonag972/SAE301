@@ -22,10 +22,11 @@
             $pays = $_POST['pays'];
             $abonnement = $_POST['abonnement'];
             $role = 'lambda'; // Role par défaut
+            $photo_de_profil = file_get_contents($_FILES['photo_de_profil']['tmp_name']);
             if (!empty($identifiant_utilisateur) && !empty($mot_de_passe) && !empty($email) && !empty($prenom) && !empty($nom_de_famille) && !empty($age) && !empty($pays)) {
                 if (modelUtilisateur::getAttributUtilisateurParIdentifiant('identifiant_utilisateur', $identifiant_utilisateur) == NULL) {
                     $modelUtilisateur = new ModelUtilisateur();
-                    $modelUtilisateur->ajouterUtilisateur($identifiant_utilisateur, password_hash($mot_de_passe, PASSWORD_DEFAULT), $email, $prenom, $nom_de_famille, $age, $pays, $abonnement, $role);
+                    $modelUtilisateur->ajouterUtilisateur($identifiant_utilisateur, password_hash($mot_de_passe, PASSWORD_DEFAULT), $email, $prenom, $nom_de_famille, $age, $pays, $abonnement, $role, $photo_de_profil);
                     // Créer la session ou la remplacer si elle existe déjà
                     if (isset($_SESSION)) {
                         session_destroy();

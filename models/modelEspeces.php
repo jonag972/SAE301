@@ -187,4 +187,20 @@ class modelEspeces {
         $resultat = database::prepareEtExecute($query, $values);
         return $resultat;
     }
+
+    public static function getEspeceParIdInternes($id_espece){
+        $query = "SELECT * FROM Especes WHERE id_espece = :id_espece";
+        $values = array(
+            ':id_espece' => $id_espece
+        );
+        $resultat = database::prepareEtExecute($query, $values);
+        return $resultat;
+    }
+
+    public static function getEspeceParIdExterne($id_espece){
+        $url = "https://taxref.mnhn.fr/api/taxa/$id_espece";
+        $json = file_get_contents($url);
+        $reponse = json_decode($json, true);
+        return $reponse;
+    }
 }

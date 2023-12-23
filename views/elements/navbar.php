@@ -14,6 +14,7 @@
                 // Vérifiez si l'utilisateur est connecté
                 if (isset($_SESSION['identifiant_utilisateur'])) {
                     echo '<li><a href="?action=afficherToutesLesNaturotheques">Naturothèques</a></li>';
+                    echo '<li><a href="?action=afficherToutesLesObservations">Observations</a></li>';
                     // Vérifiez si l'utilisateur est un administrateur
                 }
                 ?>

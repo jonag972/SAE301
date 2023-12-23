@@ -10,6 +10,7 @@
         <input type="hidden" name="id" value="<?php echo $naturotheque['id_naturotheque']; ?>">
         Nom: <input type="text" name="nom" value="<?php echo htmlspecialchars($naturotheque['nom']); ?>"><br>
         Description: <textarea name="description"><?php echo htmlspecialchars($naturotheque['description']); ?></textarea><br>
+        Photo de couverture: <input type="file" name="photo_naturotheque"><br>
         <input type="submit" value="Modifier">
     </form>
 </body>

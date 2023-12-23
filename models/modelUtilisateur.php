@@ -31,12 +31,13 @@ class ModelUtilisateur {
         database::prepareEtExecute($query, $values);
     }
 
-    public static function ajouterUtilisateur($identifiant_utilisateur, $mot_de_passe, $email,  $prenom, $nom_de_famille, $age, $pays, $abonnement, $role) {
+    public static function ajouterUtilisateur($identifiant_utilisateur, $mot_de_passe, $email,  $prenom, $nom_de_famille, $age, $pays, $abonnement, $role, $photo_de_profil) {
         // On prépare la requête SQL pour ajouter un utilisateur
-        $query = "INSERT INTO Utilisateurs (identifiant_utilisateur, mot_de_passe, email, prenom, nom_de_famille, age, pays, abonnement, role) VALUES (:identifiant_utilisateur, :mot_de_passe, :email, :prenom, :nom_de_famille, :age, :pays, :abonnement, :role)";
+        $query = "INSERT INTO Utilisateurs (identifiant_utilisateur, photo_de_profil, mot_de_passe, email, prenom, nom_de_famille, age, pays, abonnement, role) VALUES (:identifiant_utilisateur, :photo_de_profil, :mot_de_passe, :email, :prenom, :nom_de_famille, :age, :pays, :abonnement, :role)";
         // On prépare les valeurs à utiliser dans la requête SQL
         $values = array(
             ':identifiant_utilisateur' => $identifiant_utilisateur,
+            ':photo_de_profil' => $photo_de_profil,
             ':mot_de_passe' => $mot_de_passe,
             ':email' => $email,
             ':prenom' => $prenom,

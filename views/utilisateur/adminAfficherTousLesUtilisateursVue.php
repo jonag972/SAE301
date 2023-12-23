@@ -12,6 +12,7 @@
         <table>
             <thead>
                 <tr>
+                    <th>Photo de profil</th>
                     <th>Identifiant</th>
                     <th>Email</th>
                     <th>Prénom</th>
@@ -24,6 +25,11 @@
             <tbody>
                 <?php foreach ($utilisateurs as $utilisateur): ?>
                     <tr>
+                        <td>
+                            <?php if ($utilisateur['photo_de_profil']): ?>
+                                <img src="data:image/jpeg;base64,<?= base64_encode($utilisateur['photo_de_profil']) ?>" width="100" height="100">
+                            <?php endif; ?>
+                        </td>
                         <td><?php echo $utilisateur['identifiant_utilisateur']; ?></td>
                         <td><?php echo $utilisateur['email']; ?></td>
                         <td><?php echo $utilisateur['prenom']; ?></td>

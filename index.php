@@ -69,6 +69,65 @@ switch ($action) {
         $controllerName = 'ControllerNaturotheques';
         break;
 
+    // Observations
+    case 'afficherToutesLesObservations':
+        // On appelle le contrôleur de la page de toutes les observations
+        $controller_file = 'controllers/ControllerObservations.php';
+        $controllerName = 'ControllerObservations';
+        break;
+
+    case 'afficherObservation':
+        // On appelle le contrôleur de la page de détails d'une observation
+        $controller_file = 'controllers/ControllerObservations.php';
+        $controllerName = 'ControllerObservations';
+        break;
+
+    case 'ajouterObservation':
+        // On appelle le contrôleur de la page d'ajout d'une observation
+        $controller_file = 'controllers/ControllerObservations.php';
+        $controllerName = 'ControllerObservations';
+        break;
+
+    case 'enregistrerObservation':
+        // On appelle le contrôleur de la page d'ajout d'une observation
+        $controller_file = 'controllers/ControllerObservations.php';
+        $controllerName = 'ControllerObservations';
+        break;
+
+    case 'modifierObservation':
+        // On appelle le contrôleur de la page de modification d'une observation
+        $controller_file = 'controllers/ControllerObservations.php';
+        $controllerName = 'ControllerObservations';
+        break;
+
+    case 'miseAJourObservation':
+        // On appelle le contrôleur de la page de modification d'une observation
+        $controller_file = 'controllers/ControllerObservations.php';
+        $controllerName = 'ControllerObservations';
+        break;
+
+    case 'supprimerObservation':
+        // On appelle le contrôleur de la page de suppression d'une observation
+        $controller_file = 'controllers/ControllerObservations.php';
+        $controllerName = 'ControllerObservations';
+        break;
+    
+    case 'detailsObservation':
+        // On appelle le contrôleur de la page de détails d'une observation
+        $controller_file = 'controllers/ControllerObservations.php';
+        $controllerName = 'ControllerObservations';
+        break;
+
+    case 'rechercherObservations':
+        // On appelle le contrôleur de la page de recherche d'observations
+        $controller_file = 'controllers/ControllerObservations.php';
+        $controllerName = 'ControllerObservations';
+        break;
+
+    
+
+    // Utilisateurs
+
     case 'adminAfficherTousLesUtilisateurs':
         // On appelle le contrôleur de la page d'administration des utilisateurs
         $controller_file = 'controllers/ControllerUtilisateur.php';
@@ -118,6 +177,8 @@ switch ($action) {
         $controllerName = 'ControllerUtilisateur';
         break;
 
+    // Espèces    
+
     case 'afficherToutesLesEspeces':
         // On appelle le contrôleur des espèces
         $controller_file = 'controllers/ControllerEspeces.php';
@@ -126,8 +187,8 @@ switch ($action) {
 
     case 'detailsEspece':
         // On appelle le contrôleur des espèces pour la page de détails
-        $controller_file = 'controllers/ControllerDetails.php';
-        $controllerName = 'ControllerDetails';
+        $controller_file = 'controllers/ControllerEspeces.php';
+        $controllerName = 'ControllerEspeces';
         break;
 
     case 'accueil':

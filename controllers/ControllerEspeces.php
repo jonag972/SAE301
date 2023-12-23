@@ -1,5 +1,6 @@
 <?php
 require_once 'models/modelEspeces.php';
+require_once 'models/modelNaturotheques.php';
 // Créer la session si elle n'existe pas
 if (!isset($_SESSION)) {
     session_start();
@@ -40,6 +41,7 @@ class ControllerEspeces {
             // Faire une boucle sur les ids des espèces pour récupérer les attributs
             foreach ($ids as $id) {
                 $especes[] = [
+                    'id' => $id,
                     'frenchVernacularNames' => modelEspeces::getAttributParIdInterne('frenchVernacularNames', $id),
                     'scientificNames' => modelEspeces::getAttributParIdInterne('scientificNames', $id),
                     'genusName' => modelEspeces::getAttributParIdInterne('genusName', $id),
@@ -172,6 +174,24 @@ class ControllerEspeces {
             $message = "Le formulaire n'a pas été soumis.";
             include 'views/especes/ajouterEspeceVue.php';
         }
+    }
+
+    public function detailsEspece() {
+        $id = $_GET['id'];
+        $interne = $_GET['interne'];
+        if ($interne === 'TRUE') {
+            $espece = modelEspeces::getEspeceParIdInterne($id);
+        } elseif ($interne === 'FALSE') {
+            $espece = modelEspeces::getEspeceParIdExterne($id);
+        }
+        include 'views/especes/detailsEspeceVue.php';
+    }
+
+    public function ajouterEspeceANaturotheque() {
+        $id_espece = $_GET['id_espece'];
+        $interne = $_GET['interne'];
+        $naturotheques = modelNaturotheques::obtenirNaturothequesParUtilisateur($_SESSION['identifiant_utilisateur']);
+        include 'views/naturotheques/ajouterEspeceANaturothequeVue.php';
     }
 
 

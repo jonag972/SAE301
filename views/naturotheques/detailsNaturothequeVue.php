@@ -6,6 +6,9 @@
 </head>
 <body>
     <h1>Détails de la Naturothèque</h1>
+    <p>Photo de couverture: <?php if ($naturotheque['photo_naturotheque']): ?>
+        <img src="data:image/jpeg;base64,<?= base64_encode($naturotheque['photo_naturotheque']) ?>" width="100" height="100">
+    <?php endif; ?></p>
     <p>Nom: <?php echo htmlspecialchars($naturotheque['nom']); ?></p>
     <p>Description: <?php echo htmlspecialchars($naturotheque['description']); ?></p>
     <p>Date de Création: <?php echo htmlspecialchars($naturotheque['dateCreation']); ?></p>
