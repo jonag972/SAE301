@@ -8,9 +8,10 @@
 <body>
     <h1>Détails Espèce</h1>
     <?php if (isset($espece)): ?>
-        <h2><?php echo htmlspecialchars($espece['frenchVernacularName']); ?></h2>
+        <h2>Nom scientifique : <?php echo htmlspecialchars($espece['scientificName']); ?></h2>
         <p>ID: <?php echo htmlspecialchars($espece['id']); ?></p>
-        <p>Nom scientifique: <?php echo htmlspecialchars($espece['scientificNames'] ?? 'Nom scientifique non renseigné'); ?></p>
+        <p>Nom vernaculaire français: <?php echo htmlspecialchars($espece['frenchVernacularName'] ?? 'Nom vernaculaire français non renseigné'); ?></p>
+        <p>Nom vernaculaire anglais: <?php echo htmlspecialchars($espece['englishVernacularName'] ?? 'Nom vernaculaire anglais non renseigné'); ?></p>
         <p>Genre: <?php echo htmlspecialchars($espece['genusName'] ?? 'Genre non renseigné'); ?></p>
         <p>Famille: <?php echo htmlspecialchars($espece['familyName'] ?? 'Famille non renseigné'); ?></p>
         <p>Ordre: <?php echo htmlspecialchars($espece['orderName'] ?? 'Ordre non renseigné'); ?></p>
@@ -23,5 +24,6 @@
         <p>Aucune espèce sélectionnée.</p>
     <?php endif; ?>
     <a href="?action=afficherToutesLesEspeces&interne=<?php echo $espece['interne']; ?>">Retour à la liste des espèces</a>
+    <a href="?action=ajouterEspeceANaturotheque&id_espece=<?php echo $espece['id']; ?>&interne=<?php echo $espece['interne']; ?>">Ajouter à Naturothèque</a>
 </body>
 </html>
