@@ -44,8 +44,8 @@
                     <td><?php echo $espece['kingdomName']; ?></td>
                     <td><?php echo $espece['habitat']; ?></td>
                     <td><img id=especephoto src="<?php echo $espece['imagePrefix'] . $espece['mediaImage']; ?>" alt="Image de l'espèce"></td>
-                    <td><a href="?action=detailsEspece&id=<?php echo $espece['id']; ?>&interne=<?php echo $espece['interne']; ?>">Voir Détails</a></td>
-                    <td><a href="?action=ajouterEspeceANaturotheque&id_espece=<?php echo $espece['id']; ?>&interne=<?php echo $espece['interne']; ?>">Ajouter à Naturothèque</a></td>
+                    <td><a href="?action=detailsEspece&id=<?php echo $espece['id']; ?>&interne=<?php echo $espece['interne']; ?>">Voir Détails</a>
+                    <a href="?action=ajouterEspeceANaturotheque&id_espece=<?php echo $espece['id']; ?>&interne=<?php echo $espece['interne']; ?>">Ajouter à Naturothèque</a></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>

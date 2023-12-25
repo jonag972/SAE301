@@ -52,13 +52,15 @@ class ControllerEspeces {
                     'habitat' => modelEspeces::getAttributParIdInterne('habitat', $id),
                     'mediaImage' => base64_encode(modelEspeces::getAttributParIdInterne('mediaImage', $id)),
                     // On ajoute 'imagePrefix' pour pouvoir afficher l'image dans la vue
-                    'imagePrefix' => 'data:image/jpeg;base64,'
+                    'imagePrefix' => 'data:image/jpeg;base64,',
+                    'interne' => 'TRUE'
                 ];
             }
 
         } elseif ($interne === 'FALSE') {
             foreach ($species["_embedded"]["taxa"] as &$specie) {
                 $especes[] = [
+                    'id' => $specie['id'],
                     'frenchVernacularNames' => modelEspeces::getAttributParIdExterne('frenchVernacularNames', $specie['id']),
                     'scientificNames' => modelEspeces::getAttributParIdExterne('scientificNames', $specie['id']),
                     'genusName' => modelEspeces::getAttributParIdExterne('genusName', $specie['id']),
@@ -68,7 +70,8 @@ class ControllerEspeces {
                     'kingdomName' => modelEspeces::getAttributParIdExterne('kingdomName', $specie['id']),
                     'habitat' => modelEspeces::getAttributParIdExterne('habitat', $specie['id']),
                     'mediaImage' => modelEspeces::getAttributParIdExterne('mediaImage', $specie['id']),
-                    'imagePrefix' => ''
+                    'imagePrefix' => '',
+                    'interne' => 'FALSE'
                 ];
             }
         }
@@ -181,8 +184,10 @@ class ControllerEspeces {
         $interne = $_GET['interne'];
         if ($interne === 'TRUE') {
             $espece = modelEspeces::getEspeceParIdInterne($id);
+            $espece['interne'] = 'TRUE';
         } elseif ($interne === 'FALSE') {
             $espece = modelEspeces::getEspeceParIdExterne($id);
+            $espece['interne'] = 'FALSE';
         }
         include 'views/especes/detailsEspeceVue.php';
     }
