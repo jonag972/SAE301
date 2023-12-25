@@ -35,8 +35,8 @@
         <tbody>
             <?php foreach ($especes as $espece) : ?>
                 <tr>
-                    <td><?php echo $espece['frenchVernacularNames']; ?></td>
-                    <td><?php echo $espece['scientificNames']; ?></td>
+                    <td><?php echo $espece['frenchVernacularName']; ?></td>
+                    <td><?php echo $espece['scientificName']; ?></td>
                     <td><?php echo $espece['genusName']; ?></td>
                     <td><?php echo $espece['familyName']; ?></td>
                     <td><?php echo $espece['orderName']; ?></td>

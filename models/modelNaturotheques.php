@@ -91,9 +91,9 @@ class modelNaturotheques {
         return !empty($resultat) ? $resultat[0]['count'] : 0;
     }
 
-    public static function ajouterEspeceANaturotheque($id_naturotheque, $id_espece) {
-        $query = "INSERT INTO EspecesNaturotheques (id_naturotheque, id_espece) VALUES (:id_naturotheque, :id_espece)";
-        $values = array(':id_naturotheque' => $id_naturotheque, ':id_espece' => $id_espece);
+    public static function ajouterEspeceANaturotheque($id_naturotheque, $id_espece, $interne) {
+        $query = "INSERT INTO especesnaturotheque (id_naturotheque, id_espece, interne) VALUES (:id_naturotheque, :id_espece, :interne)";
+        $values = array(':id_naturotheque' => $id_naturotheque, ':id_espece' => $id_espece, ':interne' => $interne);
         return database::prepareEtExecute($query, $values);
     }
 

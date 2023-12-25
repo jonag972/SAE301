@@ -191,6 +191,18 @@ switch ($action) {
         $controllerName = 'ControllerEspeces';
         break;
 
+    case 'ajouterEspeceANaturotheque':
+        // On appelle le contrôleur des espèces pour la page d'ajout d'espèce à une naturothèque
+        $controller_file = 'controllers/ControllerEspeces.php';
+        $controllerName = 'ControllerEspeces';
+        break;
+
+    case 'ajouterEspeceANaturothequeConfirmation':
+        // On appelle le contrôleur des espèces pour la page de confirmation d'ajout d'espèce à une naturothèque
+        $controller_file = 'controllers/ControllerNaturotheques.php';
+        $controllerName = 'ControllerNaturotheques';
+        break;
+
     case 'accueil':
         // On appelle le contrôleur de la page d'accueil
         $controller_file = 'controllers/ControllerAccueil.php';

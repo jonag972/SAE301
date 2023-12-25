@@ -125,6 +125,20 @@ class ControllerNaturotheques {
         header('Location: ?action=afficherMesNaturotheques');
     }
 
+    public function ajouterEspeceANaturothequeConfirmation() {
+        $id_espece = $_GET['id_espece'];
+        $id_naturotheque = $_GET['id_naturotheque'];
+        $interne = $_GET['interne'] === 'TRUE' ? 1 : 0;
+        if ($this->estProprietaireNaturotheque($id_naturotheque) || $this->estAdmin()) {
+            $resultat = modelNaturotheques::ajouterEspeceANaturotheque($id_naturotheque, $id_espece, $interne);
+            $message = "L'espèce a bien été ajoutée à la naturothèque.";
+            header('Location: ?action=afficherMesNaturotheques');
+        } else {
+            $error = 'Vous n\'avez pas la permission d\'ajouter une espèce à cette naturothèque.';
+            include 'views/errors/error.php';
+        }
+    }
+
     
     
 }

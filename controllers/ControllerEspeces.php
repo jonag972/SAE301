@@ -42,8 +42,8 @@ class ControllerEspeces {
             foreach ($ids as $id) {
                 $especes[] = [
                     'id' => $id,
-                    'frenchVernacularNames' => modelEspeces::getAttributParIdInterne('frenchVernacularNames', $id),
-                    'scientificNames' => modelEspeces::getAttributParIdInterne('scientificNames', $id),
+                    'frenchVernacularName' => modelEspeces::getAttributParIdInterne('frenchVernacularNames', $id),
+                    'scientificName' => modelEspeces::getAttributParIdInterne('scientificNames', $id),
                     'genusName' => modelEspeces::getAttributParIdInterne('genusName', $id),
                     'familyName' => modelEspeces::getAttributParIdInterne('familyName', $id),
                     'orderName' => modelEspeces::getAttributParIdInterne('orderName', $id),
@@ -61,8 +61,8 @@ class ControllerEspeces {
             foreach ($species["_embedded"]["taxa"] as &$specie) {
                 $especes[] = [
                     'id' => $specie['id'],
-                    'frenchVernacularNames' => modelEspeces::getAttributParIdExterne('frenchVernacularNames', $specie['id']),
-                    'scientificNames' => modelEspeces::getAttributParIdExterne('scientificNames', $specie['id']),
+                    'frenchVernacularName' => modelEspeces::getAttributParIdExterne('frenchVernacularNames', $specie['id']),
+                    'scientificName' => modelEspeces::getAttributParIdExterne('scientificNames', $specie['id']),
                     'genusName' => modelEspeces::getAttributParIdExterne('genusName', $specie['id']),
                     'familyName' => modelEspeces::getAttributParIdExterne('familyName', $specie['id']),
                     'orderName' => modelEspeces::getAttributParIdExterne('orderName', $specie['id']),
@@ -195,8 +195,15 @@ class ControllerEspeces {
     public function ajouterEspeceANaturotheque() {
         $id_espece = $_GET['id_espece'];
         $interne = $_GET['interne'];
-        $naturotheques = modelNaturotheques::obtenirNaturothequesParUtilisateur($_SESSION['identifiant_utilisateur']);
-        include 'views/naturotheques/ajouterEspeceANaturothequeVue.php';
+        if ($interne === 'TRUE') {
+            $espece = modelEspeces::getEspeceParIdInterne($id_espece);
+            $espece['interne'] = 'TRUE';
+        } elseif ($interne === 'FALSE') {
+            $espece = modelEspeces::getEspeceParIdExterne($id_espece);
+            $espece['interne'] = 'FALSE';
+        }
+        $naturotheques = modelNaturotheques::obtenirNaturothequesParUtilisateur($_SESSION['identifiant_utilisateur'], 1, 100);
+        include 'views/especes/ajouterEspeceANaturothequeVue.php';
     }
 
 

@@ -37,9 +37,9 @@ CREATE TABLE IF NOT EXISTS Historique_Naturotheques(
     nouvelle_valeur TEXT
 );
 
-CREATE TABLE IF NOT EXISTS Historique_EspecesNaturotheques(
+CREATE TABLE IF NOT EXISTS Historique_EspecesNaturotheque(
     id_historique_espece_naturotheque INT PRIMARY KEY AUTO_INCREMENT,
-    id_espece_naturotheque INT NOT NULL,
+    id_especes_naturotheque INT NOT NULL,
     action VARCHAR (10),  -- Peut être "INSERT", "UPDATE" ou "DELETE"
     date_modification TIMESTAMP,
     colonne_changee VARCHAR (100),  -- Le nom de la colonne modifiée

@@ -307,13 +307,13 @@
 
     DELIMITER //
     CREATE TRIGGER tr_espece_naturotheque_insert
-    AFTER INSERT ON EspecesNaturotheques
+    AFTER INSERT ON EspecesNaturotheque
     FOR EACH ROW
     BEGIN
-        INSERT INTO Historique_EspecesNaturotheques (id_espece_naturotheque, action, date_modification, colonne_changee, nouvelle_valeur)
-        VALUES (NEW.id_espece_naturotheque, 'INSERT', NOW(), 'id_espece', NEW.id_espece),
-            (NEW.id_espece_naturotheque, 'INSERT', NOW(), 'id_naturotheque', NEW.id_naturotheque),
-            (NEW.id_espece_naturotheque, 'INSERT', NOW(), 'interne', NEW.interne);
+        INSERT INTO Historique_EspecesNaturotheque (id_especes_naturotheque, action, date_modification, colonne_changee, nouvelle_valeur)
+        VALUES (NEW.id_especes_naturotheque, 'INSERT', NOW(), 'id_espece', NEW.id_espece),
+            (NEW.id_especes_naturotheque, 'INSERT', NOW(), 'id_naturotheque', NEW.id_naturotheque),
+            (NEW.id_especes_naturotheque, 'INSERT', NOW(), 'interne', NEW.interne);
         UPDATE Naturotheques
         SET nombre_especes = nombre_especes + 1
         WHERE id_naturotheque = NEW.id_naturotheque;
@@ -322,33 +322,33 @@
 
     DELIMITER //
     CREATE TRIGGER tr_espece_naturotheque_update
-    AFTER UPDATE ON EspecesNaturotheques
+    AFTER UPDATE ON EspecesNaturotheque
     FOR EACH ROW
     BEGIN
         IF NEW.id_espece <> OLD.id_espece THEN
-            INSERT INTO Historique_EspecesNaturotheques (id_espece_naturotheque, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
-            VALUES (NEW.id_espece_naturotheque, 'UPDATE', NOW(), 'id_espece', OLD.id_espece, NEW.id_espece);
+            INSERT INTO Historique_EspecesNaturotheque (id_especes_naturotheque, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
+            VALUES (NEW.id_especes_naturotheque, 'UPDATE', NOW(), 'id_espece', OLD.id_espece, NEW.id_espece);
         END IF;
         IF NEW.id_naturotheque <> OLD.id_naturotheque THEN
-            INSERT INTO Historique_EspecesNaturotheques (id_espece_naturotheque, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
-            VALUES (NEW.id_espece_naturotheque, 'UPDATE', NOW(), 'id_naturotheque', OLD.id_naturotheque, NEW.id_naturotheque);
+            INSERT INTO Historique_EspecesNaturotheque (id_especes_naturotheque, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
+            VALUES (NEW.id_especes_naturotheque, 'UPDATE', NOW(), 'id_naturotheque', OLD.id_naturotheque, NEW.id_naturotheque);
         END IF;
         IF NEW.interne <> OLD.interne THEN
-            INSERT INTO Historique_EspecesNaturotheques (id_espece_naturotheque, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
-            VALUES (NEW.id_espece_naturotheque, 'UPDATE', NOW(), 'interne', OLD.interne, NEW.interne);
+            INSERT INTO Historique_EspecesNaturotheque (id_especes_naturotheque, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
+            VALUES (NEW.id_especes_naturotheque, 'UPDATE', NOW(), 'interne', OLD.interne, NEW.interne);
         END IF;
     END //
     DELIMITER ;
 
     DELIMITER //
     CREATE TRIGGER tr_espece_naturotheque_delete
-    AFTER DELETE ON EspecesNaturotheques
+    AFTER DELETE ON EspecesNaturotheque
     FOR EACH ROW
     BEGIN
-        INSERT INTO Historique_EspecesNaturotheques (id_espece_naturotheque, action, date_modification, colonne_changee, ancienne_valeur)
-        VALUES (OLD.id_espece_naturotheque, 'DELETE', NOW(), 'id_espece', OLD.id_espece),
-            (OLD.id_espece_naturotheque, 'DELETE', NOW(), 'id_naturotheque', OLD.id_naturotheque),
-            (OLD.id_espece_naturotheque, 'DELETE', NOW(), 'interne', OLD.interne);
+        INSERT INTO Historique_EspecesNaturotheque (id_especes_naturotheque, action, date_modification, colonne_changee, ancienne_valeur)
+        VALUES (OLD.id_especes_naturotheque, 'DELETE', NOW(), 'id_espece', OLD.id_espece),
+            (OLD.id_especes_naturotheque, 'DELETE', NOW(), 'id_naturotheque', OLD.id_naturotheque),
+            (OLD.id_especes_naturotheque, 'DELETE', NOW(), 'interne', OLD.interne);
         UPDATE Naturotheques
         SET nombre_especes = nombre_especes - 1
         WHERE id_naturotheque = OLD.id_naturotheque;
