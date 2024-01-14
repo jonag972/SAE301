@@ -10,15 +10,15 @@ DROP TABLE IF EXISTS InsertionsEspeces;
 
 CREATE TABLE IF NOT EXISTS Utilisateurs (
     id_utilisateur INT PRIMARY KEY AUTO_INCREMENT,
-    identifiant_utilisateur VARCHAR (255) UNIQUE ,
+    identifiant_utilisateur VARCHAR(191) UNIQUE ,
     photo_de_profil LONGBLOB DEFAULT NULL,
-    mot_de_passe VARCHAR (255),
-    email VARCHAR (255) UNIQUE,
+    mot_de_passe VARCHAR(191),
+    email VARCHAR(191) UNIQUE,
     prenom VARCHAR (100),
     nom_de_famille VARCHAR (100),
     age INT,
-    pays VARCHAR (255),
-    ville VARCHAR (255),
+    pays VARCHAR(191),
+    ville VARCHAR(191),
     abonnement VARCHAR (50) DEFAULT 'gratuit',
     role VARCHAR (50) DEFAULT 'lambda',
     date_inscription TIMESTAMP DEFAULT NOW(),
@@ -41,13 +41,13 @@ CREATE TABLE IF NOT EXISTS Especes (
   orderName VARCHAR (100) DEFAULT NULL,
   className VARCHAR (100) DEFAULT NULL,
   kingdomName VARCHAR (100) DEFAULT NULL,
-  habitat VARCHAR (255) DEFAULT NULL,
+  habitat VARCHAR(191) DEFAULT NULL,
   mediaImage LONGBLOB DEFAULT NULL
 );
 
 CREATE TABLE IF NOT EXISTS InsertionsEspeces (
     id_insertion INT PRIMARY KEY AUTO_INCREMENT,
-    identifiant_utilisateur VARCHAR(255) ,
+    identifiant_utilisateur VARCHAR(191) ,
     id_espece INT ,
     date_insertion TIMESTAMP DEFAULT NOW(),
     FOREIGN KEY (identifiant_utilisateur) REFERENCES Utilisateurs(identifiant_utilisateur) ON DELETE SET NULL,
@@ -58,8 +58,8 @@ CREATE TABLE IF NOT EXISTS InsertionsEspeces (
 CREATE TABLE IF NOT EXISTS Naturotheques (
     id_naturotheque INT PRIMARY KEY AUTO_INCREMENT,
     photo_naturotheque LONGBLOB DEFAULT NULL,
-    identifiant_utilisateur VARCHAR(255),
-    nom VARCHAR (255),
+    identifiant_utilisateur VARCHAR(191),
+    nom VARCHAR(191),
     description TEXT,
     nombre_especes INT DEFAULT 0,
     visibilite ENUM ('prive', 'public') DEFAULT 'public',
@@ -80,10 +80,10 @@ CREATE TABLE IF NOT EXISTS Observations (
     id_observation INT PRIMARY KEY AUTO_INCREMENT,
     id_espece INT ,
     photo_observation LONGBLOB DEFAULT NULL,
-    identifiant_utilisateur VARCHAR(255) ,
+    identifiant_utilisateur VARCHAR(191) ,
     date_observation DATE,
-    pays_observation VARCHAR (255),
-    ville_observation VARCHAR (255),
+    pays_observation VARCHAR(191),
+    ville_observation VARCHAR(191),
     commentaire TEXT,
     visibilite ENUM ('prive', 'public') DEFAULT 'public',
     interne BOOLEAN DEFAULT FALSE, -- Si l'espèce est interne à la base de données ou non
@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS Observations (
 
 CREATE TABLE IF NOT EXISTS ConsultationsEspeces (
     id_consultation INT PRIMARY KEY AUTO_INCREMENT,
-    identifiant_utilisateur VARCHAR(255),
+    identifiant_utilisateur VARCHAR(191),
     id_espece INT,
     date_consultation TIMESTAMP DEFAULT NOW(),
     interne BOOLEAN DEFAULT FALSE,
@@ -102,7 +102,7 @@ CREATE TABLE IF NOT EXISTS ConsultationsEspeces (
 
 CREATE TABLE IF NOT EXISTS ConsultationsNaturotheques (
     id_consultation INT PRIMARY KEY AUTO_INCREMENT,
-    identifiant_utilisateur VARCHAR(255),
+    identifiant_utilisateur VARCHAR(191),
     id_naturotheque INT,
     date_consultation TIMESTAMP DEFAULT NOW(),
     interne BOOLEAN DEFAULT FALSE,
@@ -112,7 +112,7 @@ CREATE TABLE IF NOT EXISTS ConsultationsNaturotheques (
 
 CREATE TABLE IF NOT EXISTS ConsultationsObservations (
     id_consultation INT PRIMARY KEY AUTO_INCREMENT,
-    identifiant_utilisateur VARCHAR(255) ,
+    identifiant_utilisateur VARCHAR(191) ,
     id_observation INT ,
     date_consultation TIMESTAMP DEFAULT NOW(),
     interne BOOLEAN DEFAULT FALSE,
