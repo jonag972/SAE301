@@ -62,6 +62,7 @@ CREATE TABLE IF NOT EXISTS Naturotheques (
     nom VARCHAR (255),
     description TEXT,
     nombre_especes INT DEFAULT 0,
+    visibilite ENUM ('prive', 'public') DEFAULT 'public',
     dateCreation TIMESTAMP DEFAULT NOW(),
     dateDerniereModification TIMESTAMP DEFAULT NOW(),
     FOREIGN KEY (identifiant_utilisateur) REFERENCES Utilisateurs(identifiant_utilisateur) ON DELETE CASCADE
@@ -84,6 +85,7 @@ CREATE TABLE IF NOT EXISTS Observations (
     pays_observation VARCHAR (255),
     ville_observation VARCHAR (255),
     commentaire TEXT,
+    visibilite ENUM ('prive', 'public') DEFAULT 'public',
     interne BOOLEAN DEFAULT FALSE, -- Si l'espèce est interne à la base de données ou non
     FOREIGN KEY (identifiant_utilisateur) REFERENCES Utilisateurs(identifiant_utilisateur) ON DELETE SET NULL
 );

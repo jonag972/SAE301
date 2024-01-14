@@ -252,6 +252,7 @@
             (NEW.id_naturotheque, 'INSERT', NOW(), 'nom', NEW.nom),
             (NEW.id_naturotheque, 'INSERT', NOW(), 'description', NEW.description),
             (NEW.id_naturotheque, 'INSERT', NOW(), 'nombre_especes', NEW.nombre_especes),
+            (NEW.id_naturotheque, 'INSERT', NOW(), 'visibilite', NEW.visibilite),
             (NEW.id_naturotheque, 'INSERT', NOW(), 'dateCreation', NEW.dateCreation),
             (NEW.id_naturotheque, 'INSERT', NOW(), 'dateDerniereModification', NEW.dateDerniereModification);
     END //
@@ -278,6 +279,10 @@
             INSERT INTO Historique_Naturotheques (id_naturotheque, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
             VALUES (NEW.id_naturotheque, 'UPDATE', NOW(), 'nombre_especes', OLD.nombre_especes, NEW.nombre_especes);
         END IF;
+        IF NEW.visibilite <> OLD.visibilite THEN
+            INSERT INTO Historique_Naturotheques (id_naturotheque, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
+            VALUES (NEW.id_naturotheque, 'UPDATE', NOW(), 'visibilite', OLD.visibilite, NEW.visibilite);
+        END IF;
         IF NEW.dateCreation <> OLD.dateCreation THEN
             INSERT INTO Historique_Naturotheques (id_naturotheque, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
             VALUES (NEW.id_naturotheque, 'UPDATE', NOW(), 'dateCreation', OLD.dateCreation, NEW.dateCreation);
@@ -299,6 +304,7 @@
             (OLD.id_naturotheque, 'DELETE', NOW(), 'nom', OLD.nom),
             (OLD.id_naturotheque, 'DELETE', NOW(), 'description', OLD.description),
             (OLD.id_naturotheque, 'DELETE', NOW(), 'nombre_especes', OLD.nombre_especes),
+            (OLD.id_naturotheque, 'DELETE', NOW(), 'visibilite', OLD.visibilite),
             (OLD.id_naturotheque, 'DELETE', NOW(), 'dateCreation', OLD.dateCreation),
             (OLD.id_naturotheque, 'DELETE', NOW(), 'dateDerniereModification', OLD.dateDerniereModification);
     END //
@@ -368,6 +374,7 @@
             (NEW.id_observation, 'INSERT', NOW(), 'pays_observation', NEW.pays_observation),
             (NEW.id_observation, 'INSERT', NOW(), 'ville_observation', NEW.ville_observation),
             (NEW.id_observation, 'INSERT', NOW(), 'commentaire', NEW.commentaire),
+            (NEW.id_observation, 'INSERT', NOW(), 'visibilite', NEW.visibilite),
             (NEW.id_observation, 'INSERT', NOW(), 'interne', NEW.interne);
     END //
     DELIMITER ;
@@ -401,6 +408,10 @@
             INSERT INTO Historique_Observations (id_observation, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
             VALUES (NEW.id_observation, 'UPDATE', NOW(), 'commentaire', OLD.commentaire, NEW.commentaire);
         END IF;
+        IF NEW.visibilite <> OLD.visibilite THEN
+            INSERT INTO Historique_Observations (id_observation, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
+            VALUES (NEW.id_observation, 'UPDATE', NOW(), 'visibilite', OLD.visibilite, NEW.visibilite);
+        END IF;
         IF NEW.interne <> OLD.interne THEN
             INSERT INTO Historique_Observations (id_observation, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
             VALUES (NEW.id_observation, 'UPDATE', NOW(), 'interne', OLD.interne, NEW.interne);
@@ -420,7 +431,8 @@
             (OLD.id_observation, 'DELETE', NOW(), 'pays_observation', OLD.pays_observation),
             (OLD.id_observation, 'DELETE', NOW(), 'ville_observation', OLD.ville_observation),
             (OLD.id_observation, 'DELETE', NOW(), 'commentaire', OLD.commentaire),
-                (OLD.id_observation, 'DELETE', NOW(), 'interne', OLD.interne);
+            (OLD.id_observation, 'DELETE', NOW(), 'visibilite', OLD.visibilite),
+            (OLD.id_observation, 'DELETE', NOW(), 'interne', OLD.interne);
     END //
     DELIMITER ;
 
