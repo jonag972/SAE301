@@ -170,12 +170,39 @@ switch ($action) {
         $controllerName = 'ControllerUtilisateur';
         break;
 
+    // Evénements
 
     case 'adminAfficherEvenementsUtilisateurs':
         // On appelle le contrôleur de la page d'affichage des événements des utilisateurs
         $controller_file = 'controllers/ControllerUtilisateur.php';
         $controllerName = 'ControllerUtilisateur';
         break;
+
+    case 'adminAfficherEvenementsNaturotheques':
+        // On appelle le contrôleur de la page d'affichage des événements des naturothèques
+        $controller_file = 'controllers/ControllerNaturotheques.php';
+        $controllerName = 'ControllerNaturotheques';
+        break;
+
+    case 'adminAfficherEvenementsEspecesNaturotheques':
+        // On appelle le contrôleur de la page d'affichage des événements des espèces des naturothèques
+        $controller_file = 'controllers/ControllerNaturotheques.php';
+        $controllerName = 'ControllerNaturotheques';
+        break;
+
+    case 'adminAfficherEvenementsObservations':
+        // On appelle le contrôleur de la page d'affichage des événements des observations
+        $controller_file = 'controllers/ControllerObservations.php';
+        $controllerName = 'ControllerObservations';
+        break;
+    
+    case 'adminAfficherEvenementsEspeces':
+        // On appelle le contrôleur de la page d'affichage des événements des espèces
+        $controller_file = 'controllers/ControllerEspeces.php';
+        $controllerName = 'ControllerEspeces';
+        break;
+
+    
 
     // Espèces    
 

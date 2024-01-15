@@ -97,7 +97,34 @@ class modelNaturotheques {
         return database::prepareEtExecute($query, $values);
     }
 
+    public static function supprimerEspeceDeNaturotheque($id_naturotheque, $id_espece) {
+        $query = "DELETE FROM especesnaturotheque WHERE id_naturotheque = :id_naturotheque AND id_espece = :id_espece";
+        $values = array(':id_naturotheque' => $id_naturotheque, ':id_espece' => $id_espece);
+        return database::prepareEtExecute($query, $values);
+    }
+
+    public static function obtenirEspeceDeNaturotheque($id_naturotheque, $id_espece) {
+        $query = "SELECT * FROM especesnaturotheque WHERE id_naturotheque = :id_naturotheque AND id_espece = :id_espece";
+        $values = array(':id_naturotheque' => $id_naturotheque, ':id_espece' => $id_espece);
+        $resultat = database::prepareEtExecute($query, $values);
     
+        return !empty($resultat) ? $resultat[0] : null;
+    }
+
+    public static function getEvenementsToutesNaturotheques($page, $nombreParPage) {
+        $offset = ($page - 1) * $nombreParPage;
+        // On prépare la requête SQL pour récupérer l'historique de tous les utilisateurs en groupant par date de modification
+        $query = "SELECT * FROM Historique_Naturotheques GROUP BY date_modification ORDER BY date_modification DESC LIMIT :offset, :nombreParPage";
+        $values = array(':offset' => $offset, ':nombreParPage' => $nombreParPage);
+        return database::prepareExecuteBind($query, $values);
+    }
+
+    public static function compterEvenementsToutesNaturotheques() {
+        $query = "SELECT COUNT(*) AS count FROM Historique_Naturotheques GROUP BY date_modification";
+        $resultat = database::prepareEtExecute($query);
+    
+        return !empty($resultat) ? $resultat[0]['count'] : 0;
+    }
     
     
 }

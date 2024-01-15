@@ -9,7 +9,7 @@ class config {
     'hostname' => 'localhost',
     'database' => 'SAE301',
     'login' => 'root',
-    'password' => 'root'
+    'password' => ''
     );
     static public function getLogin() : string {
         return static::$databases['login'];

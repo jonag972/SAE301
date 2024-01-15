@@ -139,6 +139,49 @@ class ControllerNaturotheques {
         }
     }
 
-    
+    public function supprimerEspeceDeNaturotheque() {
+        $id_espece = $_GET['id_espece'];
+        $id_naturotheque = $_GET['id_naturotheque'];
+        if ($this->estProprietaireNaturotheque($id_naturotheque) || $this->estAdmin()) {
+            $resultat = modelNaturotheques::supprimerEspeceDeNaturotheque($id_naturotheque, $id_espece);
+            $message = "L'espèce a bien été supprimée de la naturothèque.";
+            header('Location: ?action=afficherMesNaturotheques');
+        } else {
+            $error = 'Vous n\'avez pas la permission de supprimer une espèce de cette naturothèque.';
+            include 'views/errors/error.php';
+        }
+    }
+
+    public function afficherNaturotheque() {
+        $id = $_GET['id'];
+        $naturotheque = modelNaturotheques::obtenirNaturothequeParId($id);
+        $especes = modelNaturotheques::obtenirEspecesParNaturotheque($id);
+        include 'views/naturotheques/afficherNaturothequeVue.php';
+    }
+
+    public function afficherEspecesNaturotheque() {
+        if ($this->estAdmin()) {
+            $id = $_GET['id'];
+            $naturotheque = modelNaturotheques::obtenirNaturothequeParId($id);
+            $especes = modelNaturotheques::obtenirEspecesParNaturotheque($id);
+            include 'views/naturotheques/afficherEspecesNaturothequeVue.php';
+        } else {
+            $error = 'Vous n\'avez pas la permission d\'afficher les espèces de cette naturothèque.';
+            include 'views/errors/error.php';
+        }
+    }
+
+    public function adminAfficherEvenementsNaturotheques() {
+        if ($this->estAdmin()) {
+            $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+            $totalEvenements = modelNaturotheques::compterEvenementsToutesNaturotheques();
+            $nombreDePages = ceil($totalEvenements / $this->naturothequesParPage);
+            $evenements = modelNaturotheques::getEvenementsToutesNaturotheques($page, $this->naturothequesParPage);
+            include 'views/naturotheques/adminAfficherEvenementsNaturothequesVue.php';
+        } else {
+            $messageErreur = 'Vous n\'avez pas la permission d\'afficher les événements des naturothèques.';
+            include 'views/errors/error.php';
+        }
+    }
     
 }

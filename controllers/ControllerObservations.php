@@ -139,4 +139,31 @@ class ControllerObservations {
 
         include 'views/observations/rechercherObservationVue.php';
     }
+
+    public function rechercherMesObservations() {
+        $id_espece = isset($_GET['id_espece']) ? $_GET['id_espece'] : '';
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $identifiant_utilisateur = $_SESSION['identifiant_utilisateur'];
+        $totalObservations = modelObservations::compterObservationsParUtilisateur($identifiant_utilisateur);
+        $nombreDePages = ceil($totalObservations / $this->observationsParPage);
+        $observations = modelObservations::rechercherObservationsParIdEspeceEtUtilisateur($id_espece, $identifiant_utilisateur, $page, $this->observationsParPage);
+
+        include 'views/observations/rechercherMesObservationsVue.php';
+    }
+
+    public function adminAfficherEvenementsObservations() {
+        if (!$this->estAdmin()) {
+            $error = 'Vous n\'avez pas la permission d\'accéder à cette page.';
+            include 'views/errors/error.php';
+            exit ();
+        }
+        else {
+            $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+            $totalObservations = modelObservations::compterEvenementsToutesObservations();
+            $nombreDePages = ceil($totalObservations / $this->observationsParPage);
+            $evenements = modelObservations::getEvenementsToutesObservations($page, $this->observationsParPage);
+            $messageErreur = 'Il n\'y a pas d\'événements à afficher.';
+            include 'views/observations/adminAfficherEvenementsObservationsVue.php';
+        }
+    }        
 }

@@ -203,4 +203,15 @@ class modelEspeces {
         $reponse = json_decode($json, true);
         return $reponse;
     }
+
+    public static function getEvenementsToutesEspeces($page, $parPage){
+        $offset = ($page - 1) * $parPage;
+        $query = "SELECT * FROM Evenements ORDER BY id_evenement LIMIT :offset, :limit";
+        $stmt = database::prepare($query);
+        $stmt->bindValue(':offset', (int) $offset, PDO::PARAM_INT);
+        $stmt->bindValue(':limit', (int) $parPage, PDO::PARAM_INT);
+        $stmt->execute();
+        $resultat = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $resultat;
+    }
 }

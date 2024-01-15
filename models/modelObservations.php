@@ -93,4 +93,17 @@ class modelObservations {
         $resultat = database::prepareEtExecute($query, $values);
         return !empty($resultat) ? $resultat[0]['count'] : 0;
     }
+
+    public static function getEvenementsToutesObservations($page, $nombreParPage) {
+        $offset = ($page - 1) * $nombreParPage;
+        $query = "SELECT * FROM Historique_Observations GROUP BY date_modification ORDER BY date_modification DESC LIMIT :offset, :nombreParPage";
+        $values = array(':offset' => $offset, ':nombreParPage' => $nombreParPage);
+        return database::prepareExecuteBind($query, $values);
+    }
+
+    public static function compterEvenementsToutesObservations() {
+        $query = "SELECT COUNT(*) AS count FROM Historique_Observations GROUP BY date_modification";
+        $resultat = database::prepareEtExecute($query);
+        return !empty($resultat) ? $resultat[0]['count'] : 0;
+    }
 }

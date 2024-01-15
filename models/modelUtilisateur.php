@@ -87,11 +87,9 @@ class ModelUtilisateur {
     public static function getEvenementsTousUtilisateurs($page, $nombreParPage) {
         $offset = ($page - 1) * $nombreParPage;
         // On prépare la requête SQL pour récupérer l'historique de tous les utilisateurs en groupant par date de modification
-        $query = "SELECT * FROM Historique_Utilisateurs ORDER BY date_modification DESC LIMIT $nombreParPage OFFSET $offset";
-        // On exécute la requête SQL en utilisant la méthode "prepareEtExecute" de la classe "database"
-        $resultat = database::prepareEtExecute($query);
-        // On retourne la résultat à l'utilisateur si elle existe ou null
-        return $resultat ? $resultat : NULL;
+        $query = "SELECT * FROM Historique_Utilisateurs JOIN Utilisateurs ON Historique_Utilisateurs.identifiant_utilisateur = Utilisateurs.identifiant_utilisateur GROUP BY date_modification ORDER BY date_modification DESC LIMIT :offset, :nombreParPage";
+        $values = array(':offset' => $offset, ':nombreParPage' => $nombreParPage);
+        return database::prepareExecuteBind($query, $values);
     }
 }
 ?>

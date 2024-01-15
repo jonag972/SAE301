@@ -15,7 +15,6 @@
                 if (isset($_SESSION['identifiant_utilisateur'])) {
                     echo '<li><a href="?action=afficherToutesLesNaturotheques">Naturothèques</a></li>';
                     echo '<li><a href="?action=afficherToutesLesObservations">Observations</a></li>';
-                    // Vérifiez si l'utilisateur est un administrateur
                 }
                 ?>
                 <?php
@@ -27,6 +26,8 @@
                     echo '<ul>';
                     echo '<li><a href="?action=adminAfficherEvenementsUtilisateurs">Afficher tous les événements des utilisateurs</a></li>';
                     echo '<li><a href="?action=adminAfficherEvenementsEspeces">Afficher tous les événements des espèces</a></li>';
+                    echo '<li><a href="?action=adminAfficherEvenementsNaturotheques">Afficher tous les événements des naturothèques</a></li>';
+                    echo '<li><a href="?action=adminAfficherEvenementsObservations">Afficher tous les événements des observations</a></li>';
                     echo '</ul>';
                 }
                 if (isset($_SESSION['identifiant_utilisateur'])) {
