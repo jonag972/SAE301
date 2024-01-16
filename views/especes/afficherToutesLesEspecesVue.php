@@ -46,6 +46,10 @@
                     <td><img id=especephoto src="<?php echo $espece['imagePrefix'] . $espece['mediaImage']; ?>" alt="Image de l'espèce"></td>
                     <td><a href="?action=detailsEspece&id=<?php echo $espece['id']; ?>&interne=<?php echo $espece['interne']; ?>">Voir Détails</a>
                     <a href="?action=ajouterEspeceANaturotheque&id_espece=<?php echo $espece['id']; ?>&interne=<?php echo $espece['interne']; ?>">Ajouter à Naturothèque</a></td>
+                    <?php if ($interne === 'TRUE') : ?>
+                        <td><a href="?action=modifierEspece&id=<?php echo $espece['id']; ?>">Modifier l'espèce</a>
+                        <a href="?action=supprimerEspece&id=<?php echo $espece['id']; ?>">Supprimer l'espèce</a></td>
+                    <?php endif; ?>
                 </tr>
             <?php endforeach; ?>
         </tbody>

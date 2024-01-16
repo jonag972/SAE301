@@ -21,7 +21,12 @@
             $age = $_POST['age'];
             $pays = $_POST['pays'];
             $abonnement = $_POST['abonnement'];
-            $role = 'lambda'; // Role par défaut
+            if (modelUtilisateur::getNombreUtilisateurs() == 0) {
+                $role = 'admin';
+            }
+            else {
+                $role = 'utilisateur';
+            }
             $photo_de_profil = file_get_contents($_FILES['photo_de_profil']['tmp_name']);
             if (!empty($identifiant_utilisateur) && !empty($mot_de_passe) && !empty($email) && !empty($prenom) && !empty($nom_de_famille) && !empty($age) && !empty($pays)) {
                 if (modelUtilisateur::getAttributUtilisateurParIdentifiant('identifiant_utilisateur', $identifiant_utilisateur) == NULL) {

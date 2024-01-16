@@ -71,6 +71,15 @@ class ModelUtilisateur {
         return $resultat ? $resultat : NULL;
     }
 
+    public static function getNombreUtilisateurs() {
+        // On prépare la requête SQL pour compter le nombre d'utilisateurs
+        $query = "SELECT COUNT(*) AS nombreUtilisateurs FROM Utilisateurs";
+        // On exécute la requête SQL en utilisant la méthode "prepareEtExecute" de la classe "database"
+        $resultat = database::prepareEtExecute($query);
+        // On retourne la résultat à l'utilisateur si elle existe ou null
+        return $resultat ? $resultat[0]['nombreUtilisateurs'] : NULL;
+    }
+
     public static function getUtilisateurParIdentifiant($identifiant_utilisateur) {
         // On prépare la requête SQL pour récupérer un utilisateur à partir de son identifiant
         $query = "SELECT * FROM Utilisateurs WHERE identifiant_utilisateur = :identifiant";

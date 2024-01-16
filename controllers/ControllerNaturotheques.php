@@ -85,7 +85,9 @@ class ControllerNaturotheques {
         if ($this->estProprietaireNaturotheque($id) || $this->estAdmin()) {
             $nom = $_POST['nom'];
             $description = $_POST['description'];
-            $photo_naturotheque = file_get_contents($_FILES['photo_naturotheque']['tmp_name']) ?? null;
+            if (isset($_FILES['photo_naturotheque']) && $_FILES['photo_naturotheque']['error'] === UPLOAD_ERR_OK) {
+                $photo_naturotheque = file_get_contents($_FILES['photo_naturotheque']['tmp_name']);
+            }
             modelNaturotheques::mettreAJourNaturotheque($id, $nom, $description, $photo_naturotheque);
             // Rediriger vers une page appropriée après la mise à jour
             header('Location: ?action=afficherMesNaturotheques');

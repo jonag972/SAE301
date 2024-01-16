@@ -131,9 +131,9 @@
     FOR EACH ROW
     BEGIN
         INSERT INTO Historique_Especes (id_espece, action, date_modification, colonne_changee, nouvelle_valeur)
-        VALUES (NEW.id_espece, 'INSERT', NOW(), 'frenchVernacularNames', NEW.frenchVernacularNames),
-            (NEW.id_espece, 'INSERT', NOW(), 'englishVernacularNames', NEW.englishVernacularNames),
-            (NEW.id_espece, 'INSERT', NOW(), 'scientificNames', NEW.scientificNames),
+        VALUES (NEW.id_espece, 'INSERT', NOW(), 'frenchVernacularName', NEW.frenchVernacularName),
+            (NEW.id_espece, 'INSERT', NOW(), 'englishVernacularName', NEW.englishVernacularName),
+            (NEW.id_espece, 'INSERT', NOW(), 'scientificName', NEW.scientificName),
             (NEW.id_espece, 'INSERT', NOW(), 'vernularGroups', NEW.vernularGroups),
             (NEW.id_espece, 'INSERT', NOW(), 'taxonomicRanks', NEW.taxonomicRanks),
             (NEW.id_espece, 'INSERT', NOW(), 'territories', NEW.territories),
@@ -156,17 +156,17 @@
     AFTER UPDATE ON Especes
     FOR EACH ROW
     BEGIN
-        IF NEW.frenchVernacularNames <> OLD.frenchVernacularNames THEN
+        IF NEW.frenchVernacularName <> OLD.frenchVernacularName THEN
             INSERT INTO Historique_Especes (id_espece, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
-            VALUES (NEW.id_espece, 'UPDATE', NOW(), 'frenchVernacularNames', OLD.frenchVernacularNames, NEW.frenchVernacularNames);
+            VALUES (NEW.id_espece, 'UPDATE', NOW(), 'frenchVernacularName', OLD.frenchVernacularName, NEW.frenchVernacularName);
         END IF;
-        IF NEW.englishVernacularNames <> OLD.englishVernacularNames THEN
+        IF NEW.englishVernacularName <> OLD.englishVernacularName THEN
             INSERT INTO Historique_Especes (id_espece, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
-            VALUES (NEW.id_espece, 'UPDATE', NOW(), 'englishVernacularNames', OLD.englishVernacularNames, NEW.englishVernacularNames);
+            VALUES (NEW.id_espece, 'UPDATE', NOW(), 'englishVernacularName', OLD.englishVernacularName, NEW.englishVernacularName);
         END IF;
-        IF NEW.scientificNames <> OLD.scientificNames THEN
+        IF NEW.scientificName <> OLD.scientificName THEN
             INSERT INTO Historique_Especes (id_espece, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
-            VALUES (NEW.id_espece, 'UPDATE', NOW(), 'scientificNames', OLD.scientificNames, NEW.scientificNames);
+            VALUES (NEW.id_espece, 'UPDATE', NOW(), 'scientificName', OLD.scientificName, NEW.scientificName);
         END IF;
         IF NEW.vernularGroups <> OLD.vernularGroups THEN
             INSERT INTO Historique_Especes (id_espece, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
@@ -229,9 +229,9 @@
     FOR EACH ROW
     BEGIN
         INSERT INTO Historique_Especes (id_espece, action, date_modification, colonne_changee, ancienne_valeur)
-        VALUES (OLD.id_espece, 'DELETE', NOW(), 'frenchVernacularNames', OLD.frenchVernacularNames),
-            (OLD.id_espece, 'DELETE', NOW(), 'englishVernacularNames', OLD.englishVernacularNames),
-            (OLD.id_espece, 'DELETE', NOW(), 'scientificNames', OLD.scientificNames),
+        VALUES (OLD.id_espece, 'DELETE', NOW(), 'frenchVernacularName', OLD.frenchVernacularName),
+            (OLD.id_espece, 'DELETE', NOW(), 'englishVernacularName', OLD.englishVernacularName),
+            (OLD.id_espece, 'DELETE', NOW(), 'scientificName', OLD.scientificName),
             (OLD.id_espece, 'DELETE', NOW(), 'vernularGroups', OLD.vernularGroups),
             (OLD.id_espece, 'DELETE', NOW(), 'taxonomicRanks', OLD.taxonomicRanks),
             (OLD.id_espece, 'DELETE', NOW(), 'territories', OLD.territories),

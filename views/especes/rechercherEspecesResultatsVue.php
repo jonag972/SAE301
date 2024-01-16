@@ -21,6 +21,9 @@
                     <th>Nom de la classe</th>
                     <th>Nom du royaume</th>
                     <th>Habitat</th>
+                    <th>Image</th>
+                    <th>Voir la fiche</th>
+                    <th>Ajouter à une naturothèque</th>
                 </tr>
             </thead>
             <tbody>";
@@ -34,6 +37,9 @@
                 <td>{$espece['className']}</td>
                 <td>{$espece['kingdomName']}</td>
                 <td>{$espece['habitat']}</td>
+                <td><img src='{$espece['mediaImage']}' alt='Image de l\'espèce' style='width: 100px; height: 100px;' /></td>
+                <td><a href='?action=detailsEspece&id={$espece['id']}&interne={$espece['interne']}'>Voir Détails</a></td>
+                <td><a href='?action=ajouterEspeceANaturotheque&id_espece={$espece['id']}&interne={$espece['interne']}'>Ajouter à Naturothèque</a></td>
             </tr>";
         }
         echo "</tbody>

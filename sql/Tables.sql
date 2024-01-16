@@ -28,9 +28,9 @@ CREATE TABLE IF NOT EXISTS Utilisateurs (
 
 CREATE TABLE IF NOT EXISTS Especes (
     id_espece INT PRIMARY KEY AUTO_INCREMENT,
-    frenchVernacularNames VARCHAR (100) DEFAULT NULL,
-    englishVernacularNames VARCHAR (100) DEFAULT NULL,
-    scientificNames VARCHAR (100) DEFAULT NULL,
+    frenchVernacularName VARCHAR (100) DEFAULT NULL,
+    englishVernacularName VARCHAR (100) DEFAULT NULL,
+    scientificName VARCHAR (100) DEFAULT NULL,
     vernularGroups VARCHAR (100) DEFAULT NULL,
     taxonomicRanks VARCHAR (100) DEFAULT NULL,
     territories VARCHAR (100) DEFAULT NULL,

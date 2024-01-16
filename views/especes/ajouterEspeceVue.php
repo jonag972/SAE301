@@ -26,14 +26,14 @@
         <input type="file" id="mediaImage" name="mediaImage"><br>
         <label for="habitat">Habitat:</label><br>
         <select name="habitat" id="habitat">
-            <option value="1">Terrestre</option>
-            <option value="2">Aquatique</option>
-            <option value="3">Aérien</option>
-            <option value="4">Souterrain</option>
-            <option value="5">Terrestre</option>
-            <option value="6">Aquatique</option>
-            <option value="7">Aérien</option>
-            <option value="8">Souterrain</option>
+            <option value="Marin">Marin</option>
+            <option value="Eau douce">Eau douce</option>
+            <option value="Terrestre">Terrestre</option>
+            <option value="Marin et eau douce">Marin et eau douce</option>
+            <option value="Marin et terrestre">Marin et terrestre</option>
+            <option value="Eau saumâtre">Eau saumâtre</option>
+            <option value="Continental (terrestre et/ou eau douce)">Continental (terrestre et/ou eau douce)</option>
+            <option value="Continental (terrestre et eau douce)">Continental (terrestre et eau douce)</option>
         </select><br>
         <input type="submit" value="Ajouter l'espèce">
         <?php if (isset($message)) : ?>

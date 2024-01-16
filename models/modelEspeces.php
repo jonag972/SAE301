@@ -86,37 +86,53 @@ class modelEspeces {
             }
     }
 
-    public static function rechercheEspeceInterneParScientificNames($scientificNames, $page, $parPage){
+    public static function rechercheEspeceInterneParscientificName($scientificName, $page, $parPage){
         $offset = ($page - 1) * $parPage;
-        $query = "SELECT * FROM Especes WHERE scientificNames LIKE :scientificNames ORDER BY id_espece LIMIT :offset, :limit";
+        $query = "SELECT * FROM Especes WHERE scientificName LIKE :scientificName ORDER BY id_espece LIMIT :offset, :limit";
         $pdoStatement = database::prepare($query);
         $pdoStatement->bindParam(':offset', $offset, PDO::PARAM_INT);
         $pdoStatement->bindParam(':limit', $parPage, PDO::PARAM_INT);
-        $pdoStatement->bindValue(':scientificNames', '%' . $scientificNames . '%');
+        $pdoStatement->bindValue(':scientificName', '%' . $scientificName . '%');
         $pdoStatement->execute();
         return $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public static function rechercheEspeceExterneParScientificNames($scientificNames, $page, $parPage){
-        $offset = ($page - 1) * $parPage;
-        $url = "https://external-api.example.com/especes?scientificNames=" . urlencode($scientificNames) . "&offset=" . $offset . "&limit=" . $parPage;
+    public static function rechercheEspeceExterneParscientificName($scientificName, $page, $parPage){
+        $url = "https://taxref.mnhn.fr/api/taxa/search?scientificName=" . urlencode($scientificName) . "&page=" . $page . "&size=" . $parPage;
         $json = file_get_contents($url);
         $reponse = json_decode($json, true);
         $resultat = array();
-        foreach ($reponse['data'] as $espece) { // Assurez-vous que 'data' correspond au format de réponse de l'API
-            $resultat[] = $espece; // Adaptez cette ligne en fonction de la structure de données retournée par l'API
+        
+        if (isset($reponse['_embedded']['taxa'])) {
+            foreach ($reponse['_embedded']['taxa'] as $espece) {
+                $resultat[] = [
+                    'id' => $espece['id'],
+                    'frenchVernacularName' => $espece['vernacularNames'][0]['vernacularName'] ??= "Non renseigné",
+                    'englishVernacularName' => $espece['vernacularNames'][1]['vernacularName'] ??= "Non renseigné",
+                    'scientificName' => $espece['scientificName'] ??= "Non renseigné",
+                    'genusName' => $espece['genusName'] ??= "Non renseigné",
+                    'familyName' => $espece['familyName'] ??= "Non renseigné",
+                    'orderName' => $espece['orderName'] ??= "Non renseigné",
+                    'className' => $espece['className'] ??= "Non renseigné",
+                    'kingdomName' => $espece['kingdomName'] ??= "Non renseigné",
+                    'habitat' => $espece['habitat'] ??= "Non renseigné",
+                    'media' => $espece['_links']['thumbnailFile']['href'] ??= 'assets/images/unknown/unknownanimal.jpeg'
+                ];
+            }
         }
+        
         return $resultat;
     }
     
     
+    
 
-    public static function addEspeceBDD ($frenchVernacularNames, $englishVernacularNames, $scientificNames, $genusName, $familyName, $orderName, $classNAme, $kingdomName, $habitat, $mediaImage){
-        $query = "INSERT INTO Especes (frenchVernacularNames, englishVernacularNames, scientificNames, genusName, familyName, orderName, className, kingdomName, habitat, mediaImage) VALUES (:frenchVernacularNames, :englishVernacularNames, :scientificNames, :genusName, :familyName, :orderName, :className, :kingdomName, :habitat, :mediaImage)";
+    public static function addEspeceBDD ($frenchVernacularName, $englishVernacularName, $scientificName, $genusName, $familyName, $orderName, $classNAme, $kingdomName, $habitat, $mediaImage){
+        $query = "INSERT INTO Especes (frenchVernacularName, englishVernacularName, scientificName, genusName, familyName, orderName, className, kingdomName, habitat, mediaImage) VALUES (:frenchVernacularName, :englishVernacularName, :scientificName, :genusName, :familyName, :orderName, :className, :kingdomName, :habitat, :mediaImage)";
         $values = array(
-            ':frenchVernacularNames' => $frenchVernacularNames,
-            ':englishVernacularNames' => $englishVernacularNames,
-            ':scientificNames' => $scientificNames,
+            ':frenchVernacularName' => $frenchVernacularName,
+            ':englishVernacularName' => $englishVernacularName,
+            ':scientificName' => $scientificName,
             ':genusName' => $genusName,
             ':familyName' => $familyName,
             ':orderName' => $orderName,
@@ -153,6 +169,34 @@ class modelEspeces {
         $stmt->bindValue(':limit', (int) $parPage, PDO::PARAM_INT);
         $stmt->execute();
         $resultat = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $resultat;
+    }
+
+    public static function modificationEspece($id_espece, $frenchVernacularName, $englishVernacularName, $scientificName, $genusName, $familyName, $orderName, $classNAme, $kingdomName, $habitat, $mediaImage){
+        $query = "UPDATE Especes SET frenchVernacularName = :frenchVernacularName, englishVernacularName = :englishVernacularName, scientificName = :scientificName, genusName = :genusName, familyName = :familyName, orderName = :orderName, className = :className, kingdomName = :kingdomName, habitat = :habitat, mediaImage = :mediaImage WHERE id_espece = :id_espece";
+        $values = array(
+            ':id_espece' => $id_espece,
+            ':frenchVernacularName' => $frenchVernacularName,
+            ':englishVernacularName' => $englishVernacularName,
+            ':scientificName' => $scientificName,
+            ':genusName' => $genusName,
+            ':familyName' => $familyName,
+            ':orderName' => $orderName,
+            ':className' => $classNAme,
+            ':kingdomName' => $kingdomName,
+            ':habitat' => $habitat,
+            ':mediaImage' => $mediaImage
+        );
+        $resultat = database::prepareEtExecute($query, $values);
+        return $resultat;
+    }
+
+    public static function supprimerEspece($id_espece){
+        $query = "DELETE FROM Especes WHERE id_espece = :id_espece";
+        $values = array(
+            ':id_espece' => $id_espece
+        );
+        $resultat = database::prepareEtExecute($query, $values);
         return $resultat;
     }
 }
