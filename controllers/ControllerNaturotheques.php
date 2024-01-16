@@ -178,6 +178,7 @@ class ControllerNaturotheques {
             $nombreDePages = ceil($totalEvenements / $this->naturothequesParPage);
             $evenements = modelNaturotheques::getEvenementsToutesNaturotheques($page, $this->naturothequesParPage);
             include 'views/naturotheques/adminAfficherEvenementsNaturothequesVue.php';
+            $messageErreur = '';
         } else {
             $messageErreur = 'Vous n\'avez pas la permission d\'afficher les événements des naturothèques.';
             include 'views/errors/error.php';

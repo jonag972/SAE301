@@ -19,7 +19,7 @@
                 } else if ($evenement['colonne_changee'] == 'date_derniere_deconnexion') {
                     echo $evenement['identifiant_utilisateur'] . ' s\'est déconnecté le ' . $evenement['date_modification'] . '<br>';
                 } else {
-                    echo $evenement['identifiant_utilisateur'] . ' a changé ' . $evenement['colonne_changee'] . ' de son compte le ' . $evenement['date_modification'] . '<br>';
+                    echo $evenement['identifiant_utilisateur'] . ' a changé ' . $evenement['colonne_changee'] . ' de son compte le ' . $evenement['date_modification'] . ' de ' . $evenement['ancienne_valeur'] . ' à ' . $evenement['nouvelle_valeur'] . '<br>';
                 }
             } else if ($evenement['action'] == 'DELETE') {
                 echo $evenement['identifiant_utilisateur'] . ' s\'est désinscrit ou a été supprimé le ' . $evenement['date_modification'] . '<br>';

@@ -86,89 +86,30 @@ class modelEspeces {
             }
     }
 
-    public static function rechercheIdEspeceParCritereInterne($frenchVernacularNames, $englishVernacularNames, $scientificNames, $vernularGroups, $taxonomicRanks, $territories, $domain, $habitats, $page, $parPage){
-        $query = "SELECT id_espece FROM Especes WHERE 1=1";
-        $values = array(
-            ':offset' => ($page - 1) * $parPage,
-            ':limit' => $parPage
-        );
-    
-        if (!empty($frenchVernacularNames)) {
-            $query .= " AND frenchVernacularNames LIKE :frenchVernacularNames";
-            $values[':frenchVernacularNames'] = '%' . $frenchVernacularNames . '%';
+    public static function rechercheEspeceInterneParScientificNames($scientificNames, $page, $parPage){
+        $offset = ($page - 1) * $parPage;
+        $query = "SELECT * FROM Especes WHERE scientificNames LIKE :scientificNames ORDER BY id_espece LIMIT :offset, :limit";
+        $pdoStatement = database::prepare($query);
+        $pdoStatement->bindParam(':offset', $offset, PDO::PARAM_INT);
+        $pdoStatement->bindParam(':limit', $parPage, PDO::PARAM_INT);
+        $pdoStatement->bindValue(':scientificNames', '%' . $scientificNames . '%');
+        $pdoStatement->execute();
+        return $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function rechercheEspeceExterneParScientificNames($scientificNames, $page, $parPage){
+        $offset = ($page - 1) * $parPage;
+        $url = "https://external-api.example.com/especes?scientificNames=" . urlencode($scientificNames) . "&offset=" . $offset . "&limit=" . $parPage;
+        $json = file_get_contents($url);
+        $reponse = json_decode($json, true);
+        $resultat = array();
+        foreach ($reponse['data'] as $espece) { // Assurez-vous que 'data' correspond au format de réponse de l'API
+            $resultat[] = $espece; // Adaptez cette ligne en fonction de la structure de données retournée par l'API
         }
-        if (!empty($englishVernacularNames)) {
-            $query .= " AND englishVernacularNames LIKE :englishVernacularNames";
-            $values[':englishVernacularNames'] = '%' . $englishVernacularNames . '%';
-        }
-        if (!empty($scientificNames)) {
-            $query .= " AND scientificNames LIKE :scientificNames";
-            $values[':scientificNames'] = '%' . $scientificNames . '%';
-        }
-        if (!empty($vernularGroups)) {
-            $query .= " AND vernacularGroup LIKE :vernacularGroup";
-            $values[':vernacularGroup'] = '%' . $vernularGroups . '%';
-        }
-        if (!empty($taxonomicRanks)) {
-            $query .= " AND taxonomicRanks LIKE :taxonomicRanks";
-            $values[':taxonomicRanks'] = '%' . $taxonomicRanks . '%';
-        }
-        if (!empty($territories)) {
-            $query .= " AND territory LIKE :territory";
-            $values[':territory'] = '%' . $territories . '%';
-        }
-        if (!empty($domain)) {
-            $query .= " AND domain LIKE :domain";
-            $values[':domain'] = '%' . $domain . '%';
-        }
-        if (!empty($habitats)) {
-            $query .= " AND habitat LIKE :habitat";
-            $values[':habitat'] = '%' . $habitats . '%';
-        }
-    
-        $query .= " ORDER BY id_espece LIMIT :offset, :limit";
-    
-        $resultat = database::prepareEtExecute($query, $values);
         return $resultat;
     }
     
-
-    public function rechercheIdEspeceParCritereExterne($frenchVernacularNames, $englishVernacularNames, $scientificNames, $vernularGroups, $taxonomicRanks, $territories, $domain, $habitats, $page, $parPage){
-        $apiUrl = "https://taxref.mnhn.fr/api/taxa/search?version=16.0&page=$page&size=$parPage";
     
-        if (!empty($scientificNames)) {
-            $apiUrl .= "&scientificNames={$scientificNames}";
-        }
-        if (!empty($frenchVernacularNames)) {
-            $apiUrl .= "&frenchVernacularNames={$frenchVernacularNames}";
-        }
-        if (!empty($englishVernacularNames)) {
-            $apiUrl .= "&englishVernacularNames={$englishVernacularNames}";
-        }
-        if (!empty($taxonomicRanks)) {
-            $apiUrl .= "&taxonomicRanks={$taxonomicRanks}";
-        }
-        if (!empty($territories)) {
-            $apiUrl .= "&territories={$territories}";
-        }
-        if (!empty($domain)) {
-            $apiUrl .= "&domain={$domain}";
-        }
-        if (!empty($habitats)) {
-            $apiUrl .= "&habitats={$habitats}";
-        }
-        if (!empty($vernularGroups)) {
-            $apiUrl .= "&vernacularGroups={$vernularGroups}";
-        }
-    
-        $speciesData = file_get_contents($apiUrl);
-        $species = json_decode($speciesData, true);
-        $ids = array();
-        foreach ($species["_embedded"]["taxa"] as &$specie) {
-            $ids[] = $specie['id'];
-        }
-        return $ids;
-    }
 
     public static function addEspeceBDD ($frenchVernacularNames, $englishVernacularNames, $scientificNames, $genusName, $familyName, $orderName, $classNAme, $kingdomName, $habitat, $mediaImage){
         $query = "INSERT INTO Especes (frenchVernacularNames, englishVernacularNames, scientificNames, genusName, familyName, orderName, className, kingdomName, habitat, mediaImage) VALUES (:frenchVernacularNames, :englishVernacularNames, :scientificNames, :genusName, :familyName, :orderName, :className, :kingdomName, :habitat, :mediaImage)";

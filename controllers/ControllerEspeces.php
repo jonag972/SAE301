@@ -79,68 +79,6 @@ class ControllerEspeces {
         include 'views/especes/afficherToutesLesEspecesVue.php';
     }
 
-    public function rechercherEspecesResultats() {
-        // Récupérer le numéro de page à partir de l'URL
-        if (isset($_GET['page'])) {
-            $page = (int) $_GET['page'];
-        } else {
-            $page = 1; // Valeur par défaut si page n'est pas défini dans l'URL
-        }
-        if (isset($_GET['parPage'])) {
-            $parPage = (int) $_GET['parPage'];
-        } else {
-            $parPage = 10; // Valeur par défaut si size n'est pas défini dans l'URL
-        }
-    
-        // Autres paramètres à gérer depuis l'URL, le cas échéant
-        $interne = isset($_GET['interne']) ? $_GET['interne'] : TRUE;
-        // Gérer la pagination
-        $parPage = 10; // Nombre d'espèces par page
-    
-        if($interne === 'TRUE'){
-            $ids = modelEspeces::rechercheIdEspeceParCritereInterne($_GET['frenchVernacularNames'], $_GET['englishVernacularNames'], $_GET['scientificNames'], $_GET['vernacularGroups'], $_GET['taxonomicRanks'], $_GET['territories'], $_GET['domain'], $_GET['habitats'], $page, $parPage);
-                // Faire une boucle sur les ids des espèces pour récupérer les attributs
-                if (empty($ids)) {
-                    $especes = [];
-                }else {
-                    foreach ($ids as $id) {
-                        $especes[] = [
-                            'frenchVernacularNames' => modelEspeces::getAttributParIdInterne('frenchVernacularNames', $id),
-                            'scientificNames' => modelEspeces::getAttributParIdInterne('scientificNames', $id),
-                            'genusName' => modelEspeces::getAttributParIdInterne('genusName', $id),
-                            'familyName' => modelEspeces::getAttributParIdInterne('familyName', $id),
-                            'orderName' => modelEspeces::getAttributParIdInterne('orderName', $id),
-                            'className' => modelEspeces::getAttributParIdInterne('className', $id),
-                            'kingdomName' => modelEspeces::getAttributParIdInterne('kingdomName', $id),
-                            'habitat' => modelEspeces::getAttributParIdInterne('habitat', $id)
-                        ];
-                    }
-                }
-        } 
-        elseif ($interne === 'FALSE') {
-            if (empty($ids)) {
-                $especes = 'bite';
-            }
-            else {
-                $ids = modelEspeces::rechercheIdEspeceParCritereExterne($_GET['frenchVernacularNamesSearchValue'], $_GET['englishVernacularNamesSearchValue'], $_GET['scientificNames'], $_GET['vernacularGroups'], $_GET['taxonomicRanks'], $_GET['territories'], $_GET['domain'], $_GET[''], $page, $parPage);
-                foreach ($ids as $id) {
-                    $especes[] = [
-                        'frenchVernacularNames' => modelEspeces::getAttributParIdExterne('frenchVernacularNames', $id),
-                        'scientificNames' => modelEspeces::getAttributParIdExterne('scientificNames', $id),
-                        'genusName' => modelEspeces::getAttributParIdExterne('genusName', $id),
-                        'familyName' => modelEspeces::getAttributParIdExterne('familyName', $id),
-                        'orderName' => modelEspeces::getAttributParIdExterne('orderName', $id),
-                        'className' => modelEspeces::getAttributParIdExterne('className', $id),
-                        'kingdomName' => modelEspeces::getAttributParIdExterne('kingdomName', $id),
-                        'habitat' => modelEspeces::getAttributParIdExterne('habitat', $id)
-                    ];
-                
-                }
-            }
-        }
-        include 'views/especes/rechercherEspecesResultatsVue.php';
-    }
-
     public function rechercherEspeces() {
         // Afficher la vue de recherche
         include 'views/especes/rechercherEspecesVue.php';
@@ -205,6 +143,37 @@ class ControllerEspeces {
         $naturotheques = modelNaturotheques::obtenirNaturothequesParUtilisateur($_SESSION['identifiant_utilisateur'], 1, 100);
         include 'views/especes/ajouterEspeceANaturothequeVue.php';
     }
+
+    public function rechercherEspecesResultats() {
+        // Récupération des paramètres de recherche depuis la requête GET
+        $scientificNames = isset($_GET['scientificNames']) ? $_GET['scientificNames'] : '';
+        $interne = isset($_GET['interne']) ? $_GET['interne'] : 'TRUE';
+    
+        // Récupération des paramètres de pagination
+        $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+        $parPage = isset($_GET['parPage']) ? (int) $_GET['parPage'] : 10;
+    
+        // Initialisation du tableau de résultats
+        $especes = [];
+    
+        if ($interne === 'TRUE') {
+            // Recherche dans la base de données interne
+            $resultat = modelEspeces::rechercheIdEspeceParCritereInterne($scientificNames, $page, $parPage);
+            foreach ($resultat as $id) {
+                $especes[] = modelEspeces::getEspeceParIdInterne($id);
+            }
+        } else {
+            // Recherche dans l'API externe
+            $resultat = modelEspeces::rechercheIdEspeceParCritereExterne($scientificNames, $page, $parPage);
+            foreach ($resultat as $id) {
+                $especes[] = modelEspeces::getEspeceParIdExterne($id);
+            }
+        }
+    
+        // Charger la vue et passer les données à la vue
+        include 'views/especes/rechercherEspecesResultatsVue.php';
+    }
+    
 
 
 }
