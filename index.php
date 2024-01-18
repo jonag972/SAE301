@@ -218,6 +218,18 @@ switch ($action) {
         $controllerName = 'ControllerEspeces';
         break;
 
+    case 'modifierEspece':
+        // On appelle le contrôleur des espèces pour la page de modification
+        $controller_file = 'controllers/ControllerEspeces.php';
+        $controllerName = 'ControllerEspeces';
+        break;
+
+    case 'modifierEspeceConfirmation':
+        // On appelle le contrôleur des espèces pour la page de confirmation de modification
+        $controller_file = 'controllers/ControllerEspeces.php';
+        $controllerName = 'ControllerEspeces';
+        break;
+
     case 'supprimerEspece':
         // On appelle le contrôleur des espèces pour la page de suppression
         $controller_file = 'controllers/ControllerEspeces.php';

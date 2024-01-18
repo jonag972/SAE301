@@ -22,13 +22,14 @@
     <?php else: ?>
         <p>Aucune espèce sélectionnée.</p>
     <?php endif; ?>
+    <a href="?action=modifierEspece&id=<?php echo $espece['id']; ?>">Modifier l'espèce</a>
     <a href="?action=ajouterObservation&id_espece=<?php echo $espece['id']; ?>&interne=<?php echo $espece['interne']; ?>">Ajouter une observation</a>
     <a href="?action=afficherToutesLesEspeces&interne=<?php echo $espece['interne']; ?>">Retour à la liste des espèces</a>
     <a href="?action=ajouterEspeceANaturotheque&id_espece=<?php echo $espece['id']; ?>&interne=<?php echo $espece['interne']; ?>">Ajouter à Naturothèque</a>
     <?php if (isset($message)): ?>
         <p><?php echo 'Message: ' . $message; ?></p>
     <?php endif; ?>
-    <?php if ($espece['interne'] == 1): ?>
+    <?php if ($espece['interne'] == 1 && isset($_SESSION['role']) && $_SESSION['role'] == 'admin') : ?>
         <a href="?action=modifierEspece&id=<?php echo $espece['id']; ?>">Modifier l'espèce</a>
         <a href="?action=supprimerEspece&id=<?php echo $espece['id']; ?>">Supprimer l'espèce</a>
     <?php endif; ?>

@@ -128,7 +128,7 @@ class modelEspeces {
     
 
     public static function addEspeceBDD ($frenchVernacularName, $englishVernacularName, $scientificName, $genusName, $familyName, $orderName, $classNAme, $kingdomName, $habitat, $mediaImage){
-        $query = "INSERT INTO Especes (frenchVernacularName, englishVernacularName, scientificName, genusName, familyName, orderName, className, kingdomName, habitat, mediaImage) VALUES (:frenchVernacularName, :englishVernacularName, :scientificName, :genusName, :familyName, :orderName, :className, :kingdomName, :habitat, :mediaImage)";
+        $query = "INSERT INTO Especes (frenchVernacularName, englishVernacularName, scientificName, genusName, familyName, orderName, className, kingdomName, habitat, mediaImage, identifiant_utilisateur) VALUES (:frenchVernacularName, :englishVernacularName, :scientificName, :genusName, :familyName, :orderName, :className, :kingdomName, :habitat, :mediaImage, :identifiant_utilisateur)";
         $values = array(
             ':frenchVernacularName' => $frenchVernacularName,
             ':englishVernacularName' => $englishVernacularName,
@@ -139,7 +139,8 @@ class modelEspeces {
             ':className' => $classNAme,
             ':kingdomName' => $kingdomName,
             ':habitat' => $habitat,
-            ':mediaImage' => $mediaImage
+            ':mediaImage' => $mediaImage,
+            ':identifiant_utilisateur' => $_SESSION['identifiant_utilisateur']
         );
         $resultat = database::prepareEtExecute($query, $values);
         return $resultat;

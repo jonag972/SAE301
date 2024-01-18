@@ -142,7 +142,7 @@ class ControllerEspeces {
     public function modifierEspece() {
         $id = $_GET['id'];
         if ($this->especeAjouteParUtilisateur($id) || $this->estAdmin()) {
-            $espece = modelEspeces::getEspeceParIdInterne($id);
+            $espece = modelEspeces::getEspeceParIdInternes($id);
             include 'views/especes/modifierEspeceVue.php';
         } else {
             $error = 'Vous n\'avez pas la permission de modifier cette espèce.';
@@ -153,8 +153,11 @@ class ControllerEspeces {
     public function modifierEspeceConfirmation() {
         $id = $_POST['id'];
         if ($this->especeAjouteParUtilisateur($id) || $this->estAdmin()) {
-            if (isset($_FILES['mediaImage']) && $_FILES['mediaImage']['error'] == 0){
-                $mediaImage = base64_encode(file_get_contents($_FILES['mediaImage']['tmp_name']));
+                if (isset($_FILES['mediaImage']) && $_FILES['mediaImage']['error'] == 0){
+                    $mediaImage = base64_encode(file_get_contents($_FILES['mediaImage']['tmp_name']));
+                } else {
+                    $mediaImage = modelEspeces::getAttributParIdInterne('mediaImage', $id);
+                }
                 $frenchVernacularName = $_POST['frenchVernacularName'];
                 $englishVernacularName = $_POST['englishVernacularName'];
                 $scientificName = $_POST['scientificName'];
@@ -166,11 +169,6 @@ class ControllerEspeces {
                 $habitat = $_POST['habitat'];
                 $resultat = modelEspeces::modificationEspece($id, $frenchVernacularName, $englishVernacularName, $scientificName, $genusName, $familyName, $orderName, $className, $kingdomName, $habitat, $mediaImage);
                 header('Location: ?action=afficherToutesLesEspeces');
-            } else {
-                // Il y a eu une erreur lors du téléchargement du fichier ou le fichier n'a pas été téléchargé
-                $message = "Une erreur est survenue lors du téléchargement du fichier.";
-                include 'views/especes/modifierEspeceVue.php';
-            }
         } else {
             $error = 'Vous n\'avez pas la permission de modifier cette espèce.';
             include 'views/errors/error.php';

@@ -26,7 +26,6 @@
         </div>
     <?php else : ?>
         <strong><p><?php echo $messageErreur; ?></p></strong>
-        <a href="?action=adminAfficherEvenementsNaturotheques&page=<?php echo $page - 1; ?>">Page précédente</a>
     <?php endif; ?>
     </body>
 </html>
