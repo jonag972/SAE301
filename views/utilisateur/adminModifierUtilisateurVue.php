@@ -31,7 +31,10 @@
             <input type="text" id="abonnement" name="abonnement" placeholder = "<?php echo $utilisateur['abonnement']; ?>">
             <br>
             <label for="role">Rôle:</label>
-            <input type="text" id="role" name="role" placeholder = "<?php echo $utilisateur['role']; ?>">
+            <select id="role" name="role">
+                <option value="utilisateur" <?php if($utilisateur['role'] === 'utilisateur') echo 'selected'; ?>>Utilisateur</option>
+                <option value="admin" <?php if($utilisateur['role'] === 'admin') echo 'selected'; ?>>Admin</option>
+            </select>
             <br>
             <input type="submit" value="Modifier">
         </form>

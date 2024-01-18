@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS Utilisateurs (
     pays VARCHAR(191),
     ville VARCHAR(191),
     abonnement VARCHAR (50) DEFAULT 'gratuit',
-    role VARCHAR (50) DEFAULT 'lambda',
+    role VARCHAR (50) DEFAULT 'utilisateur',
     date_inscription TIMESTAMP DEFAULT NOW(),
     date_derniere_connexion TIMESTAMP DEFAULT NOW(),
     date_derniere_deconnexion TIMESTAMP DEFAULT NOW()

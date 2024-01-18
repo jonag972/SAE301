@@ -217,6 +217,7 @@ class ControllerEspeces {
             $espece['className'] = modelEspeces::getAttributParIdExterne('className', $id);
             $espece['kingdomName'] = modelEspeces::getAttributParIdExterne('kingdomName', $id);
             $espece['habitat'] = modelEspeces::getAttributParIdExterne('habitat', $id);
+            $espece['mediaImage'] = modelEspeces::getAttributParIdExterne('mediaImage', $id);
             $espece['interne'] = 'FALSE';
             $espece['imagePrefix'] = '';
         }
