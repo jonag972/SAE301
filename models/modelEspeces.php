@@ -161,17 +161,6 @@ class modelEspeces {
         return $reponse;
     }
 
-    public static function getEvenementsToutesEspeces($page, $parPage){
-        $offset = ($page - 1) * $parPage;
-        $query = "SELECT * FROM Evenements ORDER BY id_evenement LIMIT :offset, :limit";
-        $stmt = database::prepare($query);
-        $stmt->bindValue(':offset', (int) $offset, PDO::PARAM_INT);
-        $stmt->bindValue(':limit', (int) $parPage, PDO::PARAM_INT);
-        $stmt->execute();
-        $resultat = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $resultat;
-    }
-
     public static function modificationEspece($id_espece, $frenchVernacularName, $englishVernacularName, $scientificName, $genusName, $familyName, $orderName, $classNAme, $kingdomName, $habitat, $mediaImage){
         $query = "UPDATE Especes SET frenchVernacularName = :frenchVernacularName, englishVernacularName = :englishVernacularName, scientificName = :scientificName, genusName = :genusName, familyName = :familyName, orderName = :orderName, className = :className, kingdomName = :kingdomName, habitat = :habitat, mediaImage = :mediaImage WHERE id_espece = :id_espece";
         $values = array(
@@ -207,5 +196,19 @@ class modelEspeces {
         );
         $resultat = database::prepareEtExecute($query, $values);
         return $resultat;
+    }
+
+    public static function compterEvenementsToutesEspeces(){
+        $query = "SELECT COUNT(*) AS count FROM Historique_Especes GROUP BY date_modification";
+        $resultat = database::prepareEtExecute($query);
+        $nombreEvenements = count($resultat);
+        return $nombreEvenements;
+    }
+
+    public static function getEvenementsToutesEspeces($page, $nombreParPage){
+        $offset = ($page - 1) * $nombreParPage;
+        $query = "SELECT * FROM Historique_Especes GROUP BY date_modification ORDER BY date_modification DESC LIMIT :offset, :nombreParPage";
+        $values = array(':offset' => $offset, ':nombreParPage' => $nombreParPage);
+        return database::prepareExecuteBind($query, $values);
     }
 }

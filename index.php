@@ -204,7 +204,7 @@ switch ($action) {
 
     
 
-    // Espèces    
+    // Espèces 
 
     case 'afficherToutesLesEspeces':
         // On appelle le contrôleur des espèces
@@ -234,6 +234,12 @@ switch ($action) {
         // On appelle le contrôleur des espèces pour la page de confirmation d'ajout d'espèce à une naturothèque
         $controller_file = 'controllers/ControllerNaturotheques.php';
         $controllerName = 'ControllerNaturotheques';
+        break;
+
+    case 'adminAfficherEvenementsEspeces':
+        // On appelle le contrôleur des espèces pour la page d'affichage des événements des espèces
+        $controller_file = 'controllers/ControllerEspeces.php';
+        $controllerName = 'ControllerEspeces';
         break;
 
     case 'accueil':

@@ -314,7 +314,19 @@ class ControllerEspeces {
         // Charger la vue et passer les données à la vue
         include 'views/especes/rechercherEspecesResultatsVue.php';
     }
-    
 
-
+    public function adminAfficherEvenementsEspeces() {
+        if ($this->estAdmin()) {
+            $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+            $parPage = isset($_GET['parPage']) ? (int)$_GET['parPage'] : 10;
+            $totalEvenements = modelEspeces::compterEvenementsToutesEspeces();
+            $evenements = modelEspeces::getEvenementsToutesEspeces($page, $parPage);
+            $nombreDePages = ceil($totalEvenements / $parPage);
+            include 'views/especes/adminAfficherEvenementsEspecesVue.php';
+            $messageErreur = '';
+        } else {
+            $error = 'Vous n\'avez pas la permission d\'afficher les événements de toutes les espèces.';
+            include 'views/errors/error.php';
+        }
+    }
 }

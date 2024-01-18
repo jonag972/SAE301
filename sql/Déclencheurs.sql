@@ -130,23 +130,25 @@
     AFTER INSERT ON Especes
     FOR EACH ROW
     BEGIN
-        INSERT INTO Historique_Especes (id_espece, action, date_modification, colonne_changee, nouvelle_valeur)
-        VALUES (NEW.id_espece, 'INSERT', NOW(), 'frenchVernacularName', NEW.frenchVernacularName),
-            (NEW.id_espece, 'INSERT', NOW(), 'englishVernacularName', NEW.englishVernacularName),
-            (NEW.id_espece, 'INSERT', NOW(), 'scientificName', NEW.scientificName),
-            (NEW.id_espece, 'INSERT', NOW(), 'vernularGroups', NEW.vernularGroups),
-            (NEW.id_espece, 'INSERT', NOW(), 'taxonomicRanks', NEW.taxonomicRanks),
-            (NEW.id_espece, 'INSERT', NOW(), 'territories', NEW.territories),
-            (NEW.id_espece, 'INSERT', NOW(), 'domain', NEW.domain),
-            (NEW.id_espece, 'INSERT', NOW(), 'habitats', NEW.habitats),
-            (NEW.id_espece, 'INSERT', NOW(), 'genusName', NEW.genusName),
-            (NEW.id_espece, 'INSERT', NOW(), 'familyName', NEW.familyName),
-            (NEW.id_espece, 'INSERT', NOW(), 'orderName', NEW.orderName),
-            (NEW.id_espece, 'INSERT', NOW(), 'className', NEW.className),
-            (NEW.id_espece, 'INSERT', NOW(), 'kingdomName', NEW.kingdomName),
-            (NEW.id_espece, 'INSERT', NOW(), 'habitat', NEW.habitat),
-            (NEW.id_espece, 'INSERT', NOW(), 'mediaImage', NEW.mediaImage),
-            (NEW.id_espece, 'INSERT', NOW(), 'ajoute_par', NEW.ajoute_par);
+        INSERT INTO Historique_Especes (id_espece, identifiant_utilisateur, action, date_modification, colonne_changee, nouvelle_valeur)
+        VALUES (NEW.id_espece, NEW.identifiant_utilisateur, 'INSERT', NOW(), 'frenchVernacularName', NEW.frenchVernacularName),
+            (NEW.id_espece, NEW.identifiant_utilisateur, 'INSERT', NOW(), 'englishVernacularName', NEW.englishVernacularName),
+            (NEW.id_espece, NEW.identifiant_utilisateur, 'INSERT', NOW(), 'scientificName', NEW.scientificName),
+            (NEW.id_espece, NEW.identifiant_utilisateur, 'INSERT', NOW(), 'vernularGroups', NEW.vernularGroups),
+            (NEW.id_espece, NEW.identifiant_utilisateur, 'INSERT', NOW(), 'taxonomicRanks', NEW.taxonomicRanks),
+            (NEW.id_espece, NEW.identifiant_utilisateur, 'INSERT', NOW(), 'territories', NEW.territories),
+            (NEW.id_espece, NEW.identifiant_utilisateur, 'INSERT', NOW(), 'domain', NEW.domain),
+            (NEW.id_espece, NEW.identifiant_utilisateur, 'INSERT', NOW(), 'habitats', NEW.habitats),
+            (NEW.id_espece, NEW.identifiant_utilisateur, 'INSERT', NOW(), 'genusName', NEW.genusName),
+            (NEW.id_espece, NEW.identifiant_utilisateur, 'INSERT', NOW(), 'familyName', NEW.familyName),
+            (NEW.id_espece, NEW.identifiant_utilisateur, 'INSERT', NOW(), 'orderName', NEW.orderName),
+            (NEW.id_espece, NEW.identifiant_utilisateur, 'INSERT', NOW(), 'className', NEW.className),
+            (NEW.id_espece, NEW.identifiant_utilisateur, 'INSERT', NOW(), 'kingdomName', NEW.kingdomName),
+            (NEW.id_espece, NEW.identifiant_utilisateur, 'INSERT', NOW(), 'habitat', NEW.habitat),
+            (NEW.id_espece, NEW.identifiant_utilisateur, 'INSERT', NOW(), 'mediaImage', NEW.mediaImage),
+            (NEW.id_espece, NEW.identifiant_utilisateur, 'INSERT', NOW(), 'identifiant_utilisateur', NEW.identifiant_utilisateur);
+    END //
+    DELIMITER ;
 
     END //
     DELIMITER ;
@@ -157,68 +159,68 @@
     FOR EACH ROW
     BEGIN
         IF NEW.frenchVernacularName <> OLD.frenchVernacularName THEN
-            INSERT INTO Historique_Especes (id_espece, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
-            VALUES (NEW.id_espece, 'UPDATE', NOW(), 'frenchVernacularName', OLD.frenchVernacularName, NEW.frenchVernacularName);
+            INSERT INTO Historique_Especes (id_espece, identifiant_utilisateur, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
+            VALUES (NEW.id_espece, NEW.identifiant_utilisateur, 'UPDATE', NOW(), 'frenchVernacularName', OLD.frenchVernacularName, NEW.frenchVernacularName);
         END IF;
         IF NEW.englishVernacularName <> OLD.englishVernacularName THEN
-            INSERT INTO Historique_Especes (id_espece, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
-            VALUES (NEW.id_espece, 'UPDATE', NOW(), 'englishVernacularName', OLD.englishVernacularName, NEW.englishVernacularName);
+            INSERT INTO Historique_Especes (id_espece, identifiant_utilisateur, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
+            VALUES (NEW.id_espece, NEW.identifiant_utilisateur, 'UPDATE', NOW(), 'englishVernacularName', OLD.englishVernacularName, NEW.englishVernacularName);
         END IF;
         IF NEW.scientificName <> OLD.scientificName THEN
-            INSERT INTO Historique_Especes (id_espece, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
-            VALUES (NEW.id_espece, 'UPDATE', NOW(), 'scientificName', OLD.scientificName, NEW.scientificName);
+            INSERT INTO Historique_Especes (id_espece, identifiant_utilisateur, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
+            VALUES (NEW.id_espece, NEW.identifiant_utilisateur, 'UPDATE', NOW(), 'scientificName', OLD.scientificName, NEW.scientificName);
         END IF;
         IF NEW.vernularGroups <> OLD.vernularGroups THEN
-            INSERT INTO Historique_Especes (id_espece, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
-            VALUES (NEW.id_espece, 'UPDATE', NOW(), 'vernularGroups', OLD.vernularGroups, NEW.vernularGroups);
+            INSERT INTO Historique_Especes (id_espece, identifiant_utilisateur, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
+            VALUES (NEW.id_espece, NEW.identifiant_utilisateur, 'UPDATE', NOW(), 'vernularGroups', OLD.vernularGroups, NEW.vernularGroups);
         END IF;
         IF NEW.taxonomicRanks <> OLD.taxonomicRanks THEN
-            INSERT INTO Historique_Especes (id_espece, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
-            VALUES (NEW.id_espece, 'UPDATE', NOW(), 'taxonomicRanks', OLD.taxonomicRanks, NEW.taxonomicRanks);
+            INSERT INTO Historique_Especes (id_espece, identifiant_utilisateur, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
+            VALUES (NEW.id_espece, NEW.identifiant_utilisateur, 'UPDATE', NOW(), 'taxonomicRanks', OLD.taxonomicRanks, NEW.taxonomicRanks);
         END IF;
         IF NEW.territories <> OLD.territories THEN
-            INSERT INTO Historique_Especes (id_espece, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
-            VALUES (NEW.id_espece, 'UPDATE', NOW(), 'territories', OLD.territories, NEW.territories);
+            INSERT INTO Historique_Especes (id_espece, identifiant_utilisateur, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
+            VALUES (NEW.id_espece, NEW.identifiant_utilisateur, 'UPDATE', NOW(), 'territories', OLD.territories, NEW.territories);
         END IF;
         IF NEW.domain <> OLD.domain THEN
-            INSERT INTO Historique_Especes (id_espece, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
-            VALUES (NEW.id_espece, 'UPDATE', NOW(), 'domain', OLD.domain, NEW.domain);
+            INSERT INTO Historique_Especes (id_espece, identifiant_utilisateur, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
+            VALUES (NEW.id_espece, NEW.identifiant_utilisateur, 'UPDATE', NOW(), 'domain', OLD.domain, NEW.domain);
         END IF;
         IF NEW.habitats <> OLD.habitats THEN
-            INSERT INTO Historique_Especes (id_espece, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
-            VALUES (NEW.id_espece, 'UPDATE', NOW(), 'habitats', OLD.habitats, NEW.habitats);
+            INSERT INTO Historique_Especes (id_espece, identifiant_utilisateur, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
+            VALUES (NEW.id_espece, NEW.identifiant_utilisateur, 'UPDATE', NOW(), 'habitats', OLD.habitats, NEW.habitats);
         END IF;
         IF NEW.genusName <> OLD.genusName THEN
-            INSERT INTO Historique_Especes (id_espece, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
-            VALUES (NEW.id_espece, 'UPDATE', NOW(), 'genusName', OLD.genusName, NEW.genusName);
+            INSERT INTO Historique_Especes (id_espece, identifiant_utilisateur, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
+            VALUES (NEW.id_espece, NEW.identifiant_utilisateur, 'UPDATE', NOW(), 'genusName', OLD.genusName, NEW.genusName);
         END IF;
         IF NEW.familyName <> OLD.familyName THEN
-            INSERT INTO Historique_Especes (id_espece, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
-            VALUES (NEW.id_espece, 'UPDATE', NOW(), 'familyName', OLD.familyName, NEW.familyName);
+            INSERT INTO Historique_Especes (id_espece, identifiant_utilisateur, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
+            VALUES (NEW.id_espece, NEW.identifiant_utilisateur, 'UPDATE', NOW(), 'familyName', OLD.familyName, NEW.familyName);
         END IF;
         IF NEW.orderName <> OLD.orderName THEN
-            INSERT INTO Historique_Especes (id_espece, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
-            VALUES (NEW.id_espece, 'UPDATE', NOW(), 'orderName', OLD.orderName, NEW.orderName);
+            INSERT INTO Historique_Especes (id_espece, identifiant_utilisateur, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
+            VALUES (NEW.id_espece, NEW.identifiant_utilisateur, 'UPDATE', NOW(), 'orderName', OLD.orderName, NEW.orderName);
         END IF;
         IF NEW.className <> OLD.className THEN
-            INSERT INTO Historique_Especes (id_espece, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
-            VALUES (NEW.id_espece, 'UPDATE', NOW(), 'className', OLD.className, NEW.className);
+            INSERT INTO Historique_Especes (id_espece, identifiant_utilisateur, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
+            VALUES (NEW.id_espece, NEW.identifiant_utilisateur, 'UPDATE', NOW(), 'className', OLD.className, NEW.className);
         END IF;
         IF NEW.kingdomName <> OLD.kingdomName THEN
-            INSERT INTO Historique_Especes (id_espece, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
-            VALUES (NEW.id_espece, 'UPDATE', NOW(), 'kingdomName', OLD.kingdomName, NEW.kingdomName);
+            INSERT INTO Historique_Especes (id_espece, identifiant_utilisateur, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
+            VALUES (NEW.id_espece, NEW.identifiant_utilisateur, 'UPDATE', NOW(), 'kingdomName', OLD.kingdomName, NEW.kingdomName);
         END IF;
         IF NEW.habitat <> OLD.habitat THEN
-            INSERT INTO Historique_Especes (id_espece, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
-            VALUES (NEW.id_espece, 'UPDATE', NOW(), 'habitat', OLD.habitat, NEW.habitat);
+            INSERT INTO Historique_Especes (id_espece, identifiant_utilisateur, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
+            VALUES (NEW.id_espece, NEW.identifiant_utilisateur, 'UPDATE', NOW(), 'habitat', OLD.habitat, NEW.habitat);
         END IF;
         IF NEW.mediaImage <> OLD.mediaImage THEN
-            INSERT INTO Historique_Especes (id_espece, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
-            VALUES (NEW.id_espece, 'UPDATE', NOW(), 'mediaImage', OLD.mediaImage, NEW.mediaImage);
+            INSERT INTO Historique_Especes (id_espece, identifiant_utilisateur, action, date_modification, colonne_changee, ancienne_valeur)
+            VALUES (NEW.id_espece, NEW.identifiant_utilisateur, 'UPDATE', NOW(), 'mediaImage', OLD.mediaImage);
         END IF;
-        IF NEW.ajoute_par <> OLD.ajoute_par THEN
-            INSERT INTO Historique_Especes (id_espece, action, date_modification, colonne_changee, ancienne_valeur, nouvelle_valeur)
-            VALUES (NEW.id_espece, 'UPDATE', NOW(), 'ajoute_par', OLD.ajoute_par, NEW.ajoute_par);
+        IF NEW.identifiant_utilisateur <> OLD.identifiant_utilisateur THEN
+            INSERT INTO Historique_Especes (id_espece, identifiant_utilisateur, action, date_modification, colonne_changee, ancienne_valeur)
+            VALUES (NEW.id_espece, NEW.identifiant_utilisateur, 'UPDATE', NOW(), 'identifiant_utilisateur', OLD.identifiant_utilisateur);
         END IF;
     END //
     DELIMITER ;
@@ -228,26 +230,25 @@
     AFTER DELETE ON Especes
     FOR EACH ROW
     BEGIN
-        INSERT INTO Historique_Especes (id_espece, action, date_modification, colonne_changee, ancienne_valeur)
-        VALUES (OLD.id_espece, 'DELETE', NOW(), 'frenchVernacularName', OLD.frenchVernacularName),
-            (OLD.id_espece, 'DELETE', NOW(), 'englishVernacularName', OLD.englishVernacularName),
-            (OLD.id_espece, 'DELETE', NOW(), 'scientificName', OLD.scientificName),
-            (OLD.id_espece, 'DELETE', NOW(), 'vernularGroups', OLD.vernularGroups),
-            (OLD.id_espece, 'DELETE', NOW(), 'taxonomicRanks', OLD.taxonomicRanks),
-            (OLD.id_espece, 'DELETE', NOW(), 'territories', OLD.territories),
-            (OLD.id_espece, 'DELETE', NOW(), 'domain', OLD.domain),
-            (OLD.id_espece, 'DELETE', NOW(), 'habitats', OLD.habitats),
-            (OLD.id_espece, 'DELETE', NOW(), 'genusName', OLD.genusName),
-            (OLD.id_espece, 'DELETE', NOW(), 'familyName', OLD.familyName),
-            (OLD.id_espece, 'DELETE', NOW(), 'orderName', OLD.orderName),
-            (OLD.id_espece, 'DELETE', NOW(), 'className', OLD.className),
-            (OLD.id_espece, 'DELETE', NOW(), 'kingdomName', OLD.kingdomName),
-            (OLD.id_espece, 'DELETE', NOW(), 'habitat', OLD.habitat),
-            (OLD.id_espece, 'DELETE', NOW(), 'mediaImage', OLD.mediaImage),
-            (OLD.id_espece, 'DELETE', NOW(), 'ajoute_par', OLD.ajoute_par);
+        INSERT INTO Historique_Especes (id_espece, identifiant_utilisateur, action, date_modification, colonne_changee, ancienne_valeur)
+        VALUES (OLD.id_espece, OLD.identifiant_utilisateur, 'DELETE', NOW(), 'frenchVernacularName', OLD.frenchVernacularName),
+            (OLD.id_espece, OLD.identifiant_utilisateur, 'DELETE', NOW(), 'englishVernacularName', OLD.englishVernacularName),
+            (OLD.id_espece, OLD.identifiant_utilisateur, 'DELETE', NOW(), 'scientificName', OLD.scientificName),
+            (OLD.id_espece, OLD.identifiant_utilisateur, 'DELETE', NOW(), 'vernularGroups', OLD.vernularGroups),
+            (OLD.id_espece, OLD.identifiant_utilisateur, 'DELETE', NOW(), 'taxonomicRanks', OLD.taxonomicRanks),
+            (OLD.id_espece, OLD.identifiant_utilisateur, 'DELETE', NOW(), 'territories', OLD.territories),
+            (OLD.id_espece, OLD.identifiant_utilisateur, 'DELETE', NOW(), 'domain', OLD.domain),
+            (OLD.id_espece, OLD.identifiant_utilisateur, 'DELETE', NOW(), 'habitats', OLD.habitats),
+            (OLD.id_espece, OLD.identifiant_utilisateur, 'DELETE', NOW(), 'genusName', OLD.genusName),
+            (OLD.id_espece, OLD.identifiant_utilisateur, 'DELETE', NOW(), 'familyName', OLD.familyName),
+            (OLD.id_espece, OLD.identifiant_utilisateur, 'DELETE', NOW(), 'orderName', OLD.orderName),
+            (OLD.id_espece, OLD.identifiant_utilisateur, 'DELETE', NOW(), 'className', OLD.className),
+            (OLD.id_espece, OLD.identifiant_utilisateur, 'DELETE', NOW(), 'kingdomName', OLD.kingdomName),
+            (OLD.id_espece, OLD.identifiant_utilisateur, 'DELETE', NOW(), 'habitat', OLD.habitat),
+            (OLD.id_espece, OLD.identifiant_utilisateur, 'DELETE', NOW(), 'mediaImage', OLD.mediaImage),
+            (OLD.id_espece, OLD.identifiant_utilisateur, 'DELETE', NOW(), 'identifiant_utilisateur', OLD.identifiant_utilisateur);
     END //
     DELIMITER ;
-
 
     DELIMITER //
     CREATE TRIGGER tr_naturotheque_insert

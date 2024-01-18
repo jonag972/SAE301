@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS Especes (
     kingdomName VARCHAR (100) DEFAULT NULL,
     habitat VARCHAR(191) DEFAULT NULL,
     mediaImage LONGBLOB DEFAULT NULL,
-    ajoute_par VARCHAR(191)
+    identifiant_utilisateur VARCHAR(191)
 );
 
 CREATE TABLE IF NOT EXISTS Naturotheques (
