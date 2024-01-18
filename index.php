@@ -344,6 +344,12 @@ switch ($action) {
         $controllerName = 'ControllerNaturotheques';
         break;
 
+    case 'afficherEspecesNaturotheque':
+        // On appelle le contrôleur de la page de toutes les espèces d'une naturothèque
+        $controller_file = 'controllers/ControllerNaturotheques.php';
+        $controllerName = 'ControllerNaturotheques';
+        break;
+
     case 'detailsNaturotheque':
         // On appelle le contrôleur de la page de détails d'une naturothèque
         $controller_file = 'controllers/ControllerNaturotheques.php';

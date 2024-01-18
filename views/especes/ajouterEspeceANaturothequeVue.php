@@ -7,7 +7,6 @@
 </head>
 <body>
     <h1>Ajouter Espèce à la Naturothèque</h1>
-    <p>ID de l'espèce : <?php echo $espece['id']; ?></p>
     <p>Nom scientifique de l'espèce : <?php echo $espece['scientificName']; ?></p>
     <p>Nom vernaculaire français de l'espèce : <?php echo $espece['frenchVernacularName']; ?></p>
     <p>Nom vernaculaire anglais de l'espèce : <?php echo $espece['englishVernacularName']; ?></p>

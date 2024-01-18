@@ -36,12 +36,20 @@ class ControllerEspeces {
         // Autres paramètres à gérer depuis l'URL, le cas échéant
         $interne = isset($_GET['interne']) ? $_GET['interne'] : TRUE;
         // Gérer la pagination
-    
+        $nombreEspeces = modelEspeces::getNombreEspecesBDD();
+        $nombrePages = ceil($nombreEspeces / $parPage);
+        $pagination = [
+            'page' => $page,
+            'parPage' => $parPage,
+            'nombreEspeces' => $nombreEspeces,
+            'nombrePages' => $nombrePages
+        ];
+
         // Utilisez l'API pour récupérer les espèces de la page demandée
         $apiUrl = "https://taxref.mnhn.fr/api/taxa/search?version=16.0&page={$page}&size={$parPage}";
         $speciesData = file_get_contents($apiUrl);
         $species = json_decode($speciesData, true);
-    
+
         // Vérifiez le nombre d'espèces retournées
         $numSpecies = count($species["_embedded"]["taxa"]);
         $especes = [];
@@ -64,7 +72,7 @@ class ControllerEspeces {
                     'className' => modelEspeces::getAttributParIdInterne('className', $id),
                     'kingdomName' => modelEspeces::getAttributParIdInterne('kingdomName', $id),
                     'habitat' => modelEspeces::getAttributParIdInterne('habitat', $id),
-                    'mediaImage' => base64_encode(modelEspeces::getAttributParIdInterne('mediaImage', $id)),
+                    'mediaImage' => modelEspeces::getAttributParIdInterne('mediaImage', $id),
                     // On ajoute 'imagePrefix' pour pouvoir afficher l'image dans la vue
                     'imagePrefix' => 'data:image/jpeg;base64,',
                     'interne' => 'TRUE'
@@ -118,7 +126,7 @@ class ControllerEspeces {
                 $kingdomName = $_POST['kingdomName'];
                 $habitat = $_POST['habitat'];
                 $resultat = modelEspeces::addEspeceBDD($frenchVernacularName, $englishVernacularName, $scientificName, $genusName, $familyName, $orderName, $className, $kingdomName, $habitat, $mediaImage);
-                include 'views/especes/ajouterEspeceVue.php';
+                header('Location: ?action=afficherToutesLesEspeces&page=1&parPage=10&interne=TRUE');
             } else {
                 // Il y a eu une erreur lors du téléchargement du fichier ou le fichier n'a pas été téléchargé
                 $message = "Une erreur est survenue lors du téléchargement du fichier.";
@@ -184,9 +192,10 @@ class ControllerEspeces {
     public function detailsEspece() {
         $id = $_GET['id'];
         $interne = $_GET['interne'];
-        if ($interne === 'TRUE') {
+        if ($interne == 'TRUE' || $interne == '1') {
             $espece['id'] = $id;
             $espece['frenchVernacularName'] = modelEspeces::getAttributParIdInterne('frenchVernacularName', $id);
+            $espece['englishVernacularName'] = modelEspeces::getAttributParIdInterne('englishVernacularName', $id);
             $espece['scientificName'] = modelEspeces::getAttributParIdInterne('scientificName', $id);
             $espece['genusName'] = modelEspeces::getAttributParIdInterne('genusName', $id);
             $espece['familyName'] = modelEspeces::getAttributParIdInterne('familyName', $id);
@@ -195,11 +204,12 @@ class ControllerEspeces {
             $espece['kingdomName'] = modelEspeces::getAttributParIdInterne('kingdomName', $id);
             $espece['habitat'] = modelEspeces::getAttributParIdInterne('habitat', $id);
             $espece['imagePrefix'] = 'data:image/jpeg;base64,';
-            $espece['mediaImage'] = base64_encode(modelEspeces::getAttributParIdInterne('mediaImage', $id));
+            $espece['mediaImage'] = modelEspeces::getAttributParIdInterne('mediaImage', $id);
             $espece['interne'] = 'TRUE';
-        } elseif ($interne === 'FALSE') {
+        } elseif ($interne === 'FALSE' || $interne === '0') {
             $espece['id'] = $id;
             $espece['frenchVernacularName'] = modelEspeces::getAttributParIdExterne('frenchVernacularName', $id);
+            $espece['englishVernacularName'] = modelEspeces::getAttributParIdExterne('englishVernacularName', $id);
             $espece['scientificName'] = modelEspeces::getAttributParIdExterne('scientificName', $id);
             $espece['genusName'] = modelEspeces::getAttributParIdExterne('genusName', $id);
             $espece['familyName'] = modelEspeces::getAttributParIdExterne('familyName', $id);
@@ -216,12 +226,33 @@ class ControllerEspeces {
     public function ajouterEspeceANaturotheque() {
         $id_espece = $_GET['id_espece'];
         $interne = $_GET['interne'];
-        if ($interne === 'TRUE') {
-            $espece = modelEspeces::getEspeceParIdInterne($id_espece);
+        if ($interne === 'TRUE' || $interne === '1') {
+            $espece['id'] = $id_espece;
+            $espece['frenchVernacularName'] = modelEspeces::getAttributParIdInterne('frenchVernacularName', $id_espece);
+            $espece['englishVernacularName'] = modelEspeces::getAttributParIdInterne('englishVernacularName', $id_espece);
+            $espece['scientificName'] = modelEspeces::getAttributParIdInterne('scientificName', $id_espece);
+            $espece['genusName'] = modelEspeces::getAttributParIdInterne('genusName', $id_espece);
+            $espece['familyName'] = modelEspeces::getAttributParIdInterne('familyName', $id_espece);
+            $espece['orderName'] = modelEspeces::getAttributParIdInterne('orderName', $id_espece);
+            $espece['className'] = modelEspeces::getAttributParIdInterne('className', $id_espece);
+            $espece['kingdomName'] = modelEspeces::getAttributParIdInterne('kingdomName', $id_espece);
+            $espece['habitat'] = modelEspeces::getAttributParIdInterne('habitat', $id_espece);
+            $espece['imagePrefix'] = 'data:image/jpeg;base64,';
+            $espece['mediaImage'] = base64_encode(modelEspeces::getAttributParIdInterne('mediaImage', $id_espece));
             $espece['interne'] = 'TRUE';
-        } elseif ($interne === 'FALSE') {
-            $espece = modelEspeces::getEspeceParIdExterne($id_espece);
+        } elseif ($interne === 'FALSE' || $interne === '0') {
+            $espece['id'] = $id_espece;
+            $espece['frenchVernacularName'] = modelEspeces::getAttributParIdExterne('frenchVernacularName', $id_espece);
+            $espece['englishVernacularName'] = modelEspeces::getAttributParIdExterne('englishVernacularName', $id_espece);
+            $espece['scientificName'] = modelEspeces::getAttributParIdExterne('scientificName', $id_espece);
+            $espece['genusName'] = modelEspeces::getAttributParIdExterne('genusName', $id_espece);
+            $espece['familyName'] = modelEspeces::getAttributParIdExterne('familyName', $id_espece);
+            $espece['orderName'] = modelEspeces::getAttributParIdExterne('orderName', $id_espece);
+            $espece['className'] = modelEspeces::getAttributParIdExterne('className', $id_espece);
+            $espece['kingdomName'] = modelEspeces::getAttributParIdExterne('kingdomName', $id_espece);
+            $espece['habitat'] = modelEspeces::getAttributParIdExterne('habitat', $id_espece);
             $espece['interne'] = 'FALSE';
+            $espece['imagePrefix'] = '';
         }
         $naturotheques = modelNaturotheques::obtenirNaturothequesParUtilisateur($_SESSION['identifiant_utilisateur'], 1, 100);
         include 'views/especes/ajouterEspeceANaturothequeVue.php';

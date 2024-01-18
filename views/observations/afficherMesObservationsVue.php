@@ -7,7 +7,6 @@
 </head>
 <body>
     <h1>Mes Observations</h1>
-    <a href="?action=ajouterObservation">Ajouter une Observation</a>
     <table>
         <thead>
             <tr>
@@ -40,8 +39,9 @@
                     <td><?= htmlspecialchars($observation['interne'] ? 'Oui' : 'Non') ?></td>
                     <td><?= htmlspecialchars($observation['identifiant_utilisateur']) ?></td>
                     <td>
-                        <a href="?action=modifierObservation&id=<?= $observation['id_observation'] ?>">Modifier</a> |
+                        <a href="?action=modifierObservation&id=<?= $observation['id_observation'] ?>">Modifier</a>
                         <a href="?action=supprimerObservation&id=<?= $observation['id_observation'] ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette observation ?');">Supprimer</a>
+                        <a href="?action=detailsEspece&id=<?= $observation['id_espece'] ?>&interne=<?= $observation['interne'] ?>">Voir l'espèce</a>
                     </td>
                 </tr>
             <?php endforeach; ?>

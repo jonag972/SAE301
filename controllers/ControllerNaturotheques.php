@@ -1,6 +1,7 @@
 <?php 
 
 require 'models/modelNaturotheques.php';
+require 'models/modelEspeces.php';
 
 class ControllerNaturotheques {
     private $naturothequesParPage = 10;
@@ -164,15 +165,17 @@ class ControllerNaturotheques {
     public function afficherEspecesNaturotheque() {
         if ($this->estAdmin()) {
             $id = $_GET['id'];
-            $naturotheque = modelNaturotheques::obtenirNaturothequeParId($id);
-            $especes = modelNaturotheques::obtenirEspecesParNaturotheque($id);
+            $especes = modelEspeces::getEspecesParNaturotheque($id);
+            foreach ($especes as &$espece) {
+                $espece['imagePrefix'] = 'data:image/jpeg;base64,';
+            }
             include 'views/naturotheques/afficherEspecesNaturothequeVue.php';
         } else {
             $error = 'Vous n\'avez pas la permission d\'afficher les espèces de cette naturothèque.';
             include 'views/errors/error.php';
         }
     }
-
+    
     public function adminAfficherEvenementsNaturotheques() {
         if ($this->estAdmin()) {
             $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;

@@ -1,3 +1,4 @@
+<?php include 'views/elements/navbar.php'; ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,12 +7,12 @@
 <body>
     <h1>Ajouter une espèce</h1>
     <form action="?action=ajouterEspeceConfirmation" method="post" enctype="multipart/form-data">
-        <label for="frenchVernacularNames">Nom vernaculaire français:</label><br>
-        <input type="text" id="frenchVernacularNames" name="frenchVernacularNames"><br>
-        <label for="englishVernacularNames">Nom vernaculaire anglais:</label><br>
-        <input type="text" id="englishVernacularNames" name="englishVernacularNames"><br>
-        <label for="scientificNames">Nom scientifique:</label><br>
-        <input type="text" id="scientificNames" name="scientificNames"><br>
+        <label for="frenchVernacularName">Nom vernaculaire français:</label><br>
+        <input type="text" id="frenchVernacularName" name="frenchVernacularName"><br>
+        <label for="englishVernacularName">Nom vernaculaire anglais:</label><br>
+        <input type="text" id="englishVernacularName" name="englishVernacularName"><br>
+        <label for="scientificName">Nom scientifique:</label><br>
+        <input type="text" id="scientificName" name="scientificName"><br>
         <label for="genusName">Nom du genre:</label><br>
         <input type="text" id="genusName" name="genusName"><br>
         <label for="familyName">Nom de la famille:</label><br>

@@ -32,6 +32,7 @@
                     <td><?php echo htmlspecialchars($naturotheque['description']); ?></td>
                     <td><?php echo htmlspecialchars($naturotheque['identifiant_utilisateur']); ?></td>
                     <td><?php echo htmlspecialchars($naturotheque['dateCreation']); ?></td>
+                    <td><a href="?action=afficherEspecesNaturotheque&id=<?php echo $naturotheque['id_naturotheque']; ?>">Voir</a></td>
                     <td><a href="?action=detailsNaturotheque&id=<?php echo $naturotheque['id_naturotheque']; ?>">Détails</a></td>
                     <?php if ($this->estAdmin()): ?>
                         <td>

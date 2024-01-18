@@ -18,10 +18,11 @@
         <p>Royaume: <?php echo htmlspecialchars($espece['kingdomName'] ?? 'Royaume non renseigné'); ?></p>
         <p>Habitat: <?php echo htmlspecialchars($espece['habitat'] ?? 'Habitat non renseigné'); ?></p>
         <p>Interne: <?php echo htmlspecialchars($espece['interne'] ?? 'Source non renseigné'); ?></p>
-        <p>Image: <img src="<?php echo $espece['imagePrefix'] . $espece['mediaImage']; ?>" alt="Image de l'espèce" width="200" height="200"></p>
+        <p>Image: <img src="<?php echo $espece['imagePrefix'] . $espece['mediaImage']; ?>" alt="Image de l'espèce" width="100" height="100"></p>
     <?php else: ?>
         <p>Aucune espèce sélectionnée.</p>
     <?php endif; ?>
+    <a href="?action=ajouterObservation&id_espece=<?php echo $espece['id']; ?>&interne=<?php echo $espece['interne']; ?>">Ajouter une observation</a>
     <a href="?action=afficherToutesLesEspeces&interne=<?php echo $espece['interne']; ?>">Retour à la liste des espèces</a>
     <a href="?action=ajouterEspeceANaturotheque&id_espece=<?php echo $espece['id']; ?>&interne=<?php echo $espece['interne']; ?>">Ajouter à Naturothèque</a>
     <?php if (isset($message)): ?>

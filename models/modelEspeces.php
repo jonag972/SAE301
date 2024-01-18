@@ -199,4 +199,13 @@ class modelEspeces {
         $resultat = database::prepareEtExecute($query, $values);
         return $resultat;
     }
+
+    public static function getEspecesParNaturotheque($id_naturotheque){
+        $query = "SELECT * FROM Especes NATURAL JOIN EspecesNaturotheque WHERE id_naturotheque = :id_naturotheque";
+        $values = array(
+            ':id_naturotheque' => $id_naturotheque
+        );
+        $resultat = database::prepareEtExecute($query, $values);
+        return $resultat;
+    }
 }

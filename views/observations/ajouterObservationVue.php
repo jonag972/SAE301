@@ -9,7 +9,7 @@
     <h1>Ajouter une Observation</h1>
     <form action="?action=enregistrerObservation" method="post" enctype="multipart/form-data">
         <label for="id_espece">ID Espèce</label>
-        <input type="text" name="id_espece" id="id_espece">
+        <input type="text" name="id_espece" id="id_espece" value="<?php echo $id_espece; ?>" readonly>
         <br>
         <label for="photo_observation">Photo</label>
         <input type="file" name="photo_observation" id="photo_observation">
@@ -27,7 +27,7 @@
         <input type="text" name="commentaire" id="commentaire">
         <br>
         <label for="interne">Interne</label>
-        <input type="checkbox" name="interne" id="interne">
+        <input type="checkbox" name="interne" id="interne" <?php if ($interne === 'TRUE') { echo 'checked'; } ?>>
         <br>
         <input type="submit" value="Enregistrer">
     </form>

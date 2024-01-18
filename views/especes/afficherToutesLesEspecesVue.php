@@ -28,7 +28,7 @@
                 <th>Classe</th>
                 <th>Royaume</th>
                 <th>Habitat</th>
-                <th>Image du Média</th>
+                <th>Image de l'espece</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -43,7 +43,7 @@
                     <td><?php echo $espece['className']; ?></td>
                     <td><?php echo $espece['kingdomName']; ?></td>
                     <td><?php echo $espece['habitat']; ?></td>
-                    <td><img id=especephoto src="<?php echo $espece['imagePrefix'] . $espece['mediaImage']; ?>" alt="Image de l'espèce"></td>
+                    <td><img id=especephoto src="<?php echo $espece['imagePrefix'] . $espece['mediaImage']; ?>" alt="Image de l'espèce" width="100" height="100"></td>
                     <td><a href="?action=detailsEspece&id=<?php echo $espece['id']; ?>&interne=<?php echo $espece['interne']; ?>">Voir Détails</a>
                     <a href="?action=ajouterEspeceANaturotheque&id_espece=<?php echo $espece['id']; ?>&interne=<?php echo $espece['interne']; ?>">Ajouter à Naturothèque</a></td>
                     <?php if ($interne === 'TRUE') : ?>
@@ -65,6 +65,8 @@
             <a href="<?php echo '?action=afficherToutesLesEspeces&page=' . ($page + 1) . '&parPage=' . $parPage . '&interne=' . $interne; ?>">Page suivante</a>
         <?php endif; ?>
     </div>
+
+
 
 </body>
 </html>

@@ -28,6 +28,7 @@
                     <td><?php echo htmlspecialchars($naturotheque['nom']); ?></td>
                     <td><?php echo htmlspecialchars($naturotheque['description']); ?></td>
                     <td><?php echo htmlspecialchars($naturotheque['dateCreation']); ?></td>
+                    <td><a href="?action=afficherEspecesNaturotheque&id=<?php echo $naturotheque['id_naturotheque']; ?>">Voir</a></td>
                     <td><a href="?action=detailsNaturotheque&id=<?php echo $naturotheque['id_naturotheque']; ?>">Détails</a></td>
                     <td><a href="?action=modifierNaturotheque&id=<?php echo $naturotheque['id_naturotheque']; ?>">Modifier</a></td>
                     <td><a href="?action=supprimerNaturotheque&id=<?php echo $naturotheque['id_naturotheque']; ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette naturothèque ?');">Supprimer</a></td>

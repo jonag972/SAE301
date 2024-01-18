@@ -48,6 +48,8 @@ class ControllerObservations {
 
     public function ajouterObservation() {
         // Afficher le formulaire d'ajout d'une observation
+        $id_espece = $_GET['id_espece'];
+        $interne = $_GET['interne'];
         include 'views/observations/ajouterObservationVue.php';
     }
 

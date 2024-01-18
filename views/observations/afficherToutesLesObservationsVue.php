@@ -7,7 +7,6 @@
 </head>
 <body>
     <h1>Toutes les Observations</h1>
-    <a href="?action=ajouterObservation">Ajouter une Observation</a>
     <a href="?action=afficherMesObservations">Mes Observations</a>
     <a href="?action=rechercherObservations">Rechercher une Observation</a>
     <table>
@@ -46,6 +45,7 @@
                             <a href="?action=detailsObservation&id=<?= $observation['id_observation'] ?>">Détails</a> |
                             <a href="?action=modifierObservation&id=<?= $observation['id_observation'] ?>">Modifier</a> |
                             <a href="?action=supprimerObservation&id=<?= $observation['id_observation'] ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette observation ?');">Supprimer</a>
+                            <a href="?action=detailsEspece&id=<?= $observation['id_espece'] ?>&interne=<?= $observation['interne'] ?>">Voir l'espèce</a>
                         </td>
                     <?php endif; ?>
                 </tr>
