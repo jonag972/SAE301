@@ -29,7 +29,7 @@
     <?php if (isset($message)): ?>
         <p><?php echo 'Message: ' . $message; ?></p>
     <?php endif; ?>
-    <?php if ($espece['interne'] == 1 && isset($_SESSION['role']) && $_SESSION['role'] == 'admin') : ?>
+    <?php if ($espece['interne'] == 1 && isset($_COOKIE['role']) && $_COOKIE['role'] == 'admin') : ?>
         <a href="?action=modifierEspece&id=<?php echo $espece['id']; ?>">Modifier l'espèce</a>
         <a href="?action=supprimerEspece&id=<?php echo $espece['id']; ?>">Supprimer l'espèce</a>
     <?php endif; ?>

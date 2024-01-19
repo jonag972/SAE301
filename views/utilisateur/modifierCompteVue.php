@@ -6,7 +6,7 @@
     <?php include 'views/elements/navbar.php'; ?>
     <?php
     // Vérifiez si l'utilisateur est connecté
-    if (!isset($_SESSION['identifiant_utilisateur'])) {
+    if (!isset($_COOKIE['identifiant_utilisateur'])) {
         // Si l'utilisateur n'est pas connecté, redirigez-le vers la page de connexion
         header('Location: ?action=connexion');
         exit();
@@ -18,7 +18,7 @@
         <h3>Laissez les champs vides pour ne pas changer les informations</h3>
         <form method="post" action="?action=modificationCompte">
             <label for="identifiant_utilisateur_actuel">Nom d'utilisateur actuel :</label>
-            <input type="text" id="identifiant_utilisateur_actuel" name="identifiant_utilisateur_actuel" value="<?php echo $_SESSION['identifiant_utilisateur']; ?>" readonly><br>
+            <input type="text" id="identifiant_utilisateur_actuel" name="identifiant_utilisateur_actuel" value="<?php echo $_COOKIE['identifiant_utilisateur']; ?>" readonly><br>
 
             <br>
 
@@ -27,34 +27,34 @@
             <br>
 
             <label for="email">Adresse e-mail :</label>
-            <input type="email" id="email" name="email" placeholder="<?php echo $_SESSION['email']; ?>"><br>
+            <input type="email" id="email" name="email" placeholder="<?php echo $_COOKIE['email']; ?>"><br>
 
             <br>
 
             <label for="prenom">Prénom :</label>
-            <input type="text" id="prenom" name="prenom" placeholder="<?php echo $_SESSION['prenom']; ?>"><br>
+            <input type="text" id="prenom" name="prenom" placeholder="<?php echo $_COOKIE['prenom']; ?>"><br>
 
             <br>
 
             <label for="nom_de_famille">Nom de famille :</label>
-            <input type="text" id="nom_de_famille" name="nom_de_famille" placeholder="<?php echo $_SESSION['nom_de_famille']; ?>"><br>
+            <input type="text" id="nom_de_famille" name="nom_de_famille" placeholder="<?php echo $_COOKIE['nom_de_famille']; ?>"><br>
 
             <br>
 
             <label for="age">Âge :</label>
-            <input type="number" id="age" name="age" placeholder="<?php echo $_SESSION['age']; ?>"><br>
+            <input type="number" id="age" name="age" placeholder="<?php echo $_COOKIE['age']; ?>"><br>
 
             <br>
 
             <label for="pays">Pays :</label>
-            <input type="text" id="pays" name="pays" placeholder="<?php echo $_SESSION['pays']; ?>"><br>
+            <input type="text" id="pays" name="pays" placeholder="<?php echo $_COOKIE['pays']; ?>"><br>
 
             <br>
 
             <label for="abonnement">Abonnement :</label>
             <select name="abonnement" id="abonnement">
-                <option value="gratuit" <?php if ($_SESSION['abonnement'] == 'gratuit') echo 'selected'; ?>>Gratuit</option>
-                <option value="premium" <?php if ($_SESSION['abonnement'] == 'premium') echo 'selected'; ?>>Premium</option>
+                <option value="gratuit" <?php if ($_COOKIE['abonnement'] == 'gratuit') echo 'selected'; ?>>Gratuit</option>
+                <option value="premium" <?php if ($_COOKIE['abonnement'] == 'premium') echo 'selected'; ?>>Premium</option>
             </select><br>
 
             <br>

@@ -6,7 +6,7 @@
 <body>
 <?php include 'views/elements/navbar.php'; ?>
     <h1>Confirmation de suppression de compte</h1>
-    <h3>Êtes-vous sûr de vouloir supprimer votre compte avec l'identifiant <?php echo $_SESSION['identifiant_utilisateur']; ?> ?</h3>
+    <h3>Êtes-vous sûr de vouloir supprimer votre compte avec l'identifiant <?php echo $_COOKIE['identifiant_utilisateur']; ?> ?</h3>
     <p>Veuillez entrer votre mot de passe pour confirmer la suppression de votre compte.</p>
     <form action="?action=supprimerCompteConfirmation" method="post">
         <label for="mot_de_passe">Mot de passe :</label>
