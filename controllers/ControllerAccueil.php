@@ -1,8 +1,10 @@
 <?php
-// Créer la session si elle n'existe pas
-if (!isset($_SESSION)) {
+// Créer le cookie si il n'existe pas
+if (!isset($_COOKIE['PHPSESSID'])) {
     session_start();
+    setcookie('PHPSESSID', session_id(), time() + 3600, '/');
 }
+
 class ControllerAccueil {
     public function accueil() {
 

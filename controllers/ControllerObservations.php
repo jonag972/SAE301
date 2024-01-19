@@ -8,12 +8,12 @@ class ControllerObservations {
 
 
     private function estAdmin() {
-        return isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
+        return isset($_COOKIE['role']) && $_COOKIE['role'] === 'admin';
     }
 
     private function estProprietaireObservation($id_observation) {
         $observation = modelObservations::obtenirObservationParId($id_observation);
-        return $observation && $observation['identifiant_utilisateur'] === $_SESSION['identifiant_utilisateur'];
+        return $observation && $observation['identifiant_utilisateur'] === $_COOKIE['identifiant_utilisateur'];
     }
 
     public function afficherToutesLesObservations() {
@@ -27,13 +27,13 @@ class ControllerObservations {
 
     public function afficherMesObservations() {
         // Si l'utilisateur n'est pas connecté, rediriger vers la page de connexion
-        if (!isset($_SESSION['identifiant_utilisateur'])) {
+        if (!isset($_COOKIE['identifiant_utilisateur'])) {
             header('Location: ?action=seconnecter');
             exit();
         }
 
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-        $identifiant_utilisateur = $_SESSION['identifiant_utilisateur'];
+        $identifiant_utilisateur = $_COOKIE['identifiant_utilisateur'];
         $totalObservations = modelObservations::compterObservationsParUtilisateur($identifiant_utilisateur);
         $nombreDePages = ceil($totalObservations / $this->observationsParPage);
         $observations = modelObservations::obtenirObservationsParUtilisateur($identifiant_utilisateur, $page, $this->observationsParPage);
@@ -55,7 +55,7 @@ class ControllerObservations {
 
     public function enregistrerObservation() {
         $id_espece = $_POST['id_espece'];
-        $identifiant_utilisateur = $_SESSION['identifiant_utilisateur'];
+        $identifiant_utilisateur = $_COOKIE['identifiant_utilisateur'];
         $date_observation = $_POST['date_observation'];
         $pays_observation = $_POST['pays_observation'];
         $ville_observation = $_POST['ville_observation'];
@@ -145,7 +145,7 @@ class ControllerObservations {
     public function rechercherMesObservations() {
         $id_espece = isset($_GET['id_espece']) ? $_GET['id_espece'] : '';
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-        $identifiant_utilisateur = $_SESSION['identifiant_utilisateur'];
+        $identifiant_utilisateur = $_COOKIE['identifiant_utilisateur'];
         $totalObservations = modelObservations::compterObservationsParUtilisateur($identifiant_utilisateur);
         $nombreDePages = ceil($totalObservations / $this->observationsParPage);
         $observations = modelObservations::rechercherObservationsParIdEspeceEtUtilisateur($id_espece, $identifiant_utilisateur, $page, $this->observationsParPage);
@@ -168,4 +168,4 @@ class ControllerObservations {
             include 'views/observations/adminAfficherEvenementsObservationsVue.php';
         }
     }        
-}
+    }
