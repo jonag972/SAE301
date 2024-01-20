@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <title>Liste des espèces</title>
+    <title>Liste des espèces <?php echo $interne === 'TRUE' ? 'de la base de données' : 'de l\'API'; ?></title>
     <link rel="stylesheet" href="assets/css/especes/afficherToutesLesEspeces.css">
     <meta charset="utf-8">
 </head>
 <?php include 'views/elements/navbar.php'; ?>
 <body>
-    <h1>Liste des espèces</h1>
+    <h1>Liste des espèces <?php echo $interne === 'TRUE' ? 'de la base de données' : 'de l\'API'; ?></h1>
     <?php if ($interne === 'FALSE') : ?>
-        <a href="?action=afficherToutesLesEspeces&interne=FALSE&page=1&parPage=10&interne=TRUE">Afficher toutes les espèces depuis la base de données</a>
-    <?php elseif ($interne === 'TRUE') : ?>
-        <a href="?action=afficherToutesLesEspeces&interne=TRUE&page=1&parPage=10&interne=FALSE">Afficher toutes les espèces depuis l'API</a>
+        <a href="?action=afficherToutesLesEspeces&interne=TRUE&page=1&size=10">Afficher toutes les espèces depuis la base de données</a>
+    <?php else : ?>
+        <a href="?action=afficherToutesLesEspeces&interne=FALSE&page=1&size=10">Afficher toutes les espèces depuis l'API</a>
     <?php endif; ?>
     <?php if ($interne === 'TRUE') : ?>
         <a href="?action=ajouterEspece">Ajouter une espèce</a>
@@ -58,13 +58,18 @@
 
     <div class="pagination">
         <?php if ($page > 1) : ?>
-            <a href="<?php echo '?action=afficherToutesLesEspeces&page=' . ($page - 1) . '&parPage=' . $parPage . '&interne=' . $interne; ?>">Page précédente</a>
+            <a href="<?php echo '?action=afficherToutesLesEspeces&page=' . ($page - 1) . '&size=' . $parPage . '&interne=' . $interne; ?>">Page précédente</a>
         <?php endif; ?>
 
-        <?php if ($numSpecies == $parPage) : ?>
-            <a href="<?php echo '?action=afficherToutesLesEspeces&page=' . ($page + 1) . '&parPage=' . $parPage . '&interne=' . $interne; ?>">Page suivante</a>
+        <?php if ($page < $nombrePages) : ?>
+            <a href="<?php echo '?action=afficherToutesLesEspeces&page=' . ($page + 1) . '&size=' . $parPage . '&interne=' . $interne; ?>">Page suivante</a>
         <?php endif; ?>
     </div>
+
+    <?php if (isset($message)) : ?>
+        <p><?php echo $message; ?></p>
+    <?php endif; ?>
+
 
 
 

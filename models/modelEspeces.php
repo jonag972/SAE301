@@ -88,17 +88,15 @@ class modelEspeces {
 
     public static function rechercheEspeceInterneParscientificName($scientificName, $page, $parPage){
         $offset = ($page - 1) * $parPage;
-        $query = "SELECT * FROM Especes WHERE scientificName LIKE :scientificName ORDER BY id_espece LIMIT :offset, :limit";
+        $query = "SELECT * FROM Especes WHERE scientificName LIKE :scientificName LIMIT $offset, $parPage";
         $pdoStatement = database::prepare($query);
-        $pdoStatement->bindParam(':offset', $offset, PDO::PARAM_INT);
-        $pdoStatement->bindParam(':limit', $parPage, PDO::PARAM_INT);
-        $pdoStatement->bindValue(':scientificName', '%' . $scientificName . '%');
+        $pdoStatement->bindValue(':scientificName', '%' . addcslashes($scientificName, '%_') . '%');
         $pdoStatement->execute();
         return $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public static function rechercheEspeceExterneParscientificName($scientificName, $page, $parPage){
-        $url = "https://taxref.mnhn.fr/api/taxa/search?scientificName=" . urlencode($scientificName) . "&page=" . $page . "&size=" . $parPage;
+        $url = "https://taxref.mnhn.fr/api/taxa/search?scientificNames=" . $scientificName . "&page=" . $page . "&size=" . $parPage;
         $json = file_get_contents($url);
         $reponse = json_decode($json, true);
         $resultat = array();
@@ -107,8 +105,8 @@ class modelEspeces {
             foreach ($reponse['_embedded']['taxa'] as $espece) {
                 $resultat[] = [
                     'id' => $espece['id'],
-                    'frenchVernacularName' => $espece['vernacularNames'][0]['vernacularName'] ??= "Non renseigné",
-                    'englishVernacularName' => $espece['vernacularNames'][1]['vernacularName'] ??= "Non renseigné",
+                    'frenchVernacularName' => $espece['frenchVernacularName'] ??= "Non renseigné",
+                    'englishVernacularName' => $espece['englishVernacularName'] ??= "Non renseigné",
                     'scientificName' => $espece['scientificName'] ??= "Non renseigné",
                     'genusName' => $espece['genusName'] ??= "Non renseigné",
                     'familyName' => $espece['familyName'] ??= "Non renseigné",

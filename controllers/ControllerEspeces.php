@@ -19,84 +19,67 @@ class ControllerEspeces {
 
     public function afficherToutesLesEspeces() {
         // Récupérer le numéro de page à partir de l'URL
-        if (isset($_GET['page'])) {
-            $page = (int) $_GET['page'];
-        } else {
-            $page = 1; // Valeur par défaut si page n'est pas défini dans l'URL
-        }
-        if (isset($_GET['size'])) {
-            $parPage = (int) $_GET['size'];
-        } else {
-            $parPage = 10; // Valeur par défaut si size n'est pas défini dans l'URL
-        }
+        $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+        $parPage = isset($_GET['size']) ? (int) $_GET['size'] : 10;
+        $interne = isset($_GET['interne']) ? $_GET['interne'] : 'TRUE';
 
-        // Autres paramètres à gérer depuis l'URL, le cas échéant
-        $interne = isset($_GET['interne']) ? $_GET['interne'] : TRUE;
-        // Gérer la pagination
-        $nombreEspeces = modelEspeces::getNombreEspecesBDD();
-        $nombrePages = ceil($nombreEspeces / $parPage);
-        $pagination = [
-            'page' => $page,
-            'parPage' => $parPage,
-            'nombreEspeces' => $nombreEspeces,
-            'nombrePages' => $nombrePages
-        ];
-
-        // Utilisez l'API pour récupérer les espèces de la page demandée
-        $apiUrl = "https://taxref.mnhn.fr/api/taxa/search?version=16.0&page={$page}&size={$parPage}";
-        $speciesData = file_get_contents($apiUrl);
-        $species = json_decode($speciesData, true);
-
-        // Vérifiez le nombre d'espèces retournées
-        $numSpecies = count($species["_embedded"]["taxa"]);
         $especes = [];
-        if($interne === 'TRUE'){
-            // Récupérer le nombre total d'espèces dans la base de données
+        $nombrePages = 0;
+
+        if ($interne === 'TRUE') {
             $nombreEspeces = modelEspeces::getNombreEspecesBDD();
-            // Calculer le nombre total de pages à afficher
             $nombrePages = ceil($nombreEspeces / $parPage);
-            // Récupérer les ids des espèces de la page actuelle
             $ids = modelEspeces::getIdsParPage($page, $parPage);
-            // Faire une boucle sur les ids des espèces pour récupérer les attributs
-            foreach ($ids as $id) {
-                $especes[] = [
-                    'id' => $id,
-                    'frenchVernacularName' => modelEspeces::getAttributParIdInterne('frenchVernacularName', $id),
-                    'scientificName' => modelEspeces::getAttributParIdInterne('scientificName', $id),
-                    'genusName' => modelEspeces::getAttributParIdInterne('genusName', $id),
-                    'familyName' => modelEspeces::getAttributParIdInterne('familyName', $id),
-                    'orderName' => modelEspeces::getAttributParIdInterne('orderName', $id),
-                    'className' => modelEspeces::getAttributParIdInterne('className', $id),
-                    'kingdomName' => modelEspeces::getAttributParIdInterne('kingdomName', $id),
-                    'habitat' => modelEspeces::getAttributParIdInterne('habitat', $id),
-                    'mediaImage' => modelEspeces::getAttributParIdInterne('mediaImage', $id),
-                    // On ajoute 'imagePrefix' pour pouvoir afficher l'image dans la vue
-                    'imagePrefix' => 'data:image/jpeg;base64,',
-                    'interne' => 'TRUE'
+                // Faire une boucle sur les ids des espèces pour récupérer les attributs
+                foreach ($ids as $id) {
+                    $especes[] = [
+                        'id' => $id,
+                        'frenchVernacularName' => modelEspeces::getAttributParIdInterne('frenchVernacularName', $id),
+                        'scientificName' => modelEspeces::getAttributParIdInterne('scientificName', $id),
+                        'genusName' => modelEspeces::getAttributParIdInterne('genusName', $id),
+                        'familyName' => modelEspeces::getAttributParIdInterne('familyName', $id),
+                        'orderName' => modelEspeces::getAttributParIdInterne('orderName', $id),
+                        'className' => modelEspeces::getAttributParIdInterne('className', $id),
+                        'kingdomName' => modelEspeces::getAttributParIdInterne('kingdomName', $id),
+                        'habitat' => modelEspeces::getAttributParIdInterne('habitat', $id),
+                        'mediaImage' => modelEspeces::getAttributParIdInterne('mediaImage', $id),
+                        // On ajoute 'imagePrefix' pour pouvoir afficher l'image dans la vue
+                        'imagePrefix' => 'data:image/jpeg;base64,',
+                        'interne' => 'TRUE'
+                    ];
+                }
+            } elseif ($interne === 'FALSE') {
+                // Utilisez l'API pour récupérer les espèces de la page demandée
+                $queryParams = [
+                    'version' => '16.0',
+                    'page' => $page,
+                    'size' => $parPage
                 ];
+                $apiUrl = "https://taxref.mnhn.fr/api/taxa/search?" . http_build_query($queryParams);
+                $speciesData = file_get_contents($apiUrl);
+                $species = json_decode($speciesData, true);
+
+                foreach ($species["_embedded"]["taxa"] as &$specie) {
+                    $especes[] = [
+                        'id' => $specie['id'],
+                        'frenchVernacularName' => modelEspeces::getAttributParIdExterne('frenchVernacularName', $specie['id']),
+                        'scientificName' => modelEspeces::getAttributParIdExterne('scientificName', $specie['id']),
+                        'genusName' => modelEspeces::getAttributParIdExterne('genusName', $specie['id']),
+                        'familyName' => modelEspeces::getAttributParIdExterne('familyName', $specie['id']),
+                        'orderName' => modelEspeces::getAttributParIdExterne('orderName', $specie['id']),
+                        'className' => modelEspeces::getAttributParIdExterne('className', $specie['id']),
+                        'kingdomName' => modelEspeces::getAttributParIdExterne('kingdomName', $specie['id']),
+                        'habitat' => modelEspeces::getAttributParIdExterne('habitat', $specie['id']),
+                        'mediaImage' => modelEspeces::getAttributParIdExterne('mediaImage', $specie['id']),
+                        'imagePrefix' => '',
+                        'interne' => 'FALSE'
+                    ];
+                }
             }
 
-        } elseif ($interne === 'FALSE') {
-            foreach ($species["_embedded"]["taxa"] as &$specie) {
-                $especes[] = [
-                    'id' => $specie['id'],
-                    'frenchVernacularName' => modelEspeces::getAttributParIdExterne('frenchVernacularName', $specie['id']),
-                    'scientificName' => modelEspeces::getAttributParIdExterne('scientificName', $specie['id']),
-                    'genusName' => modelEspeces::getAttributParIdExterne('genusName', $specie['id']),
-                    'familyName' => modelEspeces::getAttributParIdExterne('familyName', $specie['id']),
-                    'orderName' => modelEspeces::getAttributParIdExterne('orderName', $specie['id']),
-                    'className' => modelEspeces::getAttributParIdExterne('className', $specie['id']),
-                    'kingdomName' => modelEspeces::getAttributParIdExterne('kingdomName', $specie['id']),
-                    'habitat' => modelEspeces::getAttributParIdExterne('habitat', $specie['id']),
-                    'mediaImage' => modelEspeces::getAttributParIdExterne('mediaImage', $specie['id']),
-                    'imagePrefix' => '',
-                    'interne' => 'FALSE'
-                ];
+            // Charger la vue et passer les données à la vue
+            include 'views/especes/afficherToutesLesEspecesVue.php';
             }
-        }
-        // Charger la vue et passer les données à la vue
-        include 'views/especes/afficherToutesLesEspecesVue.php';
-    }
 
     public function rechercherEspeces() {
         // Afficher la vue de recherche
@@ -104,8 +87,15 @@ class ControllerEspeces {
     }
 
     public function ajouterEspece() {
-        // Afficher la vue d'ajout d'espèce
-        include 'views/especes/ajouterEspeceVue.php';
+        // Vérifier s'il y a des cookies de rôle
+        if (isset($_COOKIE['role'])) {
+            // Afficher la vue d'ajout d'espèce
+            include 'views/especes/ajouterEspeceVue.php';
+        } else {
+            // Rediriger vers une page d'erreur ou une autre action
+            $error = 'Vous n\'avez pas la permission d\'ajouter une espèce car vous n\'êtes pas connecté.';
+            include 'views/errors/error.php';
+        }
     }
 
     public function ajouterEspeceConfirmation() {
@@ -138,6 +128,7 @@ class ControllerEspeces {
 
     public function modifierEspece() {
         $id = $_GET['id'];
+
         if ($this->especeAjouteParUtilisateur($id) || $this->estAdmin()) {
             $espece = modelEspeces::getEspeceParIdInternes($id);
             include 'views/especes/modifierEspeceVue.php';
@@ -148,7 +139,7 @@ class ControllerEspeces {
     }
 
     public function modifierEspeceConfirmation() {
-        $id = $_POST['id'];
+        $id = $_POST['id_espece'];
         if ($this->especeAjouteParUtilisateur($id) || $this->estAdmin()) {
                 if (isset($_FILES['mediaImage']) && $_FILES['mediaImage']['error'] == 0){
                     $mediaImage = base64_encode(file_get_contents($_FILES['mediaImage']['tmp_name']));
