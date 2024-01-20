@@ -1,7 +1,6 @@
 <?php
 // Créer le cookie si il n'existe pas
 if (!isset($_COOKIE['PHPSESSID'])) {
-    session_start();
     setcookie('PHPSESSID', session_id(), time() + 3600, '/');
 }
 
