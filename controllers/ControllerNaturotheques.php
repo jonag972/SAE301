@@ -167,7 +167,35 @@ class ControllerNaturotheques {
                 $id = $_GET['id'];
                 $especes = modelEspeces::getEspecesParNaturotheque($id);
                 foreach ($especes as &$espece) {
-                    $espece['imagePrefix'] = 'data:image/jpeg;base64,';
+                    if ($espece['interne'] === 1) {
+                        $id = $espece['id_espece'];
+                        $espece['frenchVernacularName'] = modelEspeces::getAttributParIdInterne('frenchVernacularName', $id);
+                        $espece['englishVernacularName'] = modelEspeces::getAttributParIdInterne('englishVernacularName', $id);
+                        $espece['scientificName'] = modelEspeces::getAttributParIdInterne('scientificName', $id);
+                        $espece['genusName'] = modelEspeces::getAttributParIdInterne('genusName', $id);
+                        $espece['familyName'] = modelEspeces::getAttributParIdInterne('familyName', $id);
+                        $espece['orderName'] = modelEspeces::getAttributParIdInterne('orderName', $id);
+                        $espece['className'] = modelEspeces::getAttributParIdInterne('className', $id);
+                        $espece['kingdomName'] = modelEspeces::getAttributParIdInterne('kingdomName', $id);
+                        $espece['habitat'] = modelEspeces::getAttributParIdInterne('habitat', $id);
+                        $espece['imagePrefix'] = 'data:image/jpeg;base64,';
+                        $espece['mediaImage'] = modelEspeces::getAttributParIdInterne('mediaImage', $id);
+                        $espece['interne'] = 'TRUE';
+                    } else {
+                        $id = $espece['id_espece'];
+                        $espece['frenchVernacularName'] = modelEspeces::getAttributParIdExterne('frenchVernacularName', $id);
+                        $espece['englishVernacularName'] = modelEspeces::getAttributParIdExterne('englishVernacularName', $id);
+                        $espece['scientificName'] = modelEspeces::getAttributParIdExterne('scientificName', $id);
+                        $espece['genusName'] = modelEspeces::getAttributParIdExterne('genusName', $id);
+                        $espece['familyName'] = modelEspeces::getAttributParIdExterne('familyName', $id);
+                        $espece['orderName'] = modelEspeces::getAttributParIdExterne('orderName', $id);
+                        $espece['className'] = modelEspeces::getAttributParIdExterne('className', $id);
+                        $espece['kingdomName'] = modelEspeces::getAttributParIdExterne('kingdomName', $id);
+                        $espece['habitat'] = modelEspeces::getAttributParIdExterne('habitat', $id);
+                        $espece['mediaImage'] = modelEspeces::getAttributParIdExterne('mediaImage', $id);
+                        $espece['interne'] = 'FALSE';
+                        $espece['imagePrefix'] = '';
+                    }
                 }
                 include 'views/naturotheques/afficherEspecesNaturothequeVue.php';
             } else {
