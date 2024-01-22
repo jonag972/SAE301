@@ -61,7 +61,7 @@
             <a href="<?php echo '?action=afficherToutesLesEspeces&page=' . ($page - 1) . '&size=' . $parPage . '&interne=' . $interne; ?>">Page précédente</a>
         <?php endif; ?>
 
-        <?php if ($page < $nombrePages) : ?>
+        <?php if ($interne === 'FALSE') : ?>
             <a href="<?php echo '?action=afficherToutesLesEspeces&page=' . ($page + 1) . '&size=' . $parPage . '&interne=' . $interne; ?>">Page suivante</a>
         <?php endif; ?>
     </div>
